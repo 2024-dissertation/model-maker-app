@@ -1,0 +1,84 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+
+Future<void> showAlertDialog(BuildContext context,
+    {String title = "Alert",
+    String message = "Proceed with action?",
+    String actionText = "Yes",
+    Function? onActionPressed,
+    String cancelText = "No",
+    Function? onCancelPressed,
+    bool isDestructiveAction = false}) async {
+  await showCupertinoDialog<void>(
+    context: context,
+    builder: (BuildContext context) => CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: <CupertinoDialogAction>[
+        CupertinoDialogAction(
+          /// This parameter indicates this action is the default,
+          /// and turns the action's text to bold text.
+          isDefaultAction: true,
+          onPressed: () {
+            Navigator.pop(context);
+            onCancelPressed?.call();
+          },
+          child: Text(cancelText),
+        ),
+        CupertinoDialogAction(
+          /// This parameter indicates the action would perform
+          /// a destructive action such as deletion, and turns
+          /// the action's text color to red.
+          isDestructiveAction: isDestructiveAction,
+          onPressed: () {
+            Navigator.pop(context);
+            onActionPressed?.call();
+          },
+          child: Text(actionText),
+        ),
+      ],
+    ),
+  );
+}
+
+Future<void> showSingleActionAlertDialog(BuildContext context,
+    {String title = "Alert",
+    String message = "Proceed with action?",
+    String actionText = "Yes",
+    Function? onActionPressed,
+    bool isDestructiveAction = false}) async {
+  await showCupertinoDialog<void>(
+    context: context,
+    builder: (BuildContext context) => CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: <CupertinoDialogAction>[
+        CupertinoDialogAction(
+          isDefaultAction: true,
+          isDestructiveAction: isDestructiveAction,
+          onPressed: () {
+            Navigator.pop(context);
+            onActionPressed?.call();
+          },
+          child: Text(actionText),
+        ),
+      ],
+    ),
+  );
+}
+
+Future<String> getFileType(File file) async {
+  final imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+  final textExtensions = ['txt', 'md', 'json'];
+
+  final fileExtension = file.path.split('.').last.toLowerCase();
+
+  if (imageExtensions.contains(fileExtension)) {
+    return 'image';
+  } else if (textExtensions.contains(fileExtension)) {
+    return 'text';
+  } else {
+    return 'other';
+  }
+}
