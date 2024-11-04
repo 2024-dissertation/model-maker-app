@@ -17,7 +17,7 @@ class ScannerPage extends StatefulWidget {
 }
 
 class _ScannerPageState extends State<ScannerPage> {
-  late CameraController controller;
+  CameraController? controller;
   bool _visible = false;
 
   @override
@@ -26,22 +26,26 @@ class _ScannerPageState extends State<ScannerPage> {
     init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _visible = true;
-      });
+      if (mounted) {
+        setState(() {
+          _visible = true;
+        });
+      }
     });
   }
 
   Future<void> init() async {
     if (widget.cameras.isEmpty) {
-      Navigator.of(context).pop();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pop();
 
-      await showSingleActionAlertDialog(context, message: "No cameras found");
+        showSingleActionAlertDialog(context, message: "No cameras found");
+      });
       return;
     }
 
     controller = CameraController(widget.cameras[0], ResolutionPreset.max);
-    controller.initialize().then((_) {
+    controller!.initialize().then((_) {
       if (!mounted) {
         print("not mounted");
         return;
@@ -84,15 +88,15 @@ class _ScannerPageState extends State<ScannerPage> {
   }
 
   Future<void> capturePhoto() async {
-    if (controller.value.isInitialized) {
-      final photoFile = await controller.takePicture();
+    if (controller != null && controller?.value.isInitialized == true) {
+      final photoFile = await controller!.takePicture();
       context.read<ScannerCubit>().addPath(photoFile.path);
     }
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    controller?.dispose();
     super.dispose();
   }
 
@@ -102,39 +106,41 @@ class _ScannerPageState extends State<ScannerPage> {
       navigationBar: const CupertinoNavigationBar(
         middle: Text('Scanner Page'),
       ),
-      child: Column(
-        children: [
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 200),
-            opacity: _visible ? 1.0 : 0.0,
-            child: Stack(children: [
-              CameraPreview(controller),
-              Positioned(
-                bottom: 16,
-                left: 16,
-                right: 16,
-                child: CameraSnap(capturePhoto: capturePhoto),
-              ),
-            ]),
-          ),
-          Expanded(
-            child: BlocBuilder<ScannerCubit, ScannerState>(
-              builder: (context, state) {
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: state.paths.length,
-                  itemBuilder: (context, index) => ImagePreview(
-                    index: index,
-                    path: state.paths[index],
-                    onDelete: (index) =>
-                        context.read<ScannerCubit>().removePath(index),
+      child: controller != null && controller?.value.isInitialized == true
+          ? Column(
+              children: [
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: _visible ? 1.0 : 0.0,
+                  child: Stack(children: [
+                    CameraPreview(controller!),
+                    Positioned(
+                      bottom: 16,
+                      left: 16,
+                      right: 16,
+                      child: CameraSnap(capturePhoto: capturePhoto),
+                    ),
+                  ]),
+                ),
+                Expanded(
+                  child: BlocBuilder<ScannerCubit, ScannerState>(
+                    builder: (context, state) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.paths.length,
+                        itemBuilder: (context, index) => ImagePreview(
+                          index: index,
+                          path: state.paths[index],
+                          onDelete: (index) =>
+                              context.read<ScannerCubit>().removePath(index),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+                ),
+              ],
+            )
+          : Center(child: Text("No cameras found")),
     );
   }
 }
