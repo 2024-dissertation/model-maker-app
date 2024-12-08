@@ -1,0 +1,10 @@
+desc "Deploy to firebase (Dev)"
+lane :deploy_firebase_dev do
+
+  build_app()
+
+  firebase_app_distribution(
+    app: "1:415251284478:ios:db4ffa92590491366980af",
+    testers: "saml@everbit.dev",
+  )
+end

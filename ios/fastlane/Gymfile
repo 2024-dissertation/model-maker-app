@@ -1,0 +1,9 @@
+build_app(
+  scheme: "Release",
+  export_method: "app-store-connect",
+  export_options: {
+    provisioningProfiles: {
+      "com.soup.scanner" => "Provisioning Profile Name",
+    }
+  }
+)
