@@ -8,7 +8,6 @@ import 'package:frontend/scanner_page/widgets/image_preview.dart';
 
 class ScannerPage extends StatefulWidget {
   const ScannerPage({super.key, required this.cameras});
-  static const String routeName = '/scanner';
 
   final List<CameraDescription> cameras;
 

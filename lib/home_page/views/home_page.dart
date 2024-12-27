@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/cubit/auth_cubit.dart';
-import 'package:frontend/scanner_page/page/scanner_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  static const String routeName = '/';
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +18,7 @@ class HomePage extends StatelessWidget {
               CupertinoButton.filled(
                 child: const Text("Enter"),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(ScannerPage.routeName);
+                  // Navigator.of(context).pushNamed(ScannerPage.routeName);
                 },
               ),
               CupertinoButton.filled(
