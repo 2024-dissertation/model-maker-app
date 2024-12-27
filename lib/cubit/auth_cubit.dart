@@ -56,8 +56,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   // Sign-out and immediately emits signedOut state
   Future<void> signOut() async {
-    _myUserCubit.clearMyUser();
     emit(AuthState.signedOut);
+    _myUserCubit.clearMyUser();
     await _authRepository.signOut();
   }
 

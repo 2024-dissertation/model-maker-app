@@ -34,4 +34,19 @@ class AuthRepositoryImp extends AuthRepository {
 
   @override
   firebase_auth.User? get currentUser => _firebaseAuth.currentUser;
+
+  @override
+  Future<firebase_auth.User?> singUpWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final creds = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return creds.user;
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
 }

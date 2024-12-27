@@ -64,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 24),
                   CupertinoButton.filled(
                     child: const Text("Register"),
-                    onPressed: () => _authRepository.signInWithEmailAndPassword(
+                    onPressed: () => _authRepository.singUpWithEmailAndPassword(
                       _emailController.text,
                       _passwordController.text,
                     ),

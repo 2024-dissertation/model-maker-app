@@ -7,6 +7,9 @@ class UnauthorizedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Unauthorized Route'),
+      ),
       child: SafeArea(
         child: Center(
           child: Column(
