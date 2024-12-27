@@ -35,4 +35,8 @@ class AuthCubit extends Cubit<AuthState> {
     await _authenticationRepository.logOut();
     emit(AuthUnauth());
   }
+
+  Future<String?> getIdToken() async {
+    return _authenticationRepository.getIdToken();
+  }
 }
