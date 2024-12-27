@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/cubit/auth_cubit.dart';
 import 'package:frontend/scanner_page/page/scanner_page.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,12 +15,24 @@ class HomePage extends StatelessWidget {
       navigationBar: const CupertinoNavigationBar(
         middle: Text('Home Route'),
       ),
-      child: Center(
-        child: CupertinoButton.filled(
-          child: const Text("Enter"),
-          onPressed: () {
-            Navigator.of(context).pushNamed(ScannerPage.routeName);
-          },
+      child: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              CupertinoButton.filled(
+                child: const Text("Enter"),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(ScannerPage.routeName);
+                },
+              ),
+              CupertinoButton.filled(
+                child: const Text("Log Out"),
+                onPressed: () {
+                  context.read<AuthCubit>().signOut();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

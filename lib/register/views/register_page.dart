@@ -1,23 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/cubit/auth_cubit.dart';
 import 'package:frontend/cubit/my_user_cubit.dart';
-import 'package:frontend/helpers.dart';
-import 'package:frontend/logger.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/repositories/auth_repository.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -34,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
-        middle: Text('Login Page'),
+        middle: Text('Register Page'),
       ),
       child: BlocListener<MyUserCubit, MyUserState>(
         listener: (context, state) {},
@@ -65,45 +62,13 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _passwordController,
                   ),
                   const SizedBox(height: 24),
-                  BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) {
-                      if (state == AuthState.signedIn) {
-                        return CupertinoButton.filled(
-                          child: const Text("Log out"),
-                          onPressed: () => _authRepository.signOut(),
-                        );
-                      }
-                      if (state == AuthState.initial) {
-                        return const CupertinoActivityIndicator();
-                      }
-                      return CupertinoButton.filled(
-                        child: const Text("Login"),
-                        onPressed: () =>
-                            _authRepository.signInWithEmailAndPassword(
-                          _emailController.text,
-                          _passwordController.text,
-                        ),
-                      );
-                    },
-                  ),
-                  if (context.watch<MyUserCubit>().state is MyUserLoaded)
-                    FutureBuilder(
-                      future: context.read<AuthCubit>().getIdToken(),
-                      builder: (context, snap) {
-                        if (snap.connectionState == ConnectionState.done) {
-                          return Column(children: [
-                            Text(snap.data.toString()),
-                            CupertinoButton(
-                                child: const Text("Register"),
-                                onPressed: () {
-                                  Clipboard.setData(ClipboardData(
-                                      text: snap.data.toString()));
-                                })
-                          ]);
-                        }
-                        return const SizedBox();
-                      },
+                  CupertinoButton.filled(
+                    child: const Text("Register"),
+                    onPressed: () => _authRepository.signInWithEmailAndPassword(
+                      _emailController.text,
+                      _passwordController.text,
                     ),
+                  ),
                   Text(context.watch<AuthCubit>().state.toString()),
                   Text("${_authRepository.currentUser}"),
                 ],

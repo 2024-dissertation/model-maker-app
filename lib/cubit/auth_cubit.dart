@@ -1,42 +1,73 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// Enum with all possible authentication states.
+import 'dart:async';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/cubit/my_user_cubit.dart';
 import 'package:frontend/logger.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/repositories/auth_repository.dart';
 
-part 'auth_state.dart';
+enum AuthState {
+  initial,
+  signedOut,
+  signedIn,
+  loading,
+}
 
+// Extends Cubit and will emit states of type AuthState
 class AuthCubit extends Cubit<AuthState> {
+  // Get the injected AuthRepository
+  final AuthRepository _authRepository = getIt();
+  final MyUserCubit _myUserCubit;
+  StreamSubscription? _authSubscription;
+
   AuthCubit({
-    required AuthenticationRepository authenticationRepository,
-  })  : _authenticationRepository = authenticationRepository,
-        super(AuthUnknown());
+    required MyUserCubit myUserCubit,
+  })  : _myUserCubit = myUserCubit,
+        super(AuthState.initial);
 
-  final AuthenticationRepository _authenticationRepository;
+  Future<void> init() async {
+    // Subscribe to listen for changes in the authentication state
+    _authSubscription =
+        _authRepository.onAuthStateChanged.listen(_authStateChanged);
+  }
 
-  Future<void> loginEmailPassword(String email, String password) async {
-    emit(AuthLoading());
-    try {
-      final creds = await _authenticationRepository.logInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      if (creds.user != null) {
-        emit(AuthSuccess(creds.user!));
+  // Helper function that will emit the current authentication state
+  void _authStateChanged(String? userUID) async {
+    if (userUID == null) {
+      emit(AuthState.signedOut);
+    } else {
+      try {
+        emit(AuthState.loading);
+
+        _myUserCubit.getMyUser().onError((e, stack) {
+          emit(AuthState.signedOut);
+          _authRepository.signOut();
+        }).then((_) {
+          emit(AuthState.signedIn);
+        });
+      } catch (e) {
+        logger.e(e.toString());
+        _authRepository.signOut();
+        emit(AuthState.signedOut);
       }
-    } catch (e) {
-      logger.e(e);
-      emit(AuthUnauth());
     }
   }
 
-  Future<void> logOut() async {
-    emit(AuthLoading());
-    await _authenticationRepository.logOut();
-    emit(AuthUnauth());
+  // Sign-out and immediately emits signedOut state
+  Future<void> signOut() async {
+    _myUserCubit.clearMyUser();
+    emit(AuthState.signedOut);
+    await _authRepository.signOut();
+  }
+
+  @override
+  Future<void> close() {
+    _authSubscription?.cancel();
+    return super.close();
   }
 
   Future<String?> getIdToken() async {
-    return _authenticationRepository.getIdToken();
+    return _authRepository.getIdToken();
   }
 }
