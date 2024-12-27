@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/cubit/auth_cubit.dart';
 import 'package:frontend/globals.dart';
-import 'package:frontend/home_page/views/app_layout.dart';
-import 'package:frontend/home_page/views/home_page.dart';
-import 'package:frontend/home_page/views/profile_page.dart';
+import 'package:frontend/app/views/app_layout.dart';
+import 'package:frontend/home/views/home_page.dart';
+import 'package:frontend/app/views/profile_page.dart';
 import 'package:frontend/logger.dart';
 import 'package:frontend/register/views/register_page.dart';
 import 'package:frontend/scanner_page/page/scanner_page.dart';
@@ -84,7 +84,6 @@ class AppRouter {
       ),
     ],
     redirect: (context, state) {
-      logger.d(state.matchedLocation);
       if ((context.read<AuthCubit>().state == AuthState.initial ||
               context.read<AuthCubit>().state == AuthState.signedOut) &&
           state.matchedLocation.startsWith('/unauthorized') == false) {

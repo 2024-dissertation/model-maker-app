@@ -1,3 +1,4 @@
+import 'package:frontend/model/task.dart';
 import 'package:frontend/model/user.dart';
 
 abstract class MyUserRepository {
@@ -6,4 +7,8 @@ abstract class MyUserRepository {
   Future<void> saveMyUser(MyUser myUser);
 
   Future<void> createUser(MyUser myUser);
+
+  Future<List<Task>> getTasks();
+
+  Future<void> saveTask(Task task);
 }

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:frontend/logger.dart';
+import 'package:frontend/model/task.dart';
 import 'package:frontend/model/user.dart';
 
 class ApiDataSource {
@@ -57,5 +58,15 @@ class ApiDataSource {
 
   Future<Map<String, dynamic>> createUser(MyUser data) async {
     return _post('/register', data.toMap());
+  }
+
+  /// Task
+  ///
+  Future<Map<String, dynamic>> getTasks() async {
+    return _get('/tasks');
+  }
+
+  Future<Map<String, dynamic>> saveTask(Task data) async {
+    return _post('/tasks', data.toMap());
   }
 }

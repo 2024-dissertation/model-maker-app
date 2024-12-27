@@ -1,24 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/cubit/auth_cubit.dart';
+import 'package:frontend/logger.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
-        middle: Text('Home Route'),
+        middle: Text('Profile Page'),
       ),
       child: SafeArea(
         child: Center(
           child: Column(
             children: [
               CupertinoButton.filled(
-                child: const Text("Enter"),
+                child: const Text("ID Token"),
                 onPressed: () {
-                  // Navigator.of(context).pushNamed(ScannerPage.routeName);
+                  context.read<AuthCubit>().getIdToken().then(logger.d);
                 },
               ),
               CupertinoButton.filled(
