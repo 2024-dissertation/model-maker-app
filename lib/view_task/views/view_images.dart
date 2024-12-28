@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend/globals.dart';
 import 'package:frontend/model/task.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,7 +37,7 @@ class ViewTaskImages extends StatelessWidget {
                   ),
                 ],
                 child: Image.network(
-                    "http://localhost:3333${task.images[index].url}"),
+                    "${Globals.baseUrl}${task.images[index].url}"),
               ),
             );
           }),

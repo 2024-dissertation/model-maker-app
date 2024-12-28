@@ -114,6 +114,17 @@ class __ViewTaskState extends State<_ViewTask> {
                         ),
                     Text("${Globals.baseUrl}${state.task.mesh!.url}"),
                     Positioned(
+                      bottom: 72,
+                      right: 8,
+                      child: CupertinoButton.filled(
+                        child: const Icon(CupertinoIcons.arrow_right),
+                        onPressed: () async {
+                          context.go('/authed/home/task/images',
+                              extra: state.task);
+                        },
+                      ),
+                    ),
+                    Positioned(
                       bottom: 16,
                       right: 8,
                       child: CupertinoButton.filled(
