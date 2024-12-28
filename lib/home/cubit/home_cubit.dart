@@ -13,7 +13,9 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
 
   Future<void> fetchTasks() async {
-    emit(HomeLoading());
+    if (state is HomeInitial) {
+      emit(HomeLoading());
+    }
     try {
       final tasks = await _myUserRepository.getTasks();
       emit(HomeLoaded(tasks, filteredTasks: tasks));

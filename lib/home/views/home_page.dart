@@ -35,6 +35,9 @@ class _HomePage extends StatelessWidget {
                 if (state is HomeLoaded) {
                   return CustomScrollView(
                     slivers: [
+                      CupertinoSliverRefreshControl(
+                        onRefresh: () => context.read<HomeCubit>().fetchTasks(),
+                      ),
                       SliverPadding(
                         padding: const EdgeInsets.all(16),
                         sliver: SliverToBoxAdapter(
