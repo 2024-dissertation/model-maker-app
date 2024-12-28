@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:frontend/logger.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/task.dart';
 import 'package:frontend/repositories/my_user_repository.dart';
@@ -16,7 +17,8 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final tasks = await _myUserRepository.getTasks();
       emit(HomeLoaded(tasks));
-    } catch (e) {
+    } catch (e, stack) {
+      logger.e("$e\n$stack");
       emit(HomeError(e.toString()));
     }
   }

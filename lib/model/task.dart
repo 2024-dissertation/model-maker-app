@@ -2,6 +2,19 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:frontend/model/task_file.dart';
+
+/*
+	ID          uint `gorm:"primaryKey"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time  `gorm:"autoCreateTime"`
+	DeletedAt   *time.Time `gorm:"autoUpdateTime"`
+	Title       string
+	Description string
+	Completed   bool
+	UserID      uint
+	Images      []Image `gorm:"foreignKey:TaskID"`
+*/
 
 class Task extends Equatable {
   final int id;
@@ -12,6 +25,7 @@ class Task extends Equatable {
   final String createdAt;
   final String updatedAt;
   final String? deletedAt;
+  final List<TaskFile> images;
 
   const Task({
     required this.id,
@@ -22,6 +36,7 @@ class Task extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
+    this.images = const [],
   });
 
   Task copyWith({
@@ -33,6 +48,7 @@ class Task extends Equatable {
     String? createdAt,
     String? updatedAt,
     String? deletedAt,
+    List<TaskFile>? images,
   }) {
     return Task(
       id: id ?? this.id,
@@ -43,6 +59,7 @@ class Task extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
+      images: images ?? this.images,
     );
   }
 
@@ -56,6 +73,7 @@ class Task extends Equatable {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'deletedAt': deletedAt,
+      'images': images.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -69,6 +87,11 @@ class Task extends Equatable {
       createdAt: map['CreatedAt'] as String,
       updatedAt: map['UpdatedAt'] as String,
       deletedAt: map['DeletedAt'] != null ? map['DeletedAt'] as String : null,
+      images: List<TaskFile>.from(
+        (map['Images'] as List<dynamic>).map<TaskFile>(
+          (x) => TaskFile.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 
@@ -91,6 +114,7 @@ class Task extends Equatable {
       createdAt,
       updatedAt,
       deletedAt,
+      images,
     ];
   }
 }

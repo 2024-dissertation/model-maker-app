@@ -17,8 +17,14 @@ class MyUser extends Equatable {
     this.deletedAt,
   });
   @override
-  List<Object?> get props =>
-      [id, email, firebaseUid, createdAt, updatedAt, deletedAt];
+  List<Object?> get props => [
+        id,
+        email,
+        firebaseUid,
+        createdAt,
+        updatedAt,
+        deletedAt,
+      ];
 
   // Helper function to convert this User to a Map
   Map<String, Object?> toMap() {
