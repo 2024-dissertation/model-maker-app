@@ -11,11 +11,12 @@ final class HomeInitial extends HomeState {}
 
 final class HomeLoaded extends HomeState {
   final List<Task> tasks;
+  final List<Task> filteredTasks;
 
-  const HomeLoaded(this.tasks);
+  const HomeLoaded(this.tasks, {this.filteredTasks = const []});
 
   @override
-  List<Object> get props => [tasks];
+  List<Object> get props => [tasks, filteredTasks];
 }
 
 final class HomeError extends HomeState {
