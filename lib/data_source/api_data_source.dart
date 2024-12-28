@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:frontend/globals.dart';
 import 'package:frontend/logger.dart';
 import 'package:frontend/model/task.dart';
 import 'package:frontend/model/user.dart';
@@ -14,7 +15,7 @@ class ApiDataSource {
   }
 
   ApiDataSource({Dio? client}) : _client = client ?? Dio() {
-    _client.options.baseUrl = 'http://localhost:3333';
+    _client.options.baseUrl = Globals.baseUrl;
   }
 
   /// Get | Post

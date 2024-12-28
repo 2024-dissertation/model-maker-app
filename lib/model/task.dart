@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:frontend/model/task_file.dart';
+import 'package:frontend/model/task_mesh.dart';
 
 /*
 	ID          uint `gorm:"primaryKey"`
@@ -26,6 +27,7 @@ class Task extends Equatable {
   final String updatedAt;
   final String? deletedAt;
   final List<TaskFile> images;
+  final TaskMesh? mesh;
 
   const Task({
     required this.id,
@@ -37,6 +39,7 @@ class Task extends Equatable {
     required this.updatedAt,
     this.deletedAt,
     this.images = const [],
+    this.mesh,
   });
 
   Task copyWith({
@@ -49,6 +52,7 @@ class Task extends Equatable {
     String? updatedAt,
     String? deletedAt,
     List<TaskFile>? images,
+    TaskMesh? mesh,
   }) {
     return Task(
       id: id ?? this.id,
@@ -60,6 +64,7 @@ class Task extends Equatable {
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
       images: images ?? this.images,
+      mesh: mesh ?? this.mesh,
     );
   }
 
@@ -74,6 +79,7 @@ class Task extends Equatable {
       'updatedAt': updatedAt,
       'deletedAt': deletedAt,
       'images': images.map((x) => x.toMap()).toList(),
+      'mesh': mesh?.toMap(),
     };
   }
 
@@ -92,6 +98,9 @@ class Task extends Equatable {
           (x) => TaskFile.fromMap(x as Map<String, dynamic>),
         ),
       ),
+      mesh: map['Mesh'] != null
+          ? TaskMesh.fromMap(map['Mesh'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -115,6 +124,7 @@ class Task extends Equatable {
       updatedAt,
       deletedAt,
       images,
+      mesh,
     ];
   }
 }

@@ -26,6 +26,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>io.flutter.embedded_views_preview</key>
+  	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>We need the camera to take pictures</string>
 	<key>NSMicrophoneUsageDescription</key>

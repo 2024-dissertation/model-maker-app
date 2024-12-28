@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/cubit/auth_cubit.dart';
 import 'package:frontend/home/cubit/home_cubit.dart';
 import 'package:go_router/go_router.dart';
 

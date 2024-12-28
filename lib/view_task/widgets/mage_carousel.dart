@@ -1,11 +1,10 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/model/task.dart';
 import 'package:go_router/go_router.dart';
 
 class CarouselDemo extends StatelessWidget {
-  CarouselSliderController buttonCarouselController =
+  final CarouselSliderController buttonCarouselController =
       CarouselSliderController();
 
   final Task task;
