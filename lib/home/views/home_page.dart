@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/cubit/auth_cubit.dart';
 import 'package:frontend/home/cubit/home_cubit.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -35,6 +36,12 @@ class _HomePage extends StatelessWidget {
                     return CupertinoListTile(
                       title: Text(state.tasks[index].title),
                       subtitle: Text(state.tasks[index].description),
+                      onTap: () {
+                        context.go(
+                          '/authed/home/task',
+                          extra: state.tasks[index],
+                        );
+                      },
                     );
                   },
                 );

@@ -5,12 +5,13 @@ import 'package:frontend/globals.dart';
 import 'package:frontend/app/views/app_layout.dart';
 import 'package:frontend/home/views/home_page.dart';
 import 'package:frontend/app/views/profile_page.dart';
-import 'package:frontend/logger.dart';
+import 'package:frontend/model/task.dart';
 import 'package:frontend/register/views/register_page.dart';
-import 'package:frontend/scanner_page/page/scanner_page.dart';
 import 'package:frontend/splash_screen/views/splash_screen.dart';
 import 'package:frontend/unauthorized/views/unauthorized_page.dart';
 import 'package:frontend/login/views/login_page.dart';
+import 'package:frontend/view_task/views/view_images.dart';
+import 'package:frontend/view_task/views/view_task.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -61,6 +62,31 @@ class AppRouter {
               GoRoute(
                 path: '/authed/home',
                 builder: (context, state) => const HomePage(),
+                routes: [
+                  GoRoute(
+                    path: 'tasks/:id',
+                    builder: (context, state) {
+                      final taskId = state.pathParameters['id'];
+                      return ViewTask(taskId: int.parse("$taskId"));
+                    },
+                  ),
+                  GoRoute(
+                    path: 'task',
+                    builder: (context, state) {
+                      final task = state.extra as Task?;
+                      return ViewTask(task: task);
+                    },
+                    routes: [
+                      GoRoute(
+                        path: 'images',
+                        builder: (context, state) {
+                          final task = state.extra as Task;
+                          return ViewTaskImages(task: task);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

@@ -30,6 +30,12 @@ class MyUserRepositoryImp extends MyUserRepository {
   }
 
   @override
+  Future<Task> getTaskById(int taskId) async {
+    final data = await _fDataSource.getTaskById(taskId);
+    return data['task'].map<Task>((task) => Task.fromMap(task)).toList();
+  }
+
+  @override
   Future<void> saveTask(Task task) {
     return _fDataSource.saveTask(task);
   }

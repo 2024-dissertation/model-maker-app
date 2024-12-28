@@ -10,5 +10,7 @@ abstract class MyUserRepository {
 
   Future<List<Task>> getTasks();
 
+  Future<Task> getTaskById(int taskId);
+
   Future<void> saveTask(Task task);
 }
