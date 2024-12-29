@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> showAlertDialog(BuildContext context,
     {String title = "Alert",
@@ -21,7 +22,7 @@ Future<void> showAlertDialog(BuildContext context,
           /// and turns the action's text to bold text.
           isDefaultAction: true,
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
             onCancelPressed?.call();
           },
           child: Text(cancelText),
@@ -32,7 +33,7 @@ Future<void> showAlertDialog(BuildContext context,
           /// the action's text color to red.
           isDestructiveAction: isDestructiveAction,
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
             onActionPressed?.call();
           },
           child: Text(actionText),
@@ -58,7 +59,7 @@ Future<void> showSingleActionAlertDialog(BuildContext context,
           isDefaultAction: true,
           isDestructiveAction: isDestructiveAction,
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
             onActionPressed?.call();
           },
           child: Text(actionText),

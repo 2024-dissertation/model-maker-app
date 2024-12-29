@@ -93,11 +93,13 @@ class Task extends Equatable {
       createdAt: map['CreatedAt'] as String,
       updatedAt: map['UpdatedAt'] as String,
       deletedAt: map['DeletedAt'] != null ? map['DeletedAt'] as String : null,
-      images: List<TaskFile>.from(
-        (map['Images'] as List<dynamic>).map<TaskFile>(
-          (x) => TaskFile.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      images: map['Images'] != null
+          ? List<TaskFile>.from(
+              (map['Images'] as List<dynamic>).map<TaskFile>(
+                (x) => TaskFile.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : [],
       mesh: map['Mesh'] != null
           ? TaskMesh.fromMap(map['Mesh'] as Map<String, dynamic>)
           : null,

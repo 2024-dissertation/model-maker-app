@@ -1,18 +1,54 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:frontend/logger.dart';
+import 'package:frontend/main.dart';
+import 'package:frontend/model/task.dart';
+import 'package:frontend/repositories/my_user_repository.dart';
 
 part 'scanner_state.dart';
 
 class ScannerCubit extends Cubit<ScannerState> {
-  ScannerCubit() : super(const ScannerInitial());
+  final MyUserRepository _myUserRepository = getIt();
+
+  ScannerCubit() : super(const ScannerLoaded([], null));
+
+  void clear() {
+    emit(const ScannerLoaded([], null));
+  }
 
   void addPath(String path) {
-    final List<String> paths = [...state.paths, path];
-    emit(state.copyWith(paths: paths));
+    if (state is! ScannerLoaded) return;
+    final List<String> paths = [...(state as ScannerLoaded).paths, path];
+    emit((state as ScannerLoaded).copyWith(paths: paths));
   }
 
   void removePath(int index) {
-    final List<String> paths = List<String>.from(state.paths)..removeAt(index);
-    emit(state.copyWith(paths: paths));
+    if (state is! ScannerLoaded) return;
+    final List<String> paths = List<String>.from((state as ScannerLoaded).paths)
+      ..removeAt(index);
+    emit((state as ScannerLoaded).copyWith(paths: paths));
+  }
+
+  void createTask() async {
+    if (state is! ScannerLoaded) return;
+    try {
+      final data = await _myUserRepository.createTask({
+        'title': 'Task',
+        'description': 'Description',
+      });
+      emit((state as ScannerLoaded).copyWith(createdTask: data));
+      await uploadImages();
+    } catch (e, stack) {
+      logger.d("$e\n$stack");
+      emit(ScannerError(e.toString()));
+    }
+  }
+
+  Future<void> uploadImages() async {
+    if (state is! ScannerLoaded) return;
+    final taskId = (state as ScannerLoaded).createdTask?.id;
+    if (taskId == null) return;
+    final paths = (state as ScannerLoaded).paths;
+    await _myUserRepository.uploadImages(taskId, paths);
   }
 }

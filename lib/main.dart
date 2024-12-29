@@ -10,6 +10,7 @@ import 'package:frontend/cubit/auth_cubit.dart';
 import 'package:frontend/cubit/my_user_cubit.dart';
 import 'package:frontend/data_source/api_data_source.dart';
 import 'package:frontend/firebase_options.dart';
+import 'package:frontend/globals.dart';
 import 'package:frontend/logger.dart';
 import 'package:frontend/repositories/auth_repository.dart';
 import 'package:frontend/repositories/implementation/auth_repository.dart';
@@ -17,7 +18,6 @@ import 'package:frontend/repositories/implementation/my_user_repository.dart';
 import 'package:frontend/repositories/my_user_repository.dart';
 import 'package:get_it/get_it.dart';
 
-late List<CameraDescription> cameras;
 late FirebaseAnalytics analytics;
 
 final getIt = GetIt.instance;
@@ -38,7 +38,7 @@ void main() async {
     return true;
   };
 
-  cameras = await availableCameras();
+  availableCameras().then((value) => Globals.cameras = value);
 
   await injectDependencies();
 

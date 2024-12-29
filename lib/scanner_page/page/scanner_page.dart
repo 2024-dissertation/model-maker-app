@@ -1,21 +1,38 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/globals.dart';
 import 'package:frontend/helpers.dart';
 import 'package:frontend/scanner_page/cubit/scanner_cubit.dart';
 import 'package:frontend/scanner_page/widgets/camera_snap.dart';
 import 'package:frontend/scanner_page/widgets/image_preview.dart';
+import 'package:go_router/go_router.dart';
 
-class ScannerPage extends StatefulWidget {
-  const ScannerPage({super.key, required this.cameras});
+class ScannerPage extends StatelessWidget {
+  const ScannerPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ScannerCubit(),
+      child: _ScannerPage(
+        cameras: Globals.cameras,
+      ),
+    );
+  }
+}
+
+class _ScannerPage extends StatefulWidget {
+  const _ScannerPage({super.key, required this.cameras});
 
   final List<CameraDescription> cameras;
 
   @override
-  State<ScannerPage> createState() => _ScannerPageState();
+  State<_ScannerPage> createState() => __ScannerPageState();
 }
 
-class _ScannerPageState extends State<ScannerPage> {
+class __ScannerPageState extends State<_ScannerPage> {
   CameraController? controller;
   bool _visible = false;
 
@@ -34,15 +51,6 @@ class _ScannerPageState extends State<ScannerPage> {
   }
 
   Future<void> init() async {
-    if (widget.cameras.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pop();
-
-        showSingleActionAlertDialog(context, message: "No cameras found");
-      });
-      return;
-    }
-
     controller = CameraController(widget.cameras[0], ResolutionPreset.max);
     controller!.initialize().then((_) {
       if (!mounted) {
@@ -102,7 +110,18 @@ class _ScannerPageState extends State<ScannerPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
+      navigationBar: CupertinoNavigationBar(
+        leading: IconButton(
+          onPressed: () {
+            context.read<ScannerCubit>().clear();
+          },
+          icon: Icon(CupertinoIcons.refresh_thick),
+        ),
+        trailing: IconButton(
+            onPressed: () {
+              context.read<ScannerCubit>().createTask();
+            },
+            icon: Icon(CupertinoIcons.check_mark)),
         middle: Text('Scanner Page'),
       ),
       child: controller != null && controller?.value.isInitialized == true
@@ -124,16 +143,32 @@ class _ScannerPageState extends State<ScannerPage> {
                 Expanded(
                   child: BlocBuilder<ScannerCubit, ScannerState>(
                     builder: (context, state) {
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.paths.length,
-                        itemBuilder: (context, index) => ImagePreview(
-                          index: index,
-                          path: state.paths[index],
-                          onDelete: (index) =>
-                              context.read<ScannerCubit>().removePath(index),
-                        ),
-                      );
+                      if (state is ScannerError) {
+                        return Column(
+                          children: [
+                            Text(state.message),
+                            CupertinoButton.filled(
+                                onPressed: () {
+                                  context.read<ScannerCubit>().clear();
+                                },
+                                child: const Text("Retry"))
+                          ],
+                        );
+                      }
+                      if (state is ScannerLoaded) {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.paths.length,
+                          itemBuilder: (context, index) => ImagePreview(
+                            index: index,
+                            path: state.paths[index],
+                            onDelete: (index) =>
+                                context.read<ScannerCubit>().removePath(index),
+                          ),
+                        );
+                      }
+
+                      return SizedBox();
                     },
                   ),
                 ),

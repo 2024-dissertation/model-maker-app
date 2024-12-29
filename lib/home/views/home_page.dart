@@ -74,13 +74,13 @@ class _HomePage extends StatelessWidget {
                                       actions: [
                                         CupertinoDialogAction(
                                           onPressed: () {
-                                            Navigator.of(context).pop(false);
+                                            context.pop(false);
                                           },
                                           child: const Text('Cancel'),
                                         ),
                                         CupertinoDialogAction(
                                           onPressed: () {
-                                            Navigator.of(context).pop(true);
+                                            context.pop(true);
                                           },
                                           isDestructiveAction: true,
                                           child: const Text('Delete'),

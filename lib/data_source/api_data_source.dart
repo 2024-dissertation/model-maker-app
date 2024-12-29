@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:frontend/globals.dart';
@@ -33,16 +35,20 @@ class ApiDataSource {
     }
   }
 
-  Future<Map<String, dynamic>> _post(
-      String path, Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> _post(String path, Object? data) async {
     try {
       // add auth header
       _client.options.headers['Authorization'] =
           'Bearer ${await currentUser.getIdToken()}';
+
+      if (data is FormData) {
+        logger.d('POST $path ${data.fields}');
+      }
       final response = await _client.post(path, data: data);
+      logger.d('POST $path ${response.statusCode} ${response.data}');
       return response.data;
     } on DioException catch (e) {
-      logger.e('Failed to get $path with data ${e.response?.data}');
+      logger.e('Failed to post $path with data ${e.response?.data}');
       throw Exception('Request failed');
     }
   }
@@ -73,5 +79,25 @@ class ApiDataSource {
 
   Future<Map<String, dynamic>> saveTask(Task data) async {
     return _post('/tasks', data.toMap());
+  }
+
+  Future<Map<String, dynamic>> createTask(Map<String, dynamic> data) async {
+    return _post('/tasks', data);
+  }
+
+  Future<Map<String, dynamic>> uploadImages(int taskId, List<String> paths) {
+    List<File> files = paths.map((path) => File(path)).toList();
+    final formData = FormData.fromMap({
+      'files': files
+          .map(
+            (file) => MultipartFile.fromFileSync(file.path),
+          )
+          .toList(),
+    });
+    return _post('/tasks/$taskId/upload', formData);
+  }
+
+  Future<Map<String, dynamic>> startTask(int taskId) async {
+    return _post('/tasks/$taskId/start', null);
   }
 }

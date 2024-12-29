@@ -1,13 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/globals.dart';
+import 'package:frontend/logger.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/model/task.dart';
+import 'package:frontend/repositories/my_user_repository.dart';
+import 'package:frontend/view_task/cubit/view_task_cubit.dart';
 import 'package:go_router/go_router.dart';
 
 class ViewTaskImages extends StatelessWidget {
-  const ViewTaskImages({super.key, required this.task});
+  ViewTaskImages({super.key, required this.task});
 
   final Task task;
+
+  final MyUserRepository _myUserRepository = getIt();
 
   @override
   Widget build(BuildContext context) {
@@ -16,31 +23,51 @@ class ViewTaskImages extends StatelessWidget {
         middle: Text('All Images'),
       ),
       child: Center(
-        child: GridView.count(
-          crossAxisCount: 3,
-          children: List.generate(task.images.length, (index) {
-            return Center(
-              child: CupertinoContextMenu(
-                actions: <Widget>[
-                  CupertinoContextMenuAction(
-                    onPressed: () {
-                      context.pop();
-                      Clipboard.setData(
-                        ClipboardData(
-                          text: task.images[index].url,
+        child: FutureBuilder(
+          future: _myUserRepository.getTaskById(task.id),
+          builder: (context, data) {
+            if (data.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CupertinoActivityIndicator(),
+              );
+            }
+            if (data.hasError) {
+              logger.d("${data.error}, ${data.stackTrace}");
+              return Center(
+                child: Text(data.error.toString()),
+              );
+            }
+            if (data.hasData) {
+              return GridView.count(
+                crossAxisCount: 3,
+                children: List.generate(data.data!.images.length, (index) {
+                  return Center(
+                    child: CupertinoContextMenu(
+                      actions: <Widget>[
+                        CupertinoContextMenuAction(
+                          onPressed: () {
+                            context.pop();
+                            Clipboard.setData(
+                              ClipboardData(
+                                text: data.data!.images[index].url,
+                              ),
+                            );
+                          },
+                          isDefaultAction: true,
+                          trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
+                          child: const Text('Copy'),
                         ),
-                      );
-                    },
-                    isDefaultAction: true,
-                    trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
-                    child: const Text('Copy'),
-                  ),
-                ],
-                child: Image.network(
-                    "${Globals.baseUrl}${task.images[index].url}"),
-              ),
-            );
-          }),
+                      ],
+                      child: Image.network(
+                          "${Globals.baseUrl}${data.data!.images[index].url}"),
+                    ),
+                  );
+                }),
+              );
+            } else {
+              return const SizedBox();
+            }
+          },
         ),
       ),
     );

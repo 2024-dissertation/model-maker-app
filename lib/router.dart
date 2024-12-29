@@ -7,6 +7,7 @@ import 'package:frontend/home/views/home_page.dart';
 import 'package:frontend/app/views/profile_page.dart';
 import 'package:frontend/model/task.dart';
 import 'package:frontend/register/views/register_page.dart';
+import 'package:frontend/scanner_page/page/scanner_page.dart';
 import 'package:frontend/splash_screen/views/splash_screen.dart';
 import 'package:frontend/unauthorized/views/unauthorized_page.dart';
 import 'package:frontend/login/views/login_page.dart';
@@ -94,7 +95,7 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: '/authed/new',
-                builder: (context, state) => const ProfilePage(),
+                builder: (context, state) => const ScannerPage(),
               ),
             ],
           ),

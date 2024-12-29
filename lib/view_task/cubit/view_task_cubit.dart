@@ -28,4 +28,14 @@ class ViewTaskCubit extends Cubit<ViewTaskState> {
       throw Exception("Failed to load task");
     }
   }
+
+  Future<List<String>> getImages(int taskId) async {
+    try {
+      final task = await _myUserRepository.getTaskById(taskId);
+      return task.images.map((e) => e.url).toList();
+    } catch (e) {
+      emit(ViewTaskError(e.toString()));
+      throw Exception("Failed to load images");
+    }
+  }
 }

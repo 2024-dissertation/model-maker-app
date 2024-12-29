@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 
 class ImagePreview extends StatefulWidget {
   const ImagePreview({
@@ -41,7 +42,7 @@ class _ImagePreviewState extends State<ImagePreview> {
       actions: [
         CupertinoContextMenuAction(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
           },
           isDefaultAction: true,
           trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
@@ -49,14 +50,14 @@ class _ImagePreviewState extends State<ImagePreview> {
         ),
         CupertinoContextMenuAction(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
           },
           trailingIcon: CupertinoIcons.share,
           child: const Text('Share'),
         ),
         CupertinoContextMenuAction(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
             widget.onDelete(widget.index);
           },
           isDestructiveAction: true,

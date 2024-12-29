@@ -1,21 +1,39 @@
 part of 'scanner_cubit.dart';
 
 sealed class ScannerState extends Equatable {
-  final List<String> paths;
-
-  const ScannerState({this.paths = const []});
-
-  ScannerState copyWith({List<String>? paths});
+  const ScannerState();
 
   @override
-  List<Object?> get props => [paths];
+  List<Object?> get props => [];
 }
 
-final class ScannerInitial extends ScannerState {
-  const ScannerInitial({super.paths});
+final class ScannerInitial extends ScannerState {}
+
+final class ScannerLoaded extends ScannerState {
+  final List<String> paths;
+  final Task? createdTask;
+
+  const ScannerLoaded(this.paths, this.createdTask);
 
   @override
-  ScannerState copyWith({List<String>? paths}) {
-    return ScannerInitial(paths: paths ?? this.paths);
+  List<Object?> get props => [paths, createdTask];
+
+  ScannerState copyWith({
+    List<String>? paths,
+    Task? createdTask,
+  }) {
+    return ScannerLoaded(
+      paths ?? this.paths,
+      createdTask ?? this.createdTask,
+    );
   }
+}
+
+final class ScannerError extends ScannerState {
+  final String message;
+
+  const ScannerError(this.message);
+
+  @override
+  List<Object> get props => [message];
 }
