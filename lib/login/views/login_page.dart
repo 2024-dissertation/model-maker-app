@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/cubit/auth_cubit.dart';
 import 'package:frontend/cubit/my_user_cubit.dart';
@@ -80,24 +79,6 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                 ),
-                if (context.watch<MyUserCubit>().state is MyUserLoaded)
-                  FutureBuilder(
-                    future: context.read<AuthCubit>().getIdToken(),
-                    builder: (context, snap) {
-                      if (snap.connectionState == ConnectionState.done) {
-                        return Column(children: [
-                          Text(snap.data.toString()),
-                          CupertinoButton(
-                              child: const Text("Register"),
-                              onPressed: () {
-                                Clipboard.setData(
-                                    ClipboardData(text: snap.data.toString()));
-                              })
-                        ]);
-                      }
-                      return const SizedBox();
-                    },
-                  ),
                 Text(context.watch<AuthCubit>().state.toString()),
                 Text("${_authRepository.currentUser}"),
               ],

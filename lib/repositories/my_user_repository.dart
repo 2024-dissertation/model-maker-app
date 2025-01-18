@@ -1,23 +1,52 @@
+import 'package:frontend/data_source/api_data_source.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/model/task.dart';
 import 'package:frontend/model/task_file.dart';
 import 'package:frontend/model/user.dart';
 
-abstract class MyUserRepository {
-  Future<MyUser> getMyUser();
+class MyUserRepository {
+  final ApiDataSource _fDataSource = getIt();
 
-  Future<void> saveMyUser(MyUser myUser);
+  Future<MyUser> getMyUser() async {
+    final data = await _fDataSource.getMyUser();
+    return MyUser.fromMap(data['user']);
+  }
 
-  Future<void> createUser(MyUser myUser);
+  Future<void> saveMyUser(MyUser myUser) {
+    return _fDataSource.saveMyUser(myUser);
+  }
 
-  Future<List<Task>> getTasks();
+  Future<void> createUser(MyUser myUser) {
+    return _fDataSource.createUser(myUser);
+  }
 
-  Future<Task> getTaskById(int taskId);
+  Future<List<Task>> getTasks() async {
+    final data = await _fDataSource.getTasks();
+    return data['tasks'].map<Task>((task) => Task.fromMap(task)).toList();
+  }
 
-  Future<void> saveTask(Task task);
+  Future<Task> getTaskById(int taskId) async {
+    final data = await _fDataSource.getTaskById(taskId);
+    return Task.fromMap(data['task']);
+  }
 
-  Future<Task> createTask(Map<String, dynamic> task);
+  Future<void> saveTask(Task task) {
+    return _fDataSource.saveTask(task);
+  }
 
-  Future<List<TaskFile>> uploadImages(int taskId, List<String> paths);
+  Future<Task> createTask(Map<String, dynamic> task) async {
+    final data = await _fDataSource.createTask(task);
+    return Task.fromMap(data['task']);
+  }
 
-  Future<Map<String, dynamic>> startTask(int taskId);
+  Future<List<TaskFile>> uploadImages(int taskId, List<String> paths) async {
+    final data = await _fDataSource.uploadImages(taskId, paths);
+    return data['images']
+        .map<TaskFile>((image) => TaskFile.fromMap(image))
+        .toList();
+  }
+
+  Future<Map<String, dynamic>> startTask(int taskId) {
+    return _fDataSource.startTask(taskId);
+  }
 }

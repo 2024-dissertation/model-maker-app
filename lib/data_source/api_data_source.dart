@@ -56,7 +56,7 @@ class ApiDataSource {
   /// User
   ///
   Future<Map<String, dynamic>> getMyUser() async {
-    return _get('/login');
+    return _post('/verify', {});
   }
 
   Future<Map<String, dynamic>> saveMyUser(MyUser data) async {

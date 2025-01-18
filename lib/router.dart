@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/app/views/app_layout.dart';
+import 'package:frontend/app/views/profile_page.dart';
 import 'package:frontend/cubit/auth_cubit.dart';
 import 'package:frontend/globals.dart';
-import 'package:frontend/app/views/app_layout.dart';
 import 'package:frontend/home/views/home_page.dart';
-import 'package:frontend/app/views/profile_page.dart';
+import 'package:frontend/login/views/login_page.dart';
 import 'package:frontend/model/task.dart';
-import 'package:frontend/register/views/register_page.dart';
 import 'package:frontend/scanner_page/page/scanner_page.dart';
 import 'package:frontend/splash_screen/views/splash_screen.dart';
 import 'package:frontend/unauthorized/views/unauthorized_page.dart';
-import 'package:frontend/login/views/login_page.dart';
 import 'package:frontend/view_task/views/view_images.dart';
 import 'package:frontend/view_task/views/view_task.dart';
 import 'package:go_router/go_router.dart';
@@ -32,10 +31,6 @@ class AppRouter {
           GoRoute(
             path: 'login',
             builder: (context, state) => const LoginPage(),
-          ),
-          GoRoute(
-            path: 'register',
-            builder: (context, state) => const RegisterPage(),
           ),
         ],
       ),

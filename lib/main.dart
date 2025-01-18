@@ -13,8 +13,6 @@ import 'package:frontend/firebase_options.dart';
 import 'package:frontend/globals.dart';
 import 'package:frontend/logger.dart';
 import 'package:frontend/repositories/auth_repository.dart';
-import 'package:frontend/repositories/implementation/auth_repository.dart';
-import 'package:frontend/repositories/implementation/my_user_repository.dart';
 import 'package:frontend/repositories/my_user_repository.dart';
 import 'package:get_it/get_it.dart';
 
@@ -64,6 +62,6 @@ Future<void> injectDependencies() async {
 
   // Inject the Repositories. Note that the type is the abstract class
   // and the injected instance is the implementation.
-  getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImp());
-  getIt.registerLazySingleton<MyUserRepository>(() => MyUserRepositoryImp());
+  getIt.registerLazySingleton<AuthRepository>(() => AuthRepository());
+  getIt.registerLazySingleton<MyUserRepository>(() => MyUserRepository());
 }

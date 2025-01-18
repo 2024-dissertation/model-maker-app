@@ -1,31 +1,51 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sign_in_button/sign_in_button.dart';
+
+import '../../main.dart';
+import '../../repositories/auth_repository.dart';
 
 class UnauthorizedPage extends StatelessWidget {
   const UnauthorizedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthRepository _authRepository = getIt();
+
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
-        middle: Text('Unauthorized Route'),
+        middle: Text('Welcome'),
       ),
       child: SafeArea(
         child: Center(
           child: Column(
+            spacing: 8,
             children: [
-              CupertinoButton.filled(
-                child: const Text('Login'),
-                onPressed: () {
-                  context.go('/unauthorized/login');
-                },
+              const Text("Sign in to continue"),
+              SignInButton(
+                Buttons.email,
+                onPressed: () => context.go('/unauthorized/login'),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
-              CupertinoButton.filled(
-                child: const Text('Register'),
-                onPressed: () {
-                  context.go('/unauthorized/register');
-                },
+              SignInButton(
+                Buttons.apple,
+                onPressed: () => _authRepository.signInWithApple(),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
+              SignInButton(
+                Buttons.google,
+                onPressed: () => _authRepository.signInWithGoogle(),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              )
             ],
           ),
         ),
