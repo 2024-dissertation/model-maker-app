@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/task.dart';
 import 'package:frontend/repositories/my_user_repository.dart';
-import 'package:go_router/go_router.dart';
 
 class CarouselDemo extends StatelessWidget {
   final CarouselSliderController buttonCarouselController =
@@ -31,20 +30,6 @@ class CarouselDemo extends StatelessWidget {
               initialPage: 2,
             ),
           ),
-          const SizedBox(height: 8),
-          CupertinoButton.filled(
-            onPressed: () {
-              context.go('/authed/home/task/images', extra: task);
-            },
-            child: Text('View all'),
-          ),
-          const SizedBox(height: 8),
-          CupertinoButton.filled(
-            onPressed: () {
-              _myUserRepository.startTask(task.id);
-            },
-            child: Text('Start process'),
-          )
         ],
       );
 }

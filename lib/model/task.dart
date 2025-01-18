@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:frontend/model/task_file.dart';
 import 'package:frontend/model/task_mesh.dart';
+import 'package:frontend/model/task_status.dart';
 
 /*
 	ID          uint `gorm:"primaryKey"`
@@ -22,6 +23,7 @@ class Task extends Equatable {
   final String title;
   final String description;
   final bool completed;
+  final TaskStatus status;
   final int userID;
   final String createdAt;
   final String updatedAt;
@@ -37,6 +39,7 @@ class Task extends Equatable {
     required this.userID,
     required this.createdAt,
     required this.updatedAt,
+    required this.status,
     this.deletedAt,
     this.images = const [],
     this.mesh,
@@ -47,6 +50,7 @@ class Task extends Equatable {
     String? title,
     String? description,
     bool? completed,
+    TaskStatus? status,
     int? userID,
     String? createdAt,
     String? updatedAt,
@@ -59,6 +63,7 @@ class Task extends Equatable {
       title: title ?? this.title,
       description: description ?? this.description,
       completed: completed ?? this.completed,
+      status: status ?? this.status,
       userID: userID ?? this.userID,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -74,6 +79,7 @@ class Task extends Equatable {
       'title': title,
       'description': description,
       'completed': completed,
+      'status': status,
       'userID': userID,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
@@ -89,6 +95,7 @@ class Task extends Equatable {
       title: map['Title'] as String,
       description: map['Description'] as String,
       completed: map['Completed'] as bool,
+      status: TaskStatusX.fromName(map['Status'] as String),
       userID: map['UserID'] as int,
       createdAt: map['CreatedAt'] as String,
       updatedAt: map['UpdatedAt'] as String,
@@ -121,6 +128,7 @@ class Task extends Equatable {
       title,
       description,
       completed,
+      status,
       userID,
       createdAt,
       updatedAt,

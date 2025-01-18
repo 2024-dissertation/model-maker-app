@@ -7,7 +7,6 @@ import 'package:frontend/helpers.dart';
 import 'package:frontend/scanner_page/cubit/scanner_cubit.dart';
 import 'package:frontend/scanner_page/widgets/camera_snap.dart';
 import 'package:frontend/scanner_page/widgets/image_preview.dart';
-import 'package:go_router/go_router.dart';
 
 class ScannerPage extends StatelessWidget {
   const ScannerPage({super.key});
@@ -111,18 +110,18 @@ class __ScannerPageState extends State<_ScannerPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        leading: IconButton(
+        leading: TextButton(
           onPressed: () {
             context.read<ScannerCubit>().clear();
           },
-          icon: Icon(CupertinoIcons.refresh_thick),
+          child: const Text("Clear"),
         ),
-        trailing: IconButton(
+        trailing: TextButton(
             onPressed: () {
               context.read<ScannerCubit>().createTask();
             },
-            icon: Icon(CupertinoIcons.check_mark)),
-        middle: Text('Scanner Page'),
+            child: const Text("Done")),
+        middle: const Text('Create Task'),
       ),
       child: controller != null && controller?.value.isInitialized == true
           ? Column(

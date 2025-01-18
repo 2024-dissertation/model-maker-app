@@ -19,6 +19,7 @@ class AppLayout extends StatelessWidget {
         return children[index];
       },
       tabBar: CupertinoTabBar(
+        iconSize: 20,
         currentIndex: navigationShell.currentIndex,
         onTap: navigationShell.goBranch,
         items: navItems

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/cubit/auth_cubit.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../widgets/prefix_widget.dart';
@@ -17,18 +19,36 @@ class SettingsPage extends StatelessWidget {
               largeTitle: Text('Settings'),
             ),
             SliverFillRemaining(
-              child: CupertinoFormSection.insetGrouped(
-                backgroundColor: Colors.transparent,
-                header: const Text("Profile"),
+              child: Column(
                 children: [
-                  CupertinoListTile(
-                    onTap: () => context.push('/authed/settings/profile'),
-                    title: const PrefixWidget(
-                      icon: CupertinoIcons.person_2_fill,
-                      title: 'Edit Details',
-                      color: CupertinoColors.systemOrange,
-                    ),
-                    trailing: const Icon(CupertinoIcons.forward),
+                  CupertinoFormSection.insetGrouped(
+                    backgroundColor: Colors.transparent,
+                    header: const Text("Profile"),
+                    children: [
+                      CupertinoListTile(
+                        onTap: () => context.push('/authed/settings/profile'),
+                        title: const PrefixWidget(
+                          icon: CupertinoIcons.person_2_fill,
+                          title: 'Edit Details',
+                          color: CupertinoColors.systemOrange,
+                        ),
+                        trailing: const Icon(CupertinoIcons.forward),
+                      ),
+                    ],
+                  ),
+                  CupertinoFormSection.insetGrouped(
+                    backgroundColor: Colors.transparent,
+                    children: [
+                      CupertinoListTile(
+                        onTap: () => context.read<AuthCubit>().signOut(),
+                        title: const PrefixWidget(
+                          icon: CupertinoIcons.fullscreen_exit,
+                          title: 'Log out',
+                          color: CupertinoColors.systemRed,
+                        ),
+                        trailing: const Icon(CupertinoIcons.forward),
+                      ),
+                    ],
                   ),
                 ],
               ),

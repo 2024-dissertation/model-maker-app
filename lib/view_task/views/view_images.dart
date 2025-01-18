@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/globals.dart';
 import 'package:frontend/logger.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/task.dart';
 import 'package:frontend/repositories/my_user_repository.dart';
-import 'package:frontend/view_task/cubit/view_task_cubit.dart';
 import 'package:go_router/go_router.dart';
 
 class ViewTaskImages extends StatelessWidget {
@@ -38,6 +36,10 @@ class ViewTaskImages extends StatelessWidget {
               );
             }
             if (data.hasData) {
+              if (data.data!.images.isEmpty) {
+                return const Text("No images");
+              }
+
               return GridView.count(
                 crossAxisCount: 3,
                 children: List.generate(data.data!.images.length, (index) {
