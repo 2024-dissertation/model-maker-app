@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:frontend/helpers.dart';
 import 'package:frontend/logger.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/user.dart';
@@ -12,18 +13,38 @@ class MyUserCubit extends Cubit<MyUserState> {
   MyUserCubit() : super(MyUserInitial());
 
   Future<void> getMyUser() async {
-    emit(MyUserLoading());
+    safeEmit(MyUserLoading());
     try {
       final myUser = await _myUserRepository.getMyUser();
-      emit(MyUserLoaded(myUser));
+      safeEmit(MyUserLoaded(myUser));
     } catch (e) {
       logger.e(e.toString());
-      emit(MyUserError(e.toString()));
+      safeEmit(MyUserError(e.toString()));
       throw Exception("Failed to get my user");
     }
   }
 
   void clearMyUser() {
-    emit(MyUserInitial());
+    safeEmit(MyUserInitial());
+  }
+
+  Future<void> saveUser() async {
+    if (state is! MyUserLoaded) return;
+    try {
+      await _myUserRepository.updateMyUser((state as MyUserLoaded).myUser);
+    } catch (e) {
+      logger.e(e);
+      return;
+    }
+  }
+
+  void updateEmail(String email) {
+    if (state is! MyUserLoaded) return;
+
+    safeEmit(
+      MyUserLoaded(
+        (state as MyUserLoaded).myUser.copyWith(email: email),
+      ),
+    );
   }
 }

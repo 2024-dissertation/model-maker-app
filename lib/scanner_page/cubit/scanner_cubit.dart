@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:frontend/helpers.dart';
 import 'package:frontend/logger.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/task.dart';
@@ -13,20 +14,20 @@ class ScannerCubit extends Cubit<ScannerState> {
   ScannerCubit() : super(const ScannerLoaded([], null));
 
   void clear() {
-    emit(const ScannerLoaded([], null));
+    safeEmit(const ScannerLoaded([], null));
   }
 
   void addPath(String path) {
     if (state is! ScannerLoaded) return;
     final List<String> paths = [...(state as ScannerLoaded).paths, path];
-    emit((state as ScannerLoaded).copyWith(paths: paths));
+    safeEmit((state as ScannerLoaded).copyWith(paths: paths));
   }
 
   void removePath(int index) {
     if (state is! ScannerLoaded) return;
     final List<String> paths = List<String>.from((state as ScannerLoaded).paths)
       ..removeAt(index);
-    emit((state as ScannerLoaded).copyWith(paths: paths));
+    safeEmit((state as ScannerLoaded).copyWith(paths: paths));
   }
 
   void createTask() async {
@@ -36,11 +37,11 @@ class ScannerCubit extends Cubit<ScannerState> {
         'title': 'Task',
         'description': 'Description',
       });
-      emit((state as ScannerLoaded).copyWith(createdTask: data));
+      safeEmit((state as ScannerLoaded).copyWith(createdTask: data));
       await uploadImages();
     } catch (e, stack) {
       logger.d("$e\n$stack");
-      emit(ScannerError(e.toString()));
+      safeEmit(ScannerError(e.toString()));
     }
   }
 

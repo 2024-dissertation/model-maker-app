@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/cubit/my_user_cubit.dart';
+import 'package:frontend/helpers.dart';
 import 'package:frontend/logger.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/repositories/auth_repository.dart';
@@ -35,28 +36,28 @@ class AuthCubit extends Cubit<AuthState> {
   // Helper function that will emit the current authentication state
   void _authStateChanged(String? userUID) async {
     if (userUID == null) {
-      emit(AuthState.signedOut);
+      safeEmit(AuthState.signedOut);
     } else {
       try {
-        emit(AuthState.loading);
+        safeEmit(AuthState.loading);
 
         _myUserCubit.getMyUser().onError((e, stack) {
-          emit(AuthState.signedOut);
+          safeEmit(AuthState.signedOut);
           _authRepository.signOut();
         }).then((_) {
-          emit(AuthState.signedIn);
+          safeEmit(AuthState.signedIn);
         });
       } catch (e) {
         logger.e(e.toString());
         _authRepository.signOut();
-        emit(AuthState.signedOut);
+        safeEmit(AuthState.signedOut);
       }
     }
   }
 
-  // Sign-out and immediately emits signedOut state
+  // Sign-out and immediately safeEmits signedOut state
   Future<void> signOut() async {
-    emit(AuthState.signedOut);
+    safeEmit(AuthState.signedOut);
     _myUserCubit.clearMyUser();
     await _authRepository.signOut();
   }

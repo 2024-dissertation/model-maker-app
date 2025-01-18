@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:frontend/helpers.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/task.dart';
 import 'package:frontend/repositories/my_user_repository.dart';
@@ -17,14 +18,14 @@ class ViewTaskCubit extends Cubit<ViewTaskState> {
 
   Future<void> _fetchTask(int taskId) async {
     if (state is ViewTaskInitial) {
-      emit(ViewTaskLoading());
+      safeEmit(ViewTaskLoading());
     }
 
     try {
       final task = await _myUserRepository.getTaskById(taskId);
-      emit(ViewTaskLoaded(task));
+      safeEmit(ViewTaskLoaded(task));
     } catch (e) {
-      emit(ViewTaskError(e.toString()));
+      safeEmit(ViewTaskError(e.toString()));
       throw Exception("Failed to load task");
     }
   }
@@ -34,7 +35,7 @@ class ViewTaskCubit extends Cubit<ViewTaskState> {
       final task = await _myUserRepository.getTaskById(taskId);
       return task.images.map((e) => e.url).toList();
     } catch (e) {
-      emit(ViewTaskError(e.toString()));
+      safeEmit(ViewTaskError(e.toString()));
       throw Exception("Failed to load images");
     }
   }

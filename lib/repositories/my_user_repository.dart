@@ -12,6 +12,11 @@ class MyUserRepository {
     return MyUser.fromMap(data['user']);
   }
 
+  Future<MyUser> updateMyUser(MyUser user) async {
+    final data = await _fDataSource.saveMyUser(user);
+    return MyUser.fromMap(data['user']);
+  }
+
   Future<void> saveMyUser(MyUser myUser) {
     return _fDataSource.saveMyUser(myUser);
   }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -81,5 +82,14 @@ Future<String> getFileType(File file) async {
     return 'text';
   } else {
     return 'other';
+  }
+}
+
+extension CubitExt<T> on Cubit<T> {
+  void safeEmit(T state) {
+    if (!isClosed) {
+      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+      emit(state);
+    }
   }
 }

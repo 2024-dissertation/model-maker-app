@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/home/cubit/home_cubit.dart';
 import 'package:go_router/go_router.dart';
@@ -21,9 +22,9 @@ class _HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Home Route'),
-      ),
+      // navigationBar: const CupertinoNavigationBar(
+      //   middle: Text('Home Route'),
+      // ),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SafeArea(
@@ -33,84 +34,103 @@ class _HomePage extends StatelessWidget {
                 if (state is HomeLoaded) {
                   return CustomScrollView(
                     slivers: [
-                      CupertinoSliverRefreshControl(
-                        onRefresh: () => context.read<HomeCubit>().fetchTasks(),
-                      ),
-                      SliverPadding(
-                        padding: const EdgeInsets.all(16),
-                        sliver: SliverToBoxAdapter(
-                          child: CupertinoSearchTextField(
-                            onChanged: (value) =>
-                                context.read<HomeCubit>().searchTasks(value),
+                      CupertinoSliverNavigationBar(
+                        largeTitle: const Text('Home'),
+                        trailing: IconButton(
+                          icon: const Icon(CupertinoIcons.add),
+                          onPressed: () {
+                            context.go('/authed/new');
+                          },
+                        ),
+                        bottom: PreferredSize(
+                          preferredSize: const Size.fromHeight(35),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: CupertinoSearchTextField(
+                              onChanged: (value) =>
+                                  context.read<HomeCubit>().searchTasks(value),
+                            ),
                           ),
                         ),
                       ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return Dismissible(
-                              direction: DismissDirection.endToStart,
-                              background: Container(
-                                color: CupertinoColors.systemRed,
-                                alignment: Alignment.centerRight,
-                                padding: const EdgeInsets.only(right: 16),
-                                child: const Icon(
-                                  CupertinoIcons.delete,
-                                  color: CupertinoColors.white,
-                                ),
-                              ),
-                              onDismissed: (direction) =>
-                                  context.read<HomeCubit>().removeTask(
-                                        state.filteredTasks[index].id,
-                                      ),
-                              confirmDismiss: (_) async {
-                                final result = await showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CupertinoAlertDialog(
-                                      title: const Text('Delete Task'),
-                                      content: const Text(
-                                          'Are you sure you want to delete this task?'),
-                                      actions: [
-                                        CupertinoDialogAction(
-                                          onPressed: () {
-                                            context.pop(false);
-                                          },
-                                          child: const Text('Cancel'),
-                                        ),
-                                        CupertinoDialogAction(
-                                          onPressed: () {
-                                            context.pop(true);
-                                          },
-                                          isDestructiveAction: true,
-                                          child: const Text('Delete'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-
-                                return result ?? false;
-                              },
-                              key: Key(
-                                "${state.filteredTasks[index].hashCode}",
-                              ),
-                              child: CupertinoListTile(
-                                title: Text(state.filteredTasks[index].title),
-                                subtitle: Text(
-                                    state.filteredTasks[index].description),
-                                onTap: () {
-                                  context.go(
-                                    '/authed/home/task',
-                                    extra: state.filteredTasks[index],
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          childCount: state.filteredTasks.length,
+                      CupertinoSliverRefreshControl(
+                        onRefresh: () => context.read<HomeCubit>().fetchTasks(),
+                      ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 16,
                         ),
                       ),
+                      if (state.tasks.isEmpty)
+                        const SliverToBoxAdapter(
+                            child: Center(child: Text("No jobs created")))
+                      else
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              return Dismissible(
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  color: CupertinoColors.systemRed,
+                                  alignment: Alignment.centerRight,
+                                  padding: const EdgeInsets.only(right: 16),
+                                  child: const Icon(
+                                    CupertinoIcons.delete,
+                                    color: CupertinoColors.white,
+                                  ),
+                                ),
+                                onDismissed: (direction) =>
+                                    context.read<HomeCubit>().removeTask(
+                                          state.filteredTasks[index].id,
+                                        ),
+                                confirmDismiss: (_) async {
+                                  final result = await showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return CupertinoAlertDialog(
+                                        title: const Text('Delete Task'),
+                                        content: const Text(
+                                            'Are you sure you want to delete this task?'),
+                                        actions: [
+                                          CupertinoDialogAction(
+                                            onPressed: () {
+                                              context.pop(false);
+                                            },
+                                            child: const Text('Cancel'),
+                                          ),
+                                          CupertinoDialogAction(
+                                            onPressed: () {
+                                              context.pop(true);
+                                            },
+                                            isDestructiveAction: true,
+                                            child: const Text('Delete'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+
+                                  return result ?? false;
+                                },
+                                key: Key(
+                                  "${state.filteredTasks[index].hashCode}",
+                                ),
+                                child: CupertinoListTile(
+                                  title: Text(state.filteredTasks[index].title),
+                                  subtitle: Text(
+                                      state.filteredTasks[index].description),
+                                  onTap: () {
+                                    context.go(
+                                      '/authed/home/task',
+                                      extra: state.filteredTasks[index],
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            childCount: state.filteredTasks.length,
+                          ),
+                        ),
                     ],
                   );
                 } else if (state is HomeError) {

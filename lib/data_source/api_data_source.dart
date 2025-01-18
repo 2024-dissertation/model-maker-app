@@ -53,6 +53,24 @@ class ApiDataSource {
     }
   }
 
+  Future<Map<String, dynamic>> _patch(String path, Object? data) async {
+    try {
+      // add auth header
+      _client.options.headers['Authorization'] =
+          'Bearer ${await currentUser.getIdToken()}';
+
+      if (data is FormData) {
+        logger.d('PATCH $path ${data.fields}');
+      }
+      final response = await _client.patch(path, data: data);
+      logger.d('PATCH $path ${response.statusCode} ${response.data}');
+      return response.data;
+    } on DioException catch (e) {
+      logger.e('Failed to patch $path with data ${e.response?.data}');
+      throw Exception('Request failed');
+    }
+  }
+
   /// User
   ///
   Future<Map<String, dynamic>> getMyUser() async {
@@ -60,7 +78,7 @@ class ApiDataSource {
   }
 
   Future<Map<String, dynamic>> saveMyUser(MyUser data) async {
-    return _post('/user', data.toMap());
+    return _patch('/verify', data.toMap());
   }
 
   Future<Map<String, dynamic>> createUser(MyUser data) async {
