@@ -17,7 +17,9 @@ class AuthRepository {
   }
 
   Future<firebase_auth.UserCredential> signInWithEmailAndPassword(
-      String email, String password) async {
+    String email,
+    String password,
+  ) async {
     final creds = await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
