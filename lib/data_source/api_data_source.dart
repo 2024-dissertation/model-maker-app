@@ -18,6 +18,7 @@ class ApiDataSource {
 
   ApiDataSource({Dio? client}) : _client = client ?? Dio() {
     _client.options.baseUrl = Globals.baseUrl;
+    logger.d('ApiDataSource created with base url ${_client.options.baseUrl}');
   }
 
   /// Get | Post
@@ -37,19 +38,22 @@ class ApiDataSource {
 
   Future<Map<String, dynamic>> _post(String path, Object? data) async {
     try {
-      // add auth header
+      // Add auth header
       _client.options.headers['Authorization'] =
           'Bearer ${await currentUser.getIdToken()}';
 
       if (data is FormData) {
-        logger.d('POST $path ${data.fields}');
+        logger.d('POST $path with form data: ${data.fields}');
+      } else {
+        logger.d('POST $path with data: $data');
       }
+
       final response = await _client.post(path, data: data);
       logger.d('POST $path ${response.statusCode} ${response.data}');
       return response.data;
     } on DioException catch (e) {
-      logger.e('Failed to post $path with data ${e.response?.data}');
-      throw Exception('Request failed');
+      logger.e('Failed to post $path with error: ${e.response?.data}');
+      throw Exception('Request failed: ${e.message}');
     }
   }
 

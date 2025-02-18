@@ -14,7 +14,10 @@ import 'package:frontend/globals.dart';
 import 'package:frontend/logger.dart';
 import 'package:frontend/repositories/auth_repository.dart';
 import 'package:frontend/repositories/my_user_repository.dart';
+import 'package:frontend/theme/cubit/theme_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 late FirebaseAnalytics analytics;
 
@@ -22,6 +25,11 @@ final getIt = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory:
+        HydratedStorageDirectory((await getTemporaryDirectory()).path),
+  );
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -46,6 +54,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider.value(value: myUserCubit),
+        BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(
           create: (_) => AuthCubit(myUserCubit: myUserCubit)..init(),
         ),

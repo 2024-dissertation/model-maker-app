@@ -21,7 +21,8 @@ class AppLayout extends StatelessWidget {
       tabBar: CupertinoTabBar(
         iconSize: 20,
         currentIndex: navigationShell.currentIndex,
-        onTap: navigationShell.goBranch,
+        onTap: (index) =>
+            navigationShell.goBranch(index, initialLocation: true),
         items: navItems
             .map((tab) =>
                 BottomNavigationBarItem(icon: Icon(tab.icon), label: tab.title))

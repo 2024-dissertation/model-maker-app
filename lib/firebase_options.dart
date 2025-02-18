@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -31,10 +28,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -58,7 +52,28 @@ class DefaultFirebaseOptions {
     messagingSenderId: '415251284478',
     projectId: 'soup-photogrammetry-project',
     storageBucket: 'soup-photogrammetry-project.firebasestorage.app',
+    iosClientId: '415251284478-g876kn2pdo0bg23j6oot6uqjdma28de2.apps.googleusercontent.com',
     iosBundleId: 'com.soup.scanner',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCfz8HpSGV_FkpHpP6HhVnoqEvmgkNlDSA',
+    appId: '1:415251284478:web:6b478ec716978f356980af',
+    messagingSenderId: '415251284478',
+    projectId: 'soup-photogrammetry-project',
+    authDomain: 'soup-photogrammetry-project.firebaseapp.com',
+    storageBucket: 'soup-photogrammetry-project.firebasestorage.app',
+    measurementId: 'G-PV3SNHQY2X',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyAF7BdSOpXlXSmHWlCC1LCXyt_a_S5T_sM',
+    appId: '1:415251284478:ios:f6bb51bedec2a24c6980af',
+    messagingSenderId: '415251284478',
+    projectId: 'soup-photogrammetry-project',
+    storageBucket: 'soup-photogrammetry-project.firebasestorage.app',
+    iosClientId: '415251284478-61ervvqpl72l92vg6kje6ablcu1so93q.apps.googleusercontent.com',
+    iosBundleId: 'com.soup.frontend',
   );
 
 }

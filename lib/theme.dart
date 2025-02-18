@@ -1,18 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
-CupertinoThemeData createCupertinoThemeFromSeed(Color seedColor) {
-  final colorScheme = ColorScheme.fromSeed(seedColor: seedColor);
+const CupertinoThemeData cupertinoLight = CupertinoThemeData(
+  brightness: Brightness.light,
+  primaryColor: CupertinoColors.activeBlue,
+);
 
-  return CupertinoThemeData(
-    primaryColor: colorScheme.primary,
-    primaryContrastingColor: colorScheme.onPrimary,
-    barBackgroundColor: colorScheme.surface,
-    scaffoldBackgroundColor: colorScheme.surface,
-    textTheme: CupertinoTextThemeData(
-      textStyle: TextStyle(color: colorScheme.onSurface),
-      actionTextStyle: TextStyle(color: colorScheme.primary),
-      tabLabelTextStyle: TextStyle(color: colorScheme.primary),
-    ),
-  );
-}
+const CupertinoThemeData cupertinoDark = CupertinoThemeData(
+  brightness: Brightness.dark,
+  primaryColor: CupertinoColors.activeGreen,
+);

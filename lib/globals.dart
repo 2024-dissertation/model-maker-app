@@ -3,6 +3,6 @@ import 'package:flutter/material.dart';
 
 class Globals {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  static String baseUrl = "https://c554-143-167-37-27.ngrok-free.app";
+  static String baseUrl = "http://soup.soup-dissertation.katapult.cloud:3001";
   static List<CameraDescription> cameras = [];
 }
