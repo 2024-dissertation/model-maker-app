@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/home/cubit/home_cubit.dart';
+import 'package:frontend/main.dart';
+import 'package:frontend/model/task.dart';
+import 'package:frontend/repositories/my_user_repository.dart';
 import 'package:frontend/view_task/widgets/task_status_widget.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,6 +25,8 @@ class _HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _myUserRepository = getIt<MyUserRepository>();
+
     return CupertinoPageScaffold(
       // navigationBar: const CupertinoNavigationBar(
       //   middle: Text('Home Route'),
@@ -120,11 +125,17 @@ class _HomePage extends StatelessWidget {
                               child: CupertinoListTile(
                                 title: Text(task.title),
                                 subtitle: Text(task.description),
-                                onTap: () {
-                                  context.go(
-                                    '/authed/home/task',
-                                    extra: task,
-                                  );
+                                onTap: () async {
+                                  final action =
+                                      await _showActionSheet(context);
+                                  if (action == 1) {
+                                    context.go(
+                                      '/authed/home/task',
+                                      extra: task,
+                                    );
+                                  } else if (action == 2) {
+                                    _myUserRepository.startTask(task.id);
+                                  }
                                 },
                                 trailing: TaskStatusWidget(task: task),
                               ),
@@ -143,6 +154,34 @@ class _HomePage extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Future<int?> _showActionSheet(BuildContext context) {
+    return showCupertinoModalPopup<int>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: const Text('Title'),
+        message: const Text('Message'),
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            /// This parameter indicates the action would be a default
+            /// default behavior, turns the action's text to bold text.
+            isDefaultAction: true,
+            onPressed: () {
+              context.pop(1);
+            },
+            child: const Text('View'),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              context.pop(2);
+            },
+            isDestructiveAction: true,
+            child: const Text('Re-run'),
+          ),
+        ],
       ),
     );
   }

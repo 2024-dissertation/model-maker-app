@@ -10,7 +10,7 @@ class TaskStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Badge(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       backgroundColor: task.status.color,
       label: Text(task.status.label),
     );

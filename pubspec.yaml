@@ -53,6 +53,7 @@ dependencies:
   hydrated_bloc: ^10.0.0
   dart_mappable: ^4.4.0
   path_provider: ^2.1.5
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

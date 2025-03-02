@@ -7,6 +7,7 @@ import 'package:frontend/helpers.dart';
 import 'package:frontend/scanner_page/cubit/scanner_cubit.dart';
 import 'package:frontend/scanner_page/widgets/camera_snap.dart';
 import 'package:frontend/scanner_page/widgets/image_preview.dart';
+import 'package:frontend/scanner_page/widgets/image_select_button.dart';
 
 class ScannerPage extends StatelessWidget {
   const ScannerPage({super.key});
@@ -117,8 +118,8 @@ class __ScannerPageState extends State<_ScannerPage> {
           child: const Text("Clear"),
         ),
         trailing: TextButton(
-            onPressed: () {
-              context.read<ScannerCubit>().createTask();
+            onPressed: () async {
+              await context.read<ScannerCubit>().createTask(context);
             },
             child: const Text("Done")),
         middle: const Text('Create Task'),
@@ -135,7 +136,20 @@ class __ScannerPageState extends State<_ScannerPage> {
                       bottom: 16,
                       left: 16,
                       right: 16,
-                      child: CameraSnap(capturePhoto: capturePhoto),
+                      child: Center(
+                        child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            spacing: 8,
+                            children: [
+                              CameraSnap(capturePhoto: capturePhoto),
+                              ImageSelectButton(
+                                onFilesSelected: (files) {
+                                  context.read<ScannerCubit>().addPaths(
+                                      files.map((file) => file.path).toList());
+                                },
+                              )
+                            ]),
+                      ),
                     ),
                   ]),
                 ),

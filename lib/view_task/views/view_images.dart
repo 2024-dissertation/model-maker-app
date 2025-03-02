@@ -6,6 +6,7 @@ import 'package:frontend/main.dart';
 import 'package:frontend/model/task.dart';
 import 'package:frontend/repositories/my_user_repository.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path/path.dart' as p;
 
 class ViewTaskImages extends StatelessWidget {
   ViewTaskImages({super.key, required this.task});
@@ -61,7 +62,12 @@ class ViewTaskImages extends StatelessWidget {
                         ),
                       ],
                       child: Image.network(
-                          "${Globals.baseUrl}${data.data!.images[index].url}"),
+                        Globals.baseUrl +
+                            data.data!.images[index].url.replaceFirst(
+                              "task-",
+                              "",
+                            ),
+                      ),
                     ),
                   );
                 }),
