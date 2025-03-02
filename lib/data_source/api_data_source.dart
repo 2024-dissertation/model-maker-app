@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:frontend/globals.dart';
-import 'package:frontend/logger.dart';
-import 'package:frontend/model/task.dart';
-import 'package:frontend/model/user.dart';
+import 'package:frontend/exceptions/api_exceptions.dart';
+import 'package:frontend/helpers/logger.dart';
+import 'package:frontend/module/tasks/models/task.dart';
+import 'package:frontend/module/user/models/my_user.dart';
 
 class ApiDataSource {
   final Dio _client;
@@ -16,10 +16,7 @@ class ApiDataSource {
     return user;
   }
 
-  ApiDataSource({Dio? client}) : _client = client ?? Dio() {
-    _client.options.baseUrl = Globals.baseUrl;
-    logger.d('ApiDataSource created with base url ${_client.options.baseUrl}');
-  }
+  const ApiDataSource({required Dio client}) : _client = client;
 
   /// Get | Post
 
@@ -32,7 +29,7 @@ class ApiDataSource {
       return response.data;
     } on DioException catch (e) {
       logger.e('Failed to get $path with data ${e.response?.data}');
-      throw Exception('Request failed');
+      throw ServerException('Request failed');
     }
   }
 
@@ -53,7 +50,7 @@ class ApiDataSource {
       return response.data;
     } on DioException catch (e) {
       logger.e('Failed to post $path with error: ${e.response?.data}');
-      throw Exception('Request failed: ${e.message}');
+      throw ServerException('Request failed');
     }
   }
 
@@ -71,7 +68,7 @@ class ApiDataSource {
       return response.data;
     } on DioException catch (e) {
       logger.e('Failed to patch $path with data ${e.response?.data}');
-      throw Exception('Request failed');
+      throw ServerException('Request failed');
     }
   }
 

@@ -1,0 +1,83 @@
+import 'dart:ui';
+
+import 'package:camera/camera.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/module/auth/repository/auth_repository.dart';
+import 'package:frontend/module/tasks/repository/task_repository.dart';
+import 'package:frontend/module/tasks/repository/task_repository_impl.dart';
+import 'package:frontend/pages/app.dart';
+import 'package:frontend/module/auth/cubit/auth_cubit.dart';
+import 'package:frontend/module/user/cubit/my_user_cubit.dart';
+import 'package:frontend/data_source/api_data_source.dart';
+import 'package:frontend/config/firebase_options.dart';
+import 'package:frontend/helpers/globals.dart';
+import 'package:frontend/helpers/logger.dart';
+import 'package:frontend/module/auth/repository/auth_repository_impl.dart';
+import 'package:frontend/module/user/repository/my_user_repository.dart';
+import 'package:frontend/module/user/repository/my_user_repository_impl.dart';
+import 'package:frontend/module/theme/cubit/theme_cubit.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+
+late FirebaseAnalytics analytics;
+
+final getIt = GetIt.instance;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory:
+        HydratedStorageDirectory((await getTemporaryDirectory()).path),
+  );
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  analytics = FirebaseAnalytics.instance;
+
+  FlutterError.onError = (details) => logger.d;
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    logger.e(error);
+    return true;
+  };
+
+  availableCameras().then((value) => Globals.cameras = value);
+
+  injectDependencies();
+
+  MyUserCubit myUserCubit = MyUserCubit();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: myUserCubit),
+        BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(
+          create: (_) => AuthCubit(myUserCubit: myUserCubit)..init(),
+        ),
+      ],
+      child: const App(),
+    ),
+  );
+}
+
+// Helper function to inject dependencies
+void injectDependencies() {
+  final _client = Dio();
+  _client.options.baseUrl = Globals.baseUrl;
+  _client.options.validateStatus = (status) => status! < 500;
+
+  getIt.registerLazySingleton(() => ApiDataSource(client: _client));
+
+  getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
+  getIt.registerLazySingleton<MyUserRepository>(() => MyUserRepositoryImpl());
+  getIt.registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl());
+}

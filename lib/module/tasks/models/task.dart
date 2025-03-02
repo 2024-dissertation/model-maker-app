@@ -1,0 +1,47 @@
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:frontend/module/tasks/models/task_file.dart';
+import 'package:frontend/module/tasks/models/task_mesh.dart';
+import 'package:frontend/module/tasks/models/task_status.dart';
+
+/*
+	ID          uint `gorm:"primaryKey"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time  `gorm:"autoCreateTime"`
+	DeletedAt   *time.Time `gorm:"autoUpdateTime"`
+	Title       string
+	Description string
+	Completed   bool
+	UserID      uint
+	Images      []Image `gorm:"foreignKey:TaskID"`
+*/
+
+part 'task.mapper.dart';
+
+@MappableClass(caseStyle: CaseStyle.pascalCase)
+class Task with TaskMappable {
+  final int id;
+  final String title;
+  final String description;
+  final bool completed;
+  final TaskStatus status;
+  final int userID;
+  final String createdAt;
+  final String updatedAt;
+  final String? deletedAt;
+  final List<TaskFile> images;
+  final TaskMesh? mesh;
+
+  const Task({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.completed,
+    required this.userID,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.status,
+    this.deletedAt,
+    this.images = const [],
+    this.mesh,
+  });
+}
