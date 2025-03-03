@@ -16,6 +16,14 @@ class MyUser with MyUserMappable {
   DateTime? get dtDeletedAt =>
       deletedAt != null ? DateTime.parse(deletedAt!) : null;
 
+  static const empty = MyUser(
+    id: 0,
+    email: '',
+    firebaseUid: '',
+    createdAt: '',
+    updatedAt: '',
+  );
+
   const MyUser({
     required this.id,
     required this.email,

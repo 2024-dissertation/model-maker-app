@@ -1,16 +1,15 @@
 // Enum with all possible authentication states.
 import 'dart:async';
 
+import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/module/auth/cubit/auth_state.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
-import 'package:frontend/helpers/helpers.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/auth/repository/auth_repository_impl.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // Extends Cubit and will emit states of type AuthState
-class AuthCubit extends HydratedCubit<AuthState> {
+class AuthCubit extends SafeHydratedCubit<AuthState> {
   // Get the injected AuthRepository
   final AuthRepositoryImpl _authRepository = getIt();
   final MyUserCubit _myUserCubit;

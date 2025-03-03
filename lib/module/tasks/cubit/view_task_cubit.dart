@@ -1,22 +1,23 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:frontend/helpers/helpers.dart';
+import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 
 part 'view_task_state.dart';
 
-class ViewTaskCubit extends Cubit<ViewTaskState> {
+class ViewTaskCubit extends SafeCubit<ViewTaskState> {
   final TaskRepository _myUserRepository = getIt();
 
-  ViewTaskCubit(int taskId) : super(ViewTaskInitial()) {
-    _fetchTask(taskId);
-  }
+  final int taskId;
 
-  ViewTaskCubit.preLoaded(Task task) : super(ViewTaskLoaded(task));
+  ViewTaskCubit(this.taskId) : super(ViewTaskInitial());
 
-  Future<void> _fetchTask(int taskId) async {
+  ViewTaskCubit.preLoaded(Task task)
+      : taskId = task.id,
+        super(ViewTaskLoaded(task));
+
+  Future<void> fetchTask() async {
     if (state is ViewTaskInitial) {
       safeEmit(ViewTaskLoading());
     }

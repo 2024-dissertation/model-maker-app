@@ -1,17 +1,16 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:frontend/helpers/helpers.dart';
+import 'package:frontend/exceptions/state_exceptions.dart';
 import 'package:frontend/helpers/logger.dart';
+import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';
-import 'package:frontend/module/user/models/my_user.dart';
+import 'package:frontend/module/user/cubit/my_user_state.dart';
 import 'package:frontend/module/user/repository/my_user_repository.dart';
 
-part 'my_user_state.dart';
+class MyUserCubit extends SafeHydratedCubit<MyUserState> {
+  final MyUserRepository _myUserRepository;
 
-class MyUserCubit extends Cubit<MyUserState> {
-  final MyUserRepository _myUserRepository = getIt();
-
-  MyUserCubit() : super(MyUserInitial());
+  MyUserCubit({MyUserRepository? myUserRepository})
+      : _myUserRepository = myUserRepository ?? getIt(),
+        super(MyUserInitial());
 
   Future<void> getMyUser() async {
     safeEmit(MyUserLoading());
@@ -21,7 +20,6 @@ class MyUserCubit extends Cubit<MyUserState> {
     } catch (e) {
       logger.e(e.toString());
       safeEmit(MyUserError(e.toString()));
-      throw Exception("Failed to get my user");
     }
   }
 
@@ -36,7 +34,7 @@ class MyUserCubit extends Cubit<MyUserState> {
       await _myUserRepository.saveMyUser((state as MyUserLoaded).myUser);
     } catch (e) {
       logger.e(e);
-      return;
+      safeEmit(MyUserError(e.toString()));
     }
   }
 
@@ -48,5 +46,19 @@ class MyUserCubit extends Cubit<MyUserState> {
         (state as MyUserLoaded).myUser.copyWith(email: email),
       ),
     );
+  }
+
+  @override
+  MyUserState? fromJson(Map<String, dynamic> json) {
+    if (json.containsKey('user')) {
+      return MyUserLoadedMapper.fromMap(json);
+    }
+
+    return MyUserInitial();
+  }
+
+  @override
+  Map<String, dynamic>? toJson(MyUserState state) {
+    return state.toMap();
   }
 }

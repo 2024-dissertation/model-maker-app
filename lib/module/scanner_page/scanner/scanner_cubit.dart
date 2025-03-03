@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:frontend/helpers/helpers.dart';
 import 'package:frontend/helpers/logger.dart';
+import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
@@ -10,7 +9,7 @@ import 'package:go_router/go_router.dart';
 
 part 'scanner_state.dart';
 
-class ScannerCubit extends Cubit<ScannerState> {
+class ScannerCubit extends SafeCubit<ScannerState> {
   final TaskRepository _taskRepository = getIt();
 
   ScannerCubit() : super(const ScannerLoaded([], null));

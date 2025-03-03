@@ -37,7 +37,7 @@ class ViewTask extends StatelessWidget {
     }
 
     return BlocProvider(
-      create: (_) => ViewTaskCubit(taskId!),
+      create: (_) => ViewTaskCubit(taskId!)..fetchTask(),
       child: _ViewTask(),
     );
   }

@@ -1,14 +1,13 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:frontend/helpers/helpers.dart';
 import 'package:frontend/helpers/logger.dart';
+import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 
 part 'home_state.dart';
 
-class HomeCubit extends Cubit<HomeState> {
+class HomeCubit extends SafeCubit<HomeState> {
   final TaskRepository _taskRepository = getIt();
 
   HomeCubit() : super(HomeInitial());

@@ -6,6 +6,7 @@ import 'package:frontend/module/auth/cubit/auth_state.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/auth/repository/auth_repository_impl.dart';
+import 'package:frontend/module/user/cubit/my_user_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

@@ -1,30 +1,29 @@
-part of 'my_user_cubit.dart';
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:frontend/module/user/models/my_user.dart';
 
-sealed class MyUserState extends Equatable {
+part 'my_user_state.mapper.dart';
+
+@MappableClass()
+sealed class MyUserState with MyUserStateMappable {
   const MyUserState();
-
-  @override
-  List<Object> get props => [];
 }
 
-final class MyUserInitial extends MyUserState {}
+@MappableClass()
+final class MyUserInitial extends MyUserState with MyUserInitialMappable {}
 
-final class MyUserLoading extends MyUserState {}
+@MappableClass()
+final class MyUserLoading extends MyUserState with MyUserLoadingMappable {}
 
-final class MyUserLoaded extends MyUserState {
+@MappableClass()
+final class MyUserLoaded extends MyUserState with MyUserLoadedMappable {
   final MyUser myUser;
 
   const MyUserLoaded(this.myUser);
-
-  @override
-  List<Object> get props => [myUser];
 }
 
-final class MyUserError extends MyUserState {
+@MappableClass()
+final class MyUserError extends MyUserState with MyUserErrorMappable {
   final String message;
 
   const MyUserError(this.message);
-
-  @override
-  List<Object> get props => [message];
 }
