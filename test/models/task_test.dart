@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/module/tasks/models/task.dart';
+import 'package:frontend/module/tasks/models/task_file.dart';
 import 'package:frontend/module/tasks/models/task_status.dart';
 
 void main() {
@@ -70,7 +72,7 @@ void main() {
       expect(result.updatedAt, '2025-02-25T14:10:04.720931Z');
       expect(result.deletedAt, '2025-02-25T14:10:04.720932Z');
       expect(result.status, TaskStatus.SUCCESS);
-      expect(result.images.length, 3);
+      expect(result.images!.length, 3);
       expect(result.mesh!.id, 215);
       expect(result.mesh!.filename, 'scene_dense_mesh_refine_texture.ply');
       expect(result.mesh!.url,
@@ -78,6 +80,43 @@ void main() {
       expect(result.mesh!.createdAt, '2025-02-17T23:13:21.892173Z');
       expect(result.mesh!.updatedAt, '2025-02-17T23:13:21.892173Z');
       expect(result.mesh!.taskID, 10);
+    });
+
+    test('should correctly parse JSON into TaskFile', () {
+      final json = '''
+{
+    "Id": 204,
+    "Filename": "task-10-3.jpg",
+    "Url": "/uploads/task-10/task-10-3.jpg",
+    "CreatedAt": "2025-02-17T23:05:05.787882Z",
+    "UpdatedAt": "2025-02-17T23:05:05.787882Z",
+    "TaskId": 10,
+    "FileType": "upload"
+}
+''';
+
+      // Convert JSON to Object
+      final result = TaskFileMapper.fromJson(json);
+
+      // Assertions
+      expect(result.id, 204);
+      expect(result.filename, 'task-10-3.jpg');
+      expect(result.url, '/uploads/task-10/task-10-3.jpg');
+      expect(result.createdAt, '2025-02-17T23:05:05.787882Z');
+      expect(result.updatedAt, '2025-02-17T23:05:05.787882Z');
+      expect(result.taskID, 10);
+    });
+
+    test('should return correct color for TaskStatus', () {
+      expect(TaskStatus.SUCCESS.color, CupertinoColors.activeGreen);
+      expect(TaskStatus.FAILED.color, CupertinoColors.systemRed);
+      expect(TaskStatus.INITIAL.color, CupertinoColors.activeBlue);
+    });
+
+    test('should return correct label for TaskStatus', () {
+      expect(TaskStatus.SUCCESS.label, "Completed");
+      expect(TaskStatus.FAILED.label, "Failed");
+      expect(TaskStatus.INITIAL.label, "In Progress");
     });
   });
 }

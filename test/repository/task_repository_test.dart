@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/data_source/api_data_source.dart';
 import 'package:frontend/helpers/logger.dart';
+import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/models/task_status.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 import 'package:frontend/module/tasks/repository/task_repository_impl.dart';
@@ -98,278 +99,6 @@ void main() {
             "UserId": 1,
             "Images": null,
             "Mesh": null
-        },
-        {
-            "Id": 9,
-            "CreatedAt": "2025-02-17T21:25:12.144949Z",
-            "UpdatedAt": "2025-02-17T23:04:42.983502Z",
-            "DeletedAt": "2025-02-17T23:04:42.983505Z",
-            "Title": "Test Title",
-            "Description": "Test description",
-            "Completed": false,
-            "Status": "INPROGRESS",
-            "UserId": 2,
-            "Images": null,
-            "Mesh": null
-        },
-        {
-            "Id": 5,
-            "CreatedAt": "2025-01-20T15:24:21.838719Z",
-            "UpdatedAt": "2025-01-20T15:25:30.786755Z",
-            "DeletedAt": "2025-01-20T15:25:30.786756Z",
-            "Title": "Task",
-            "Description": "Description",
-            "Completed": true,
-            "Status": "INITIAL",
-            "UserId": 1,
-            "Images": null,
-            "Mesh": {
-                "Id": 81,
-                "Filename": "task-5.glb",
-                "Url": "/objects/5/task-5.glb",
-                "CreatedAt": "2025-01-20T15:25:30.785078Z",
-                "UpdatedAt": "2025-01-20T15:25:30.785078Z",
-                "TaskId": 5,
-                "FileType": "mesh"
-            }
-        },
-        {
-            "Id": 12,
-            "CreatedAt": "2025-02-17T23:33:10.750219Z",
-            "UpdatedAt": "2025-02-20T09:49:17.918507Z",
-            "DeletedAt": "2025-02-20T09:49:17.918507Z",
-            "Title": "Test Title",
-            "Description": "Test description",
-            "Completed": false,
-            "Status": "INPROGRESS",
-            "UserId": 2,
-            "Images": null,
-            "Mesh": null
-        },
-        {
-            "Id": 14,
-            "CreatedAt": "2025-02-20T10:39:35.097944Z",
-            "UpdatedAt": "2025-02-20T10:43:24.86747Z",
-            "DeletedAt": "2025-02-20T10:43:24.867471Z",
-            "Title": "cup",
-            "Description": "Description",
-            "Completed": false,
-            "Status": "INPROGRESS",
-            "UserId": 1,
-            "Images": null,
-            "Mesh": null
-        },
-        {
-            "Id": 11,
-            "CreatedAt": "2025-02-17T23:19:41.994009Z",
-            "UpdatedAt": "2025-02-17T23:23:01.542396Z",
-            "DeletedAt": "2025-02-17T23:23:01.542398Z",
-            "Title": "Test Title",
-            "Description": "Test description",
-            "Completed": false,
-            "Status": "FAILED",
-            "UserId": 2,
-            "Images": null,
-            "Mesh": null
-        },
-        {
-            "Id": 6,
-            "CreatedAt": "2025-02-07T18:49:29.441251Z",
-            "UpdatedAt": "2025-02-08T15:56:33.592913Z",
-            "DeletedAt": "2025-02-08T15:56:33.592913Z",
-            "Title": "Test Title",
-            "Description": "Test description",
-            "Completed": true,
-            "Status": "INITIAL",
-            "UserId": 2,
-            "Images": null,
-            "Mesh": {
-                "Id": 166,
-                "Filename": "task-6.glb",
-                "Url": "/objects/6/task-6.glb",
-                "CreatedAt": "2025-02-08T15:56:33.584135Z",
-                "UpdatedAt": "2025-02-08T15:56:33.584135Z",
-                "TaskId": 6,
-                "FileType": "mesh"
-            }
-        },
-        {
-            "Id": 7,
-            "CreatedAt": "2025-02-08T16:02:41.78701Z",
-            "UpdatedAt": "2025-02-08T16:02:59.613645Z",
-            "DeletedAt": "2025-02-08T16:02:59.613646Z",
-            "Title": "Task",
-            "Description": "Description",
-            "Completed": true,
-            "Status": "INITIAL",
-            "UserId": 1,
-            "Images": null,
-            "Mesh": {
-                "Id": 170,
-                "Filename": "task-7.glb",
-                "Url": "/objects/7/task-7.glb",
-                "CreatedAt": "2025-02-08T16:02:59.611179Z",
-                "UpdatedAt": "2025-02-08T16:02:59.611179Z",
-                "TaskId": 7,
-                "FileType": "mesh"
-            }
-        },
-        {
-            "Id": 15,
-            "CreatedAt": "2025-02-20T11:40:59.568639Z",
-            "UpdatedAt": "2025-02-20T11:41:19.272152Z",
-            "DeletedAt": "2025-02-20T11:41:19.272152Z",
-            "Title": "cup 2",
-            "Description": "Description",
-            "Completed": false,
-            "Status": "INPROGRESS",
-            "UserId": 1,
-            "Images": null,
-            "Mesh": null
-        },
-        {
-            "Id": 8,
-            "CreatedAt": "2025-02-08T16:03:38.612269Z",
-            "UpdatedAt": "2025-02-08T16:04:16.810888Z",
-            "DeletedAt": "2025-02-08T16:04:16.810888Z",
-            "Title": "Task",
-            "Description": "Description",
-            "Completed": true,
-            "Status": "INITIAL",
-            "UserId": 1,
-            "Images": null,
-            "Mesh": {
-                "Id": 181,
-                "Filename": "task-8.glb",
-                "Url": "/objects/8/task-8.glb",
-                "CreatedAt": "2025-02-08T16:04:16.805124Z",
-                "UpdatedAt": "2025-02-08T16:04:16.805124Z",
-                "TaskId": 8,
-                "FileType": "mesh"
-            }
-        },
-        {
-            "Id": 16,
-            "CreatedAt": "2025-02-20T11:46:25.216473Z",
-            "UpdatedAt": "2025-02-20T12:06:23.997411Z",
-            "DeletedAt": "2025-02-20T12:06:23.997411Z",
-            "Title": "dice",
-            "Description": "Description",
-            "Completed": true,
-            "Status": "SUCCESS",
-            "UserId": 1,
-            "Images": null,
-            "Mesh": {
-                "Id": 331,
-                "Filename": "final_model.glb",
-                "Url": "objects/task-16/mvs/final_model.glb",
-                "CreatedAt": "2025-02-20T12:06:23.989646Z",
-                "UpdatedAt": "2025-02-20T12:06:23.989646Z",
-                "TaskId": 16,
-                "FileType": "mesh"
-            }
-        },
-        {
-            "Id": 13,
-            "CreatedAt": "2025-02-18T14:11:43.681113Z",
-            "UpdatedAt": "2025-02-20T12:15:00.833222Z",
-            "DeletedAt": "2025-02-20T12:15:00.833222Z",
-            "Title": "Test Title",
-            "Description": "Test description",
-            "Completed": true,
-            "Status": "SUCCESS",
-            "UserId": 2,
-            "Images": null,
-            "Mesh": {
-                "Id": 332,
-                "Filename": "final_model.glb",
-                "Url": "objects/task-13/mvs/final_model.glb",
-                "CreatedAt": "2025-02-20T12:15:00.830316Z",
-                "UpdatedAt": "2025-02-20T12:15:00.830316Z",
-                "TaskId": 13,
-                "FileType": "mesh"
-            }
-        },
-        {
-            "Id": 18,
-            "CreatedAt": "2025-02-20T12:35:17.601663Z",
-            "UpdatedAt": "2025-02-20T12:35:17.601663Z",
-            "DeletedAt": "2025-02-20T12:35:17.601663Z",
-            "Title": "Test Title",
-            "Description": "Test description",
-            "Completed": false,
-            "Status": "INITIAL",
-            "UserId": 2,
-            "Images": null,
-            "Mesh": null
-        },
-        {
-            "Id": 19,
-            "CreatedAt": "2025-02-20T15:19:13.333893Z",
-            "UpdatedAt": "2025-02-20T15:20:32.78615Z",
-            "DeletedAt": "2025-02-20T15:20:32.786154Z",
-            "Title": "dice 3",
-            "Description": "Description",
-            "Completed": false,
-            "Status": "FAILED",
-            "UserId": 1,
-            "Images": null,
-            "Mesh": null
-        },
-        {
-            "Id": 10,
-            "CreatedAt": "2025-02-17T23:04:59.696683Z",
-            "UpdatedAt": "2025-02-25T14:10:04.720931Z",
-            "DeletedAt": "2025-02-25T14:10:04.720932Z",
-            "Title": "Test Title",
-            "Description": "Test description",
-            "Completed": true,
-            "Status": "SUCCESS",
-            "UserId": 2,
-            "Images": null,
-            "Mesh": {
-                "Id": 510,
-                "Filename": "final_model.glb",
-                "Url": "objects/task-10/mvs/final_model.glb",
-                "CreatedAt": "2025-02-25T14:10:04.700609Z",
-                "UpdatedAt": "2025-02-25T14:10:04.700609Z",
-                "TaskId": 10,
-                "FileType": "mesh"
-            }
-        },
-        {
-            "Id": 17,
-            "CreatedAt": "2025-02-20T12:22:56.768639Z",
-            "UpdatedAt": "2025-02-25T14:27:09.272671Z",
-            "DeletedAt": "2025-02-25T14:27:09.272671Z",
-            "Title": "warhammer",
-            "Description": "Description",
-            "Completed": true,
-            "Status": "SUCCESS",
-            "UserId": 1,
-            "Images": null,
-            "Mesh": {
-                "Id": 511,
-                "Filename": "final_model.glb",
-                "Url": "objects/task-17/mvs/final_model.glb",
-                "CreatedAt": "2025-02-25T14:27:09.255389Z",
-                "UpdatedAt": "2025-02-25T14:27:09.255389Z",
-                "TaskId": 17,
-                "FileType": "mesh"
-            }
-        },
-        {
-            "Id": 20,
-            "CreatedAt": "2025-02-26T17:13:58.615888Z",
-            "UpdatedAt": "2025-02-26T17:13:58.615888Z",
-            "DeletedAt": "2025-02-26T17:13:58.615888Z",
-            "Title": "Warhammer",
-            "Description": "Test description",
-            "Completed": false,
-            "Status": "INITIAL",
-            "UserId": 2,
-            "Images": null,
-            "Mesh": null
         }
     ]
 }
@@ -382,7 +111,7 @@ void main() {
       final result = await taskRepository.getTasks();
 
       // Assert
-      expect(result.length, 20);
+      expect(result.length, 4);
       expect(result[0].id, 2);
       expect(result[0].title, 'Test Title');
       expect(result[0].description, 'Test description');
@@ -400,6 +129,167 @@ void main() {
       expect(result[0].mesh!.taskID, 2);
 
       verify(mockApiDataSource.getTasks()).called(1);
+    });
+
+    test('should return Task when getTask is called', () async {
+      final data = '''
+{
+    "task": {
+        "Id": 10,
+        "CreatedAt": "2025-02-17T23:04:59.696683Z",
+        "UpdatedAt": "2025-02-25T14:10:04.720931Z",
+        "DeletedAt": "2025-02-25T14:10:04.720932Z",
+        "Title": "Test Title",
+        "Description": "Test description",
+        "Completed": true,
+        "Status": "SUCCESS",
+        "UserId": 2,
+        "Images": [
+            {
+                "Id": 204,
+                "Filename": "task-10-3.jpg",
+                "Url": "/uploads/task-10/task-10-3.jpg",
+                "CreatedAt": "2025-02-17T23:05:05.787882Z",
+                "UpdatedAt": "2025-02-17T23:05:05.787882Z",
+                "TaskId": 10,
+                "FileType": "upload"
+            },
+            {
+                "Id": 205,
+                "Filename": "task-10-5.jpg",
+                "Url": "/uploads/task-10/task-10-5.jpg",
+                "CreatedAt": "2025-02-17T23:05:05.79347Z",
+                "UpdatedAt": "2025-02-17T23:05:05.79347Z",
+                "TaskId": 10,
+                "FileType": "upload"
+            }
+        ],
+        "Mesh": {
+            "Id": 215,
+            "Filename": "scene_dense_mesh_refine_texture.ply",
+            "Url": "objects/task-10/scene_dense_mesh_refine_texture.ply",
+            "CreatedAt": "2025-02-17T23:13:21.892173Z",
+            "UpdatedAt": "2025-02-17T23:13:21.892173Z",
+            "TaskId": 10,
+            "FileType": "mesh"
+        }
+    }
+}
+''';
+
+      when(mockApiDataSource.getTaskById(any))
+          .thenAnswer((_) async => jsonDecode(data));
+
+      // Act
+      final result = await taskRepository.getTaskById(10);
+
+      // Assert
+      expect(result, isA<Task>());
+      expect(result.id, 10);
+      expect(result.title, 'Test Title');
+      expect(result.description, 'Test description');
+      expect(result.completed, true);
+      expect(result.userID, 2);
+      expect(result.status, TaskStatus.SUCCESS);
+      expect(result.createdAt, '2025-02-17T23:04:59.696683Z');
+      expect(result.updatedAt, '2025-02-25T14:10:04.720931Z');
+      expect(result.deletedAt, '2025-02-25T14:10:04.720932Z');
+      expect(result.images!.length, 2);
+      expect(result.mesh!.id, 215);
+      expect(result.mesh!.filename, 'scene_dense_mesh_refine_texture.ply');
+      expect(result.mesh!.url,
+          'objects/task-10/scene_dense_mesh_refine_texture.ply');
+      expect(result.mesh!.createdAt, '2025-02-17T23:13:21.892173Z');
+      expect(result.mesh!.updatedAt, '2025-02-17T23:13:21.892173Z');
+      expect(result.mesh!.taskID, 10);
+    });
+
+    test('should return Task when createTask is called', () async {
+      final data = '''
+{
+    "task": {
+        "Id": 21,
+        "CreatedAt": "2025-03-02T23:41:48.059815Z",
+        "UpdatedAt": "2025-03-02T23:41:48.059815Z",
+        "DeletedAt": "2025-03-02T23:41:48.059815Z",
+        "Title": "Warhammer",
+        "Description": "Test description",
+        "Completed": false,
+        "Status": "INITIAL",
+        "UserId": 2,
+        "Images": null,
+        "Mesh": null
+    }
+}
+''';
+
+      final payload = {"title": "Warhammer", "description": "Test description"};
+
+      when(mockApiDataSource.createTask(any))
+          .thenAnswer((_) async => jsonDecode(data));
+
+      // Act
+      final result = await taskRepository.createTask(payload);
+
+      // Assert
+      expect(result, isA<Task>());
+      expect(result.title, 'Warhammer');
+      expect(result.description, 'Test description');
+    });
+
+    test('should return List<TaskFile> when uploadTaskFile is called',
+        () async {
+      final data = '''
+{
+    "images": [
+        {
+            "Id": 512,
+            "Filename": "task-21-0.png",
+            "Url": "/uploads/task-21/task-21-0.png",
+            "CreatedAt": "2025-03-02T23:48:51.60844Z",
+            "UpdatedAt": "2025-03-02T23:48:51.60844Z",
+            "TaskId": 21,
+            "FileType": "upload"
+        }
+    ],
+    "message": "Files uploaded successfully"
+}
+''';
+
+      when(mockApiDataSource.uploadImages(any, any))
+          .thenAnswer((_) async => jsonDecode(data));
+
+      // Act
+      final result = await taskRepository.uploadImages(21, ['/images/etc']);
+
+      // Assert
+      expect(result.length, 1);
+      expect(result[0].id, 512);
+      expect(result[0].filename, 'task-21-0.png');
+      expect(result[0].url, '/uploads/task-21/task-21-0.png');
+      expect(result[0].createdAt, '2025-03-02T23:48:51.60844Z');
+      expect(result[0].updatedAt, '2025-03-02T23:48:51.60844Z');
+      expect(result[0].taskID, 21);
+    });
+
+    test('should return updated status when startTask is called', () async {
+      final data = '''
+{
+    "message": "Task started successfully"
+}
+''';
+
+      when(mockApiDataSource.startTask(any))
+          .thenAnswer((_) async => jsonDecode(data));
+
+      // Act
+      final result = await taskRepository.startTask(21);
+
+      // Assert
+      // Assert
+      expect(result, isA<Map<String, dynamic>>());
+      expect(result['message'], isA<String>());
+      verify(mockApiDataSource.startTask(21)).called(1);
     });
   });
 }

@@ -36,13 +36,13 @@ class ViewTaskImages extends StatelessWidget {
               );
             }
             if (data.hasData) {
-              if (data.data!.images.isEmpty) {
+              if (data.data!.images == null || data.data!.images!.isEmpty) {
                 return const Text("No images");
               }
 
               return GridView.count(
                 crossAxisCount: 3,
-                children: List.generate(data.data!.images.length, (index) {
+                children: List.generate(data.data!.images!.length, (index) {
                   return Center(
                     child: CupertinoContextMenu(
                       actions: <Widget>[
@@ -51,7 +51,7 @@ class ViewTaskImages extends StatelessWidget {
                             context.pop();
                             Clipboard.setData(
                               ClipboardData(
-                                text: data.data!.images[index].url,
+                                text: data.data!.images![index].url,
                               ),
                             );
                           },
@@ -62,7 +62,7 @@ class ViewTaskImages extends StatelessWidget {
                       ],
                       child: Image.network(
                         Globals.baseUrl +
-                            data.data!.images[index].url.replaceFirst(
+                            data.data!.images![index].url.replaceFirst(
                               "task-",
                               "",
                             ),

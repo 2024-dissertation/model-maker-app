@@ -14,9 +14,11 @@ class CarouselDemo extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: <Widget>[
           CarouselSlider(
-            items: task.images.map((image) {
-              return Image.network("http://localhost:3333${image.url}");
-            }).toList(),
+            items: task.images == null
+                ? []
+                : task.images!.map((image) {
+                    return Image.network("http://localhost:3333${image.url}");
+                  }).toList(),
             carouselController: buttonCarouselController,
             options: CarouselOptions(
               autoPlay: false,

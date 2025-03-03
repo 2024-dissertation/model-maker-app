@@ -28,7 +28,7 @@ class Task with TaskMappable {
   final String createdAt;
   final String updatedAt;
   final String? deletedAt;
-  final List<TaskFile> images;
+  final List<TaskFile>? images;
   final TaskMesh? mesh;
 
   const Task({
@@ -41,7 +41,7 @@ class Task with TaskMappable {
     required this.updatedAt,
     required this.status,
     this.deletedAt,
-    this.images = const [],
+    this.images,
     this.mesh,
   });
 }

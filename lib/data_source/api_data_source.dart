@@ -96,10 +96,6 @@ class ApiDataSource {
     return _get('/tasks/$id');
   }
 
-  Future<Map<String, dynamic>> saveTask(Task data) async {
-    return _post('/tasks', data.toMap());
-  }
-
   Future<Map<String, dynamic>> createTask(Map<String, dynamic> data) async {
     return _post('/tasks', data);
   }
