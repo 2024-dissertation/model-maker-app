@@ -88,9 +88,10 @@ class TaskRepositoryImpl extends AbstractRepository implements TaskRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> startTask(int taskId) {
+  Future<Map<String, dynamic>> startTask(int taskId) async {
     try {
-      return apiDataSource.startTask(taskId);
+      final data = await apiDataSource.startTask(taskId);
+      return data;
     } catch (e) {
       if (e is ServerException || e is NetworkException) {
         rethrow;

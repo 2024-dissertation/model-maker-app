@@ -29,7 +29,7 @@ class ApiDataSource {
       return response.data;
     } on DioException catch (e) {
       logger.e('Failed to get $path with data ${e.response?.data}');
-      throw ServerException('Request failed');
+      throw ServerException(message: 'Request failed');
     }
   }
 
@@ -50,7 +50,7 @@ class ApiDataSource {
       return response.data;
     } on DioException catch (e) {
       logger.e('Failed to post $path with error: ${e.response?.data}');
-      throw ServerException('Request failed');
+      throw ServerException(message: 'Request failed');
     }
   }
 
@@ -68,7 +68,7 @@ class ApiDataSource {
       return response.data;
     } on DioException catch (e) {
       logger.e('Failed to patch $path with data ${e.response?.data}');
-      throw ServerException('Request failed');
+      throw ServerException(message: 'Request failed');
     }
   }
 
@@ -80,10 +80,6 @@ class ApiDataSource {
 
   Future<Map<String, dynamic>> saveMyUser(MyUser data) async {
     return _patch('/verify', data.toMap());
-  }
-
-  Future<Map<String, dynamic>> createUser(MyUser data) async {
-    return _post('/register', data.toMap());
   }
 
   /// Task

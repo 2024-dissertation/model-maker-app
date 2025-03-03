@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/data_source/api_data_source.dart';
+import 'package:frontend/exceptions/api_exceptions.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/models/task_status.dart';
@@ -15,19 +16,17 @@ import 'my_user_repository_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<ApiDataSource>(), MockSpec<Logger>()])
 void main() {
+  late MockApiDataSource mockApiDataSource;
+  late TaskRepository taskRepository;
+
   setUp(() {
+    mockApiDataSource = MockApiDataSource();
     logger = MockLogger();
+
+    taskRepository = TaskRepositoryImpl(apiDataSource: mockApiDataSource);
   });
 
-  group('Task Repository Tests', () {
-    late MockApiDataSource mockApiDataSource;
-    late TaskRepository taskRepository;
-
-    setUp(() {
-      mockApiDataSource = MockApiDataSource();
-      taskRepository = TaskRepositoryImpl(apiDataSource: mockApiDataSource);
-    });
-
+  group('TaskRepository getTask Tests', () {
     test('should return List<Task> when getTasks is called', () async {
       final data = '''
 {
@@ -131,7 +130,41 @@ void main() {
       verify(mockApiDataSource.getTasks()).called(1);
     });
 
-    test('should return Task when getTask is called', () async {
+    test('should throw ServerException when getTasks fails', () async {
+      when(mockApiDataSource.getTasks()).thenThrow(ServerException());
+
+      // Act
+      final call = taskRepository.getTasks();
+
+      // Assert
+      expect(call, throwsA(isA<ServerException>()));
+    });
+
+    test('should throw NetworkException when getTasks fails', () async {
+      when(mockApiDataSource.getTasks()).thenThrow(NetworkException());
+
+      // Act
+      final call = taskRepository.getTasks();
+
+      // Assert
+      expect(call, throwsA(isA<NetworkException>()));
+    });
+
+    test('should throw ParsingException when getTasks fails to parse',
+        () async {
+      // Data without 'user' key
+      when(mockApiDataSource.getTasks()).thenAnswer((_) async => {});
+
+      // Act
+      final call = taskRepository.getTasks();
+
+      // Assert
+      expect(call, throwsA(isA<ParsingException>()));
+    });
+  });
+
+  group('TaskRepository getTaskById Tests', () {
+    test('should return Task when getTaskById is called', () async {
       final data = '''
 {
     "task": {
@@ -204,6 +237,40 @@ void main() {
       expect(result.mesh!.taskID, 10);
     });
 
+    test('should throw ServerException when getTaskById fails', () async {
+      when(mockApiDataSource.getTaskById(any)).thenThrow(ServerException());
+
+      // Act
+      final call = taskRepository.getTaskById(1);
+
+      // Assert
+      expect(call, throwsA(isA<ServerException>()));
+    });
+
+    test('should throw NetworkException when getTaskById fails', () async {
+      when(mockApiDataSource.getTaskById(any)).thenThrow(NetworkException());
+
+      // Act
+      final call = taskRepository.getTaskById(1);
+
+      // Assert
+      expect(call, throwsA(isA<NetworkException>()));
+    });
+
+    test('should throw ParsingException when getTaskById fails to parse',
+        () async {
+      // Data without 'user' key
+      when(mockApiDataSource.getTaskById(any)).thenAnswer((_) async => {});
+
+      // Act
+      final call = taskRepository.getTaskById(1);
+
+      // Assert
+      expect(call, throwsA(isA<ParsingException>()));
+    });
+  });
+
+  group('TaskRepository createTask Tests', () {
     test('should return Task when createTask is called', () async {
       final data = '''
 {
@@ -237,6 +304,73 @@ void main() {
       expect(result.description, 'Test description');
     });
 
+    test('should throw ServerException when createTask fails', () async {
+      when(mockApiDataSource.createTask(any)).thenThrow(ServerException());
+
+      final task = Task(
+        id: 1,
+        title: 'Warhammer',
+        description: 'Description',
+        completed: false,
+        userID: 1,
+        createdAt: '',
+        updatedAt: '',
+        status: TaskStatus.INITIAL,
+      );
+
+      // Act
+      final call = taskRepository.createTask(task.toMap());
+
+      // Assert
+      expect(call, throwsA(isA<ServerException>()));
+    });
+
+    test('should throw NetworkException when createTask fails', () async {
+      when(mockApiDataSource.createTask(any)).thenThrow(NetworkException());
+
+      final task = Task(
+        id: 1,
+        title: 'Warhammer',
+        description: 'Description',
+        completed: false,
+        userID: 1,
+        createdAt: '',
+        updatedAt: '',
+        status: TaskStatus.INITIAL,
+      );
+
+      // Act
+      final call = taskRepository.createTask(task.toMap());
+
+      // Assert
+      expect(call, throwsA(isA<NetworkException>()));
+    });
+
+    test('should throw ParsingException when createTask fails to parse',
+        () async {
+      // Data without 'user' key
+      when(mockApiDataSource.createTask(any)).thenAnswer((_) async => {});
+
+      final task = Task(
+        id: 1,
+        title: 'Warhammer',
+        description: 'Description',
+        completed: false,
+        userID: 1,
+        createdAt: '',
+        updatedAt: '',
+        status: TaskStatus.INITIAL,
+      );
+
+      // Act
+      final call = taskRepository.createTask(task.toMap());
+
+      // Assert
+      expect(call, throwsA(isA<ParsingException>()));
+    });
+  });
+
+  group('TaskRepository uploadImages Tests', () {
     test('should return List<TaskFile> when uploadTaskFile is called',
         () async {
       final data = '''
@@ -272,6 +406,47 @@ void main() {
       expect(result[0].taskID, 21);
     });
 
+    test('should throw NetworkException when uploadTaskFile fails', () async {
+      when(mockApiDataSource.uploadImages(any, any))
+          .thenThrow(NetworkException());
+
+      final data = ['image1', 'image2'];
+
+      // Act
+      final call = taskRepository.uploadImages(1, data);
+
+      // Assert
+      expect(call, throwsA(isA<NetworkException>()));
+    });
+
+    test('should throw ServerException when uploadTaskFile fails', () async {
+      when(mockApiDataSource.uploadImages(any, any))
+          .thenThrow(ServerException());
+
+      final data = ['image1', 'image2'];
+
+      // Act
+      final call = taskRepository.uploadImages(1, data);
+
+      // Assert
+      expect(call, throwsA(isA<ServerException>()));
+    });
+
+    test('should throw ParsingException when uploadTaskFile fails', () async {
+      when(mockApiDataSource.uploadImages(any, any))
+          .thenAnswer((_) async => {});
+
+      final data = ['image1', 'image2'];
+
+      // Act
+      final call = taskRepository.uploadImages(1, data);
+
+      // Assert
+      expect(call, throwsA(isA<ParsingException>()));
+    });
+  });
+
+  group('TaskRepository startTask Tests', () {
     test('should return updated status when startTask is called', () async {
       final data = '''
 {
@@ -290,6 +465,36 @@ void main() {
       expect(result, isA<Map<String, dynamic>>());
       expect(result['message'], isA<String>());
       verify(mockApiDataSource.startTask(21)).called(1);
+    });
+
+    test('should throw NetworkException when startTask fails', () async {
+      when(mockApiDataSource.startTask(any)).thenThrow(NetworkException());
+
+      // Act
+      final call = taskRepository.startTask(1);
+
+      // Assert
+      expect(call, throwsA(isA<NetworkException>()));
+    });
+
+    test('should throw ServerException when startTask fails', () async {
+      when(mockApiDataSource.startTask(any)).thenThrow(ServerException());
+
+      // Act
+      final call = taskRepository.startTask(1);
+
+      // Assert
+      expect(call, throwsA(isA<ServerException>()));
+    });
+
+    test('should throw ParsingException when startTask fails', () async {
+      when(mockApiDataSource.startTask(any)).thenThrow(ParsingException());
+
+      // Act
+      final call = taskRepository.startTask(1);
+
+      // Assert
+      expect(call, throwsA(isA<ParsingException>()));
     });
   });
 }

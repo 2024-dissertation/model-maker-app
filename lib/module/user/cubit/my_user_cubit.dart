@@ -31,8 +31,9 @@ class MyUserCubit extends Cubit<MyUserState> {
 
   Future<void> saveUser() async {
     if (state is! MyUserLoaded) return;
+
     try {
-      await _myUserRepository.updateMyUser((state as MyUserLoaded).myUser);
+      await _myUserRepository.saveMyUser((state as MyUserLoaded).myUser);
     } catch (e) {
       logger.e(e);
       return;
