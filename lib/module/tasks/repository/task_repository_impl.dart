@@ -100,4 +100,21 @@ class TaskRepositoryImpl extends AbstractRepository implements TaskRepository {
       throw ParsingException();
     }
   }
+
+  @override
+  Future<List<String>> getImages(int taskId) async {
+    try {
+      final task = await getTaskById(taskId);
+      if (task.images == null) {
+        return [];
+      }
+      return task.images!.map((e) => e.url).toList();
+    } catch (e) {
+      if (e is ServerException || e is NetworkException) {
+        rethrow;
+      }
+      logger.e(e);
+      throw ParsingException();
+    }
+  }
 }

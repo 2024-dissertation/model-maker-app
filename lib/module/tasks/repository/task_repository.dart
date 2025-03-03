@@ -7,4 +7,5 @@ abstract class TaskRepository {
   Future<Task> createTask(Map<String, dynamic> task);
   Future<List<TaskFile>> uploadImages(int taskId, List<String> paths);
   Future<Map<String, dynamic>> startTask(int taskId);
+  Future<List<String>> getImages(int taskId);
 }

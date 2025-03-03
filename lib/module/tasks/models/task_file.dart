@@ -20,6 +20,15 @@ class TaskFile with TaskFileMappable {
   final String updatedAt;
   final int taskID;
 
+  static const empty = TaskFile(
+    id: 0,
+    filename: '',
+    url: '',
+    createdAt: '',
+    updatedAt: '',
+    taskID: 0,
+  );
+
   const TaskFile({
     required this.id,
     required this.filename,

@@ -7,14 +7,17 @@ import 'package:frontend/module/tasks/repository/task_repository.dart';
 part 'view_task_state.dart';
 
 class ViewTaskCubit extends SafeCubit<ViewTaskState> {
-  final TaskRepository _myUserRepository = getIt();
+  final TaskRepository _taskRepository;
 
   final int taskId;
 
-  ViewTaskCubit(this.taskId) : super(ViewTaskInitial());
+  ViewTaskCubit(this.taskId, {TaskRepository? taskRepository})
+      : _taskRepository = taskRepository ?? getIt(),
+        super(ViewTaskInitial());
 
-  ViewTaskCubit.preLoaded(Task task)
+  ViewTaskCubit.preLoaded(Task task, {TaskRepository? taskRepository})
       : taskId = task.id,
+        _taskRepository = taskRepository ?? getIt(),
         super(ViewTaskLoaded(task));
 
   Future<void> fetchTask() async {
@@ -23,24 +26,10 @@ class ViewTaskCubit extends SafeCubit<ViewTaskState> {
     }
 
     try {
-      final task = await _myUserRepository.getTaskById(taskId);
+      final task = await _taskRepository.getTaskById(taskId);
       safeEmit(ViewTaskLoaded(task));
     } catch (e) {
       safeEmit(ViewTaskError(e.toString()));
-      throw Exception("Failed to load task");
-    }
-  }
-
-  Future<List<String>> getImages(int taskId) async {
-    try {
-      final task = await _myUserRepository.getTaskById(taskId);
-      if (task.images == null) {
-        return [];
-      }
-      return task.images!.map((e) => e.url).toList();
-    } catch (e) {
-      safeEmit(ViewTaskError(e.toString()));
-      throw Exception("Failed to load images");
     }
   }
 }
