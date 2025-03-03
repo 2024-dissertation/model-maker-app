@@ -1,31 +1,30 @@
-part of 'home_cubit.dart';
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:frontend/module/tasks/models/task.dart';
 
-sealed class HomeState extends Equatable {
+part 'home_state.mapper.dart';
+
+@MappableClass()
+sealed class HomeState with HomeStateMappable {
   const HomeState();
-
-  @override
-  List<Object> get props => [];
 }
 
-final class HomeInitial extends HomeState {}
+@MappableClass()
+final class HomeInitial extends HomeState with HomeInitialMappable {}
 
-final class HomeLoaded extends HomeState {
+@MappableClass()
+final class HomeLoading extends HomeState with HomeLoadingMappable {}
+
+@MappableClass()
+final class HomeLoaded extends HomeState with HomeLoadedMappable {
   final List<Task> tasks;
   final List<Task> filteredTasks;
 
   const HomeLoaded(this.tasks, {this.filteredTasks = const []});
-
-  @override
-  List<Object> get props => [tasks, filteredTasks];
 }
 
-final class HomeError extends HomeState {
+@MappableClass()
+final class HomeError extends HomeState with HomeErrorMappable {
   final String message;
 
   const HomeError(this.message);
-
-  @override
-  List<Object> get props => [message];
 }
-
-final class HomeLoading extends HomeState {}

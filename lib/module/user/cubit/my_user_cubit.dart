@@ -1,4 +1,3 @@
-import 'package:frontend/exceptions/state_exceptions.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';

@@ -22,6 +22,15 @@ class TaskMesh with TaskMeshMappable {
   final String url;
   final int taskID;
 
+  static const empty = TaskMesh(
+    id: 1,
+    createdAt: '',
+    updatedAt: '',
+    filename: '',
+    url: '',
+    taskID: 1,
+  );
+
   const TaskMesh({
     required this.id,
     required this.createdAt,

@@ -31,6 +31,17 @@ class Task with TaskMappable {
   final List<TaskFile>? images;
   final TaskMesh? mesh;
 
+  static const empty = Task(
+    id: 1,
+    title: 'Task',
+    description: 'Description',
+    completed: false,
+    userID: 1,
+    createdAt: '',
+    updatedAt: '',
+    status: TaskStatus.INITIAL,
+  );
+
   const Task({
     required this.id,
     required this.title,
