@@ -3,15 +3,15 @@ import 'dart:async';
 
 import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/module/auth/cubit/auth_state.dart';
+import 'package:frontend/module/auth/repository/auth_repository.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/main/main.dart';
-import 'package:frontend/module/auth/repository/auth_repository_impl.dart';
 
 // Extends Cubit and will emit states of type AuthState
 class AuthCubit extends SafeHydratedCubit<AuthState> {
   // Get the injected AuthRepository
-  final AuthRepositoryImpl _authRepository = getIt();
+  final AuthRepository _authRepository = getIt();
   final MyUserCubit _myUserCubit;
   StreamSubscription? _authSubscription;
 
@@ -23,7 +23,7 @@ class AuthCubit extends SafeHydratedCubit<AuthState> {
   Future<void> init() async {
     // Subscribe to listen for changes in the authentication state
     _authSubscription =
-        _authRepository.onAuthStateChanged.listen(_authStateChanged);
+        _authRepository.onAuthStateChanged().listen(_authStateChanged);
   }
 
   // Helper function that will emit the current authentication state

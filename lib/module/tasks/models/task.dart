@@ -1,7 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/module/tasks/models/task_file.dart';
 import 'package:frontend/module/tasks/models/task_mesh.dart';
 import 'package:frontend/module/tasks/models/task_status.dart';
+import 'package:path/path.dart' as p;
 
 /*
 	ID          uint `gorm:"primaryKey"`
@@ -30,6 +32,16 @@ class Task with TaskMappable {
   final String? deletedAt;
   final List<TaskFile>? images;
   final TaskMesh? mesh;
+
+  List<Uri> get imageUrls {
+    if (images == null || images!.isEmpty) {
+      return [];
+    }
+    return images!
+        .map((e) => Uri.parse(Globals.baseUrl)
+            .resolveUri(Uri.parse(e.url.replaceAll("task-", ""))))
+        .toList();
+  }
 
   static const empty = Task(
     id: 1,

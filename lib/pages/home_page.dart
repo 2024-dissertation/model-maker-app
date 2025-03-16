@@ -64,7 +64,7 @@ class _HomePage extends StatelessWidget {
                   const SliverToBoxAdapter(
                       child: Center(child: Text("No jobs created")))
                 else
-                  SliverToBoxAdapter(
+                  SliverFillRemaining(
                     child: CupertinoListSection(
                       header: const Text('Tasks'),
                       children: state.filteredTasks

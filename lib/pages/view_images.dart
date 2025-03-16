@@ -6,6 +6,7 @@ import 'package:frontend/main/main.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path/path.dart' as p;
 
 class ViewTaskImages extends StatelessWidget {
   ViewTaskImages({super.key, required this.task});
@@ -40,39 +41,39 @@ class ViewTaskImages extends StatelessWidget {
                 return const Text("No images");
               }
 
-              return GridView.count(
-                crossAxisCount: 3,
-                children: List.generate(data.data!.images!.length, (index) {
-                  return Center(
-                    child: CupertinoContextMenu(
-                      actions: <Widget>[
-                        CupertinoContextMenuAction(
-                          onPressed: () {
-                            context.pop();
-                            Clipboard.setData(
-                              ClipboardData(
-                                text: data.data!.images![index].url,
-                              ),
-                            );
-                          },
-                          isDefaultAction: true,
-                          trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
-                          child: const Text('Copy'),
-                        ),
-                      ],
-                      child: Image.network(
-                        Globals.baseUrl +
-                            data.data!.images![index].url.replaceFirst(
-                              "task-",
-                              "",
+              final urls = data.data!.imageUrls;
+              logger.d(urls);
+
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                ),
+                itemBuilder: (context, index) => Center(
+                  child: CupertinoContextMenu(
+                    actions: <Widget>[
+                      CupertinoContextMenuAction(
+                        onPressed: () {
+                          context.pop();
+                          Clipboard.setData(
+                            ClipboardData(
+                              text: urls[index].toString(),
                             ),
+                          );
+                        },
+                        isDefaultAction: true,
+                        trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
+                        child: const Text('Copy'),
                       ),
+                    ],
+                    child: Image.network(
+                      urls[index].toString(),
                     ),
-                  );
-                }),
+                  ),
+                ),
+                itemCount: urls.length,
               );
             } else {
-              return const SizedBox();
+              return SizedBox();
             }
           },
         ),

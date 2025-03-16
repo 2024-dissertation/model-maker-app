@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/module/auth/cubit/auth_state.dart';
+import 'package:frontend/module/auth/repository/auth_repository.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
 import 'package:frontend/main/main.dart';
-import 'package:frontend/module/auth/repository/auth_repository_impl.dart';
 import 'package:frontend/module/user/cubit/my_user_state.dart';
 
 class LoginPage extends StatefulWidget {
@@ -19,11 +19,11 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final AuthRepositoryImpl _authRepository = getIt();
+  final AuthRepository _authRepository = getIt();
 
   @override
   void initState() {
-    _emailController.text = "laister.sam@gmail.com";
+    _emailController.text = "laister.sam+scanner@gmail.com";
     _passwordController.text = "password";
     super.initState();
   }

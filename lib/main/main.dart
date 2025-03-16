@@ -6,6 +6,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/helpers/locator.dart';
 import 'package:frontend/module/auth/repository/auth_repository.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 import 'package:frontend/module/tasks/repository/task_repository_impl.dart';
@@ -67,17 +68,4 @@ void main() async {
       child: const App(),
     ),
   );
-}
-
-// Helper function to inject dependencies
-void injectDependencies() {
-  final _client = Dio();
-  _client.options.baseUrl = Globals.baseUrl;
-  _client.options.validateStatus = (status) => status! < 500;
-
-  getIt.registerLazySingleton(() => ApiDataSource(client: _client));
-
-  getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
-  getIt.registerLazySingleton<MyUserRepository>(() => MyUserRepositoryImpl());
-  getIt.registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl());
 }

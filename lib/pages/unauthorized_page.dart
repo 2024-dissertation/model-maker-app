@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/module/auth/repository/auth_repository.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 import '../main/main.dart';
-import '../module/auth/repository/auth_repository_impl.dart';
 
 class UnauthorizedPage extends StatelessWidget {
   const UnauthorizedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AuthRepositoryImpl _authRepository = getIt();
+    final AuthRepository _authRepository = getIt();
 
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(

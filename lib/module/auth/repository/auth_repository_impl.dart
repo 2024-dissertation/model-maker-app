@@ -8,7 +8,8 @@ typedef UserUID = String;
 class AuthRepositoryImpl implements AuthRepository {
   final _firebaseAuth = firebase_auth.FirebaseAuth.instance;
 
-  Stream<UserUID?> get onAuthStateChanged =>
+  @override
+  Stream<UserUID?> onAuthStateChanged() =>
       _firebaseAuth.authStateChanges().asyncMap((user) => user?.uid);
 
   @override
@@ -18,6 +19,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<String?> getIdToken() async {
     return _firebaseAuth.currentUser?.getIdToken();
   }
+
+  @override
+  firebase_auth.User? currentUser() => _firebaseAuth.currentUser;
 
   @override
   Future<firebase_auth.UserCredential> signInWithEmailAndPassword(
@@ -56,8 +60,6 @@ class AuthRepositoryImpl implements AuthRepository {
     return await firebase_auth.FirebaseAuth.instance
         .signInWithCredential(credential);
   }
-
-  firebase_auth.User? get currentUser => _firebaseAuth.currentUser;
 
   @override
   Future<firebase_auth.User?> singUpWithEmailAndPassword(
