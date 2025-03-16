@@ -34,6 +34,8 @@ dependencies:
   dart_mappable: ^4.4.0
   path_provider: ^2.1.5
   image_picker: ^1.1.2
+  flutter_svg: ^2.0.17
+  vector_graphics: ^1.1.18
 
 dev_dependencies:
   flutter_test:
@@ -44,6 +46,7 @@ dev_dependencies:
   mockito: ^5.4.5
   bloc_test: ^10.0.0
   mocktail: ^1.0.4
+  vector_graphics_compiler: ^1.1.16
 
 
 flutter:
@@ -51,3 +54,4 @@ flutter:
 
   assets:
     - assets/test_object.glb
+    - assets/svg/camera-1-48.svg.vec

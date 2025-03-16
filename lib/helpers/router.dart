@@ -11,7 +11,7 @@ import 'package:frontend/pages/scanner_page.dart';
 import 'package:frontend/pages/profile_page.dart';
 import 'package:frontend/pages/settings_page.dart';
 import 'package:frontend/pages/splash_screen.dart';
-import 'package:frontend/pages/unauthorized_page.dart';
+import 'package:frontend/pages/onboarding/unauthorized_page.dart';
 import 'package:frontend/pages/view_images.dart';
 import 'package:frontend/pages/view_task.dart';
 import 'package:go_router/go_router.dart';

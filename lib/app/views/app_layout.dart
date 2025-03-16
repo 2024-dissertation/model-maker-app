@@ -15,6 +15,7 @@ class AppLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
+      resizeToAvoidBottomInset: false,
       tabBuilder: (context, index) {
         return children[index];
       },
