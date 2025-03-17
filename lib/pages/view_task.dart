@@ -168,7 +168,8 @@ class __ViewTaskState extends State<_ViewTask> {
                       ),
                       CupertinoListTile.notched(
                         title: const Text("Status"),
-                        additionalInfo: TaskStatusWidget(task: state.task),
+                        additionalInfo:
+                            TaskStatusWidget(status: state.task.status),
                       ),
                     ],
                   ),

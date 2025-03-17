@@ -46,7 +46,7 @@ void main() async {
   FlutterError.onError = (details) => logger.d;
 
   PlatformDispatcher.instance.onError = (error, stack) {
-    logger.e(error);
+    logger.e(error, stackTrace: stack);
     return true;
   };
 

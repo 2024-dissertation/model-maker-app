@@ -8,7 +8,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: TaskStatusWidget(
-          task: Task.empty,
+          status: Task.empty,
         ),
       ),
     );

@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/config/constants.dart';
 import 'package:frontend/module/home/cubit/home_cubit.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
+import 'package:frontend/ui/themed/themed_list_item.dart';
 import 'package:frontend/ui/task_status_widget.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
@@ -65,61 +68,18 @@ class _HomePage extends StatelessWidget {
                       child: Center(child: Text("No jobs created")))
                 else
                   SliverFillRemaining(
-                    child: CupertinoListSection(
-                      header: const Text('Tasks'),
-                      children: state.filteredTasks
-                          .map(
-                            (task) => Dismissible(
-                              direction: DismissDirection.endToStart,
-                              background: Container(
-                                color: CupertinoColors.systemRed,
-                                alignment: Alignment.centerRight,
-                                padding: const EdgeInsets.only(right: 16),
-                                child: const Icon(
-                                  CupertinoIcons.delete,
-                                  color: CupertinoColors.white,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppPadding.md),
+                      child: Column(
+                        children: state.filteredTasks
+                            .map(
+                              (task) => ThemedListItem(
+                                trailing: TaskStatusWidget(status: task.status),
+                                onTap: () => context.go(
+                                  '/authed/home/task',
+                                  extra: task,
                                 ),
-                              ),
-                              onDismissed: (direction) =>
-                                  context.read<HomeCubit>().removeTask(
-                                        task.id,
-                                      ),
-                              confirmDismiss: (_) async {
-                                final result = await showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CupertinoAlertDialog(
-                                      title: const Text('Delete Task'),
-                                      content: const Text(
-                                          'Are you sure you want to delete this task?'),
-                                      actions: [
-                                        CupertinoDialogAction(
-                                          onPressed: () {
-                                            context.pop(false);
-                                          },
-                                          child: const Text('Cancel'),
-                                        ),
-                                        CupertinoDialogAction(
-                                          onPressed: () {
-                                            context.pop(true);
-                                          },
-                                          isDestructiveAction: true,
-                                          child: const Text('Delete'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-
-                                return result ?? false;
-                              },
-                              key: Key(
-                                "${task.id}",
-                              ),
-                              child: CupertinoListTile(
-                                title: Text(task.title),
-                                subtitle: Text(task.description),
-                                onTap: () async {
+                                onLongTap: () async {
                                   final action =
                                       await _showActionSheet(context);
                                   if (action == 1) {
@@ -131,11 +91,68 @@ class _HomePage extends StatelessWidget {
                                     _taskRepository.startTask(task.id);
                                   }
                                 },
-                                trailing: TaskStatusWidget(task: task),
+                                onDismissed: () =>
+                                    context.read<HomeCubit>().removeTask(
+                                          task.id,
+                                        ),
+                                dismissableKey: "${task.id}",
+                                title: Text(task.title),
+                                subtitle: ThemedText(
+                                  task.description,
+                                  style: TextType.small,
+                                  color: TextColor.secondary,
+                                ),
+                                onConfirmDismiss: () async {
+                                  final result = await showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return CupertinoAlertDialog(
+                                        title: const Text('Delete Task'),
+                                        content: const Text(
+                                            'Are you sure you want to delete this task?'),
+                                        actions: [
+                                          CupertinoDialogAction(
+                                            onPressed: () {
+                                              context.pop(false);
+                                            },
+                                            child: const Text('Cancel'),
+                                          ),
+                                          CupertinoDialogAction(
+                                            onPressed: () {
+                                              context.pop(true);
+                                            },
+                                            isDestructiveAction: true,
+                                            child: const Text('Delete'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+
+                                  return result ?? false;
+                                },
                               ),
-                            ),
-                          )
-                          .toList(),
+                              // child: CupertinoListTile(
+                              //   title: Text(task.title),
+                              //   subtitle: Text(task.description),
+                              //   onTap: () async {
+                              //     final action =
+                              //         await _showActionSheet(context);
+                              //     if (action == 1) {
+                              //       context.go(
+                              //         '/authed/home/task',
+                              //         extra: task,
+                              //       );
+                              //     } else if (action == 2) {
+                              //       _taskRepository.startTask(task.id);
+                              //     }
+                              //   },
+                              //   trailing: TaskStatusWidget(task: task),
+                              // ),
+                              // ),
+                            )
+                            .toList(),
+                      ),
                     ),
                   ),
                 const SliverToBoxAdapter(

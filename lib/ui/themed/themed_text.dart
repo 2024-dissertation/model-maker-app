@@ -5,6 +5,7 @@ enum TextType {
   body,
   title,
   subtitle,
+  small,
 }
 
 enum TextColor {
@@ -45,6 +46,11 @@ class ThemedText extends StatelessWidget {
             );
       case TextType.subtitle:
         return CustomCupertinoTheme.of(context).subtitle.copyWith(
+              color: _getTextColor(context),
+            );
+      case TextType.small:
+        return CustomCupertinoTheme.of(context).body.copyWith(
+              fontSize: 14,
               color: _getTextColor(context),
             );
     }
