@@ -32,6 +32,14 @@ class Task with TaskMappable {
   final String? deletedAt;
   final List<TaskFile>? images;
   final TaskMesh? mesh;
+  final Map<String, dynamic> metadata;
+
+  String get fTitle =>
+      metadata.containsKey("ai-title") ? metadata["ai-title"] : title;
+
+  String get fDescription => metadata.containsKey("ai-description")
+      ? metadata["ai-description"]
+      : description;
 
   List<Uri> get imageUrls {
     if (images == null || images!.isEmpty) {
@@ -66,5 +74,6 @@ class Task with TaskMappable {
     this.deletedAt,
     this.images,
     this.mesh,
+    this.metadata = const {},
   });
 }

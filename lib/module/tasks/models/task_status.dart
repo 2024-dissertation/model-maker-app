@@ -19,6 +19,9 @@ extension TaskStatusX on TaskStatus {
         return CupertinoColors.activeGreen;
 
       case TaskStatus.INITIAL:
+        return CupertinoColors.systemGrey;
+
+      case TaskStatus.INPROGRESS:
         return CupertinoColors.activeBlue;
 
       case TaskStatus.FAILED:
@@ -35,6 +38,9 @@ extension TaskStatusX on TaskStatus {
         return "Completed";
 
       case TaskStatus.INITIAL:
+        return "Not started";
+
+      case TaskStatus.INPROGRESS:
         return "In Progress";
 
       case TaskStatus.FAILED:

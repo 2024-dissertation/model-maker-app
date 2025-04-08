@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/helpers/helpers.dart';
+import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/module/scanner_page/scanner/scanner_cubit.dart';
 import 'package:frontend/ui/camera_snap.dart';
+import 'package:frontend/ui/image_extra_button.dart';
 import 'package:frontend/ui/image_preview.dart';
 import 'package:frontend/ui/image_select_button.dart';
 
@@ -109,85 +111,97 @@ class __ScannerPageState extends State<_ScannerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        leading: TextButton(
-          onPressed: () {
-            context.read<ScannerCubit>().clear();
-          },
-          child: const Text("Clear"),
-        ),
-        trailing: TextButton(
-            onPressed: () async {
-              await context.read<ScannerCubit>().createTask(context);
+    return BlocListener<ScannerCubit, ScannerState>(
+      listener: (context, state) {
+        if (state.error != null) {
+          showSingleActionAlertDialog(context, message: state.error!);
+        }
+      },
+      child: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          leading: TextButton(
+            onPressed: () {
+              context.read<ScannerCubit>().clear();
             },
-            child: const Text("Done")),
-        middle: const Text('Create Task'),
-      ),
-      child: controller != null && controller?.value.isInitialized == true
-          ? Column(
-              children: [
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 200),
-                  opacity: _visible ? 1.0 : 0.0,
-                  child: Stack(children: [
-                    CameraPreview(controller!),
-                    Positioned(
-                      bottom: 16,
-                      left: 16,
-                      right: 16,
-                      child: Center(
-                        child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            spacing: 8,
-                            children: [
-                              CameraSnap(capturePhoto: capturePhoto),
-                              ImageSelectButton(
-                                onFilesSelected: (files) {
-                                  context.read<ScannerCubit>().addPaths(
-                                      files.map((file) => file.path).toList());
-                                },
-                              )
-                            ]),
-                      ),
-                    ),
-                  ]),
-                ),
-                Expanded(
-                  child: BlocBuilder<ScannerCubit, ScannerState>(
-                    builder: (context, state) {
-                      if (state is ScannerError) {
-                        return Column(
-                          children: [
-                            Text(state.message),
-                            CupertinoButton.filled(
-                                onPressed: () {
-                                  context.read<ScannerCubit>().clear();
-                                },
-                                child: const Text("Retry"))
-                          ],
-                        );
-                      }
-                      if (state is ScannerLoaded) {
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: state.paths.length,
-                          itemBuilder: (context, index) => ImagePreview(
-                            index: index,
-                            path: state.paths[index],
-                            onDelete: (index) =>
-                                context.read<ScannerCubit>().removePath(index),
+            child: const Text("Clear"),
+          ),
+          trailing: TextButton(
+              onPressed: () async {
+                if (await context.read<ScannerCubit>().createTask()) {
+                  if (context.read<ScannerCubit>().state.paths.isEmpty) {
+                    showSingleActionAlertDialog(context,
+                        message: "No images to upload");
+                    return;
+                  }
+                  await context.read<ScannerCubit>().uploadImages();
+                }
+              },
+              child: const Text("Done")),
+          middle: const Text('Create Task'),
+        ),
+        child: Column(
+          children: [
+            AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              opacity: _visible ? 1.0 : 0.0,
+              child: Stack(children: [
+                if (controller != null &&
+                    controller?.value.isInitialized == true)
+                  CameraPreview(controller!)
+                else
+                  Center(
+                    child: Container(
+                        color: CupertinoColors.black,
+                        width: double.infinity,
+                        height: 500,
+                        child: Text("No cameras found")),
+                  ),
+                Positioned(
+                  bottom: 16,
+                  left: 16,
+                  right: 16,
+                  child: Center(
+                    child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 8,
+                        children: [
+                          CameraSnap(capturePhoto: capturePhoto),
+                          ImageSelectButton(
+                            onFilesSelected: (files) {
+                              context.read<ScannerCubit>().addPaths(
+                                  files.map((file) => file.path).toList());
+                            },
                           ),
-                        );
-                      }
-
-                      return SizedBox();
-                    },
+                          ImageExtraButton(
+                            onFilesSelected: (files) {
+                              context.read<ScannerCubit>().addPaths(
+                                  files.map((file) => file.path).toList());
+                            },
+                          ),
+                        ]),
                   ),
                 ),
-              ],
-            )
-          : Center(child: Text("No cameras found")),
+              ]),
+            ),
+            Expanded(
+              child: BlocBuilder<ScannerCubit, ScannerState>(
+                builder: (context, state) {
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: state.paths.length,
+                    itemBuilder: (context, index) => ImagePreview(
+                      index: index,
+                      path: state.paths[index],
+                      onDelete: (index) =>
+                          context.read<ScannerCubit>().removePath(index),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

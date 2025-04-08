@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:frontend/exceptions/api_exceptions.dart';
+import 'package:frontend/gen/assets.gen.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/user/models/my_user.dart';
@@ -98,6 +99,7 @@ class ApiDataSource {
 
   Future<Map<String, dynamic>> uploadImages(int taskId, List<String> paths) {
     List<File> files = paths.map((path) => File(path)).toList();
+
     final formData = FormData.fromMap({
       'files': files
           .map(

@@ -70,7 +70,9 @@ class _ImagePreviewState extends State<ImagePreview> {
         duration: const Duration(seconds: 1),
         child: Stack(
           children: [
-            Image.file(File(widget.path)),
+            widget.path.contains("assets/")
+                ? Image.asset(widget.path)
+                : Image.file(File(widget.path)),
             Positioned(
               top: 6,
               left: 6,

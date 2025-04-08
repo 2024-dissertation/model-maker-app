@@ -1,39 +1,14 @@
-part of 'scanner_cubit.dart';
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:frontend/module/tasks/models/task.dart';
 
-sealed class ScannerState extends Equatable {
-  const ScannerState();
+part 'scanner_state.mapper.dart';
 
-  @override
-  List<Object?> get props => [];
-}
-
-final class ScannerInitial extends ScannerState {}
-
-final class ScannerLoaded extends ScannerState {
+@MappableClass()
+final class ScannerState with ScannerStateMappable {
   final List<String> paths;
   final Task? createdTask;
 
-  const ScannerLoaded(this.paths, this.createdTask);
+  final String? error;
 
-  @override
-  List<Object?> get props => [paths, createdTask];
-
-  ScannerState copyWith({
-    List<String>? paths,
-    Task? createdTask,
-  }) {
-    return ScannerLoaded(
-      paths ?? this.paths,
-      createdTask ?? this.createdTask,
-    );
-  }
-}
-
-final class ScannerError extends ScannerState {
-  final String message;
-
-  const ScannerError(this.message);
-
-  @override
-  List<Object> get props => [message];
+  const ScannerState(this.paths, this.createdTask, this.error);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_3d_controller/flutter_3d_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/config/constants.dart';
 import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/module/tasks/models/task.dart';
@@ -152,27 +153,13 @@ class __ViewTaskState extends State<_ViewTask> {
             return CustomScrollView(
               slivers: [
                 CupertinoSliverNavigationBar(
-                  largeTitle: Text(state.task.title),
+                  largeTitle: Text(state.task.fTitle),
+                  trailing: TaskStatusWidget(status: state.task.status),
                 ),
                 SliverToBoxAdapter(
-                  child: CupertinoListSection.insetGrouped(
-                    backgroundColor: Colors.transparent,
-                    children: [
-                      CupertinoListTile.notched(
-                        title: const Text("Title"),
-                        additionalInfo: Text(state.task.title),
-                      ),
-                      CupertinoListTile.notched(
-                        title: const Text("Description"),
-                        additionalInfo: Text(state.task.description),
-                      ),
-                      CupertinoListTile.notched(
-                        title: const Text("Status"),
-                        additionalInfo:
-                            TaskStatusWidget(status: state.task.status),
-                      ),
-                    ],
-                  ),
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppPadding.md),
+                      child: Text(state.task.fDescription)),
                 ),
                 SliverToBoxAdapter(
                   child: Row(

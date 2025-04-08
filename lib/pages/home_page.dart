@@ -67,13 +67,14 @@ class _HomePage extends StatelessWidget {
                   const SliverToBoxAdapter(
                       child: Center(child: Text("No jobs created")))
                 else
-                  SliverFillRemaining(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppPadding.md),
-                      child: Column(
-                        children: state.filteredTasks
-                            .map(
-                              (task) => ThemedListItem(
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: AppPadding.md),
+                    sliver: SliverList.list(
+                      children: state.filteredTasks
+                          .map(
+                            (task) => Container(
+                              margin: EdgeInsets.only(bottom: AppPadding.sm),
+                              child: ThemedListItem(
                                 trailing: TaskStatusWidget(status: task.status),
                                 onTap: () => context.go(
                                   '/authed/home/task',
@@ -96,9 +97,9 @@ class _HomePage extends StatelessWidget {
                                           task.id,
                                         ),
                                 dismissableKey: "${task.id}",
-                                title: Text(task.title),
+                                title: Text(task.fTitle),
                                 subtitle: ThemedText(
-                                  task.description,
+                                  task.fDescription,
                                   style: TextType.small,
                                   color: TextColor.secondary,
                                 ),
@@ -132,27 +133,27 @@ class _HomePage extends StatelessWidget {
                                   return result ?? false;
                                 },
                               ),
-                              // child: CupertinoListTile(
-                              //   title: Text(task.title),
-                              //   subtitle: Text(task.description),
-                              //   onTap: () async {
-                              //     final action =
-                              //         await _showActionSheet(context);
-                              //     if (action == 1) {
-                              //       context.go(
-                              //         '/authed/home/task',
-                              //         extra: task,
-                              //       );
-                              //     } else if (action == 2) {
-                              //       _taskRepository.startTask(task.id);
-                              //     }
-                              //   },
-                              //   trailing: TaskStatusWidget(task: task),
-                              // ),
-                              // ),
-                            )
-                            .toList(),
-                      ),
+                            ),
+                            // child: CupertinoListTile(
+                            //   title: Text(task.title),
+                            //   subtitle: Text(task.description),
+                            //   onTap: () async {
+                            //     final action =
+                            //         await _showActionSheet(context);
+                            //     if (action == 1) {
+                            //       context.go(
+                            //         '/authed/home/task',
+                            //         extra: task,
+                            //       );
+                            //     } else if (action == 2) {
+                            //       _taskRepository.startTask(task.id);
+                            //     }
+                            //   },
+                            //   trailing: TaskStatusWidget(task: task),
+                            // ),
+                            // ),
+                          )
+                          .toList(),
                     ),
                   ),
                 const SliverToBoxAdapter(

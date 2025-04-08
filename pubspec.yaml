@@ -36,6 +36,7 @@ dependencies:
   image_picker: ^1.1.2
   flutter_svg: ^2.0.17
   vector_graphics: ^1.1.18
+  flutter_gen: ^5.10.0
 
 dev_dependencies:
   flutter_test:
@@ -56,3 +57,87 @@ flutter:
   assets:
     - assets/test_object.glb
     - assets/svg/camera-1-48.svg.vec
+    - assets/images/27-0.png 
+    - assets/images/27-1.png 
+    - assets/images/27-2.png 
+    - assets/images/27-3.png 
+    - assets/images/27-4.png 
+    - assets/images/27-5.png 
+    - assets/images/27-6.png 
+    - assets/images/27-7.png 
+    - assets/images/27-8.png 
+    - assets/images/27-9.png 
+    - assets/images/27-10.png 
+    - assets/images/27-11.png 
+    - assets/images/27-12.png 
+    - assets/images/27-13.png 
+    - assets/images/27-14.png 
+    - assets/images/27-15.png 
+    - assets/images/27-16.png 
+    - assets/images/27-17.png 
+    - assets/images/27-18.png 
+    - assets/images/27-19.png 
+    - assets/images/27-20.png 
+    - assets/images/27-21.png 
+    - assets/images/27-22.png 
+    - assets/images/27-23.png 
+    - assets/images/27-24.png 
+    - assets/images/27-25.png 
+    - assets/images/27-26.png 
+    - assets/images/27-27.png 
+    - assets/images/27-28.png 
+    - assets/images/27-29.png 
+    - assets/images/27-30.png 
+    - assets/images/27-31.png 
+    - assets/images/27-32.png 
+    - assets/images/27-33.png 
+    - assets/images/27-34.png 
+    - assets/images/27-35.png 
+    - assets/images/27-36.png 
+    - assets/images/27-37.png 
+    - assets/images/27-38.png 
+    - assets/images/27-39.png 
+    - assets/images/27-40.png 
+    - assets/images/27-41.png 
+    - assets/images/27-42.png 
+    - assets/images/27-43.png 
+    - assets/images/27-44.png 
+    - assets/images/27-45.png 
+    - assets/images/27-46.png 
+    - assets/images/27-47.png 
+    - assets/images/27-48.png 
+    - assets/images/27-49.png 
+    - assets/images/27-50.png 
+    - assets/images/27-51.png 
+    - assets/images/27-52.png 
+    - assets/images/27-53.png 
+    - assets/images/27-54.png 
+    - assets/images/27-55.png 
+    - assets/images/27-56.png 
+    - assets/images/27-57.png 
+    - assets/images/27-58.png 
+    - assets/images/27-59.png 
+    - assets/images/27-60.png 
+    - assets/images/27-61.png 
+    - assets/images/27-62.png 
+    - assets/images/27-63.png 
+    - assets/images/27-64.png 
+    - assets/images/27-65.png 
+    - assets/images/27-66.png 
+    - assets/images/27-67.png 
+    - assets/images/27-68.png 
+    - assets/images/27-69.png 
+    - assets/images/27-70.png 
+    - assets/images/27-71.png 
+    - assets/images/27-72.png 
+    - assets/images/27-73.png 
+    - assets/images/27-74.png 
+    - assets/images/27-75.png 
+    - assets/images/27-76.png 
+    - assets/images/27-77.png 
+    - assets/images/27-78.png 
+    - assets/images/27-79.png 
+    - assets/images/27-80.png 
+    - assets/images/27-81.png 
+    - assets/images/27-82.png 
+    - assets/images/27-83.png

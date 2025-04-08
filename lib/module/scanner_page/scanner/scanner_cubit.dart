@@ -1,116 +1,66 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';
-import 'package:frontend/module/tasks/models/task.dart';
+import 'package:frontend/module/scanner_page/scanner/scanner_state.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
-import 'package:go_router/go_router.dart';
 
-part 'scanner_state.dart';
+export 'scanner_state.dart';
 
 class ScannerCubit extends SafeCubit<ScannerState> {
   final TaskRepository _taskRepository = getIt();
 
-  ScannerCubit() : super(const ScannerLoaded([], null));
+  ScannerCubit() : super(const ScannerState([], null, null));
 
   void clear() {
-    safeEmit(const ScannerLoaded([], null));
+    safeEmit(const ScannerState([], null, null));
   }
 
   void addPath(String path) {
-    if (state is! ScannerLoaded) return;
-    final List<String> paths = [...(state as ScannerLoaded).paths, path];
-    safeEmit((state as ScannerLoaded).copyWith(paths: paths));
+    final List<String> paths = [...(state).paths, path];
+    safeEmit((state).copyWith(paths: paths));
   }
 
   void addPaths(List<String> paths) {
-    if (state is! ScannerLoaded) return;
-    final List<String> newPaths = [...(state as ScannerLoaded).paths, ...paths];
-    safeEmit((state as ScannerLoaded).copyWith(paths: newPaths));
-  }
-
-  void removePath(int index) {
-    if (state is! ScannerLoaded) return;
-    final List<String> paths = List<String>.from((state as ScannerLoaded).paths)
-      ..removeAt(index);
-    safeEmit((state as ScannerLoaded).copyWith(paths: paths));
-  }
-
-  Future<void> createTask(BuildContext context) async {
-    if (state is! ScannerLoaded) return;
     try {
-      final details = await showCupertinoDialog<Map<String, dynamic>?>(
-          context: context,
-          builder: (context) {
-            final TextEditingController titleController =
-                TextEditingController();
-            final TextEditingController descriptionController =
-                TextEditingController();
-
-            return CupertinoAlertDialog(
-              title: const Text('Task Details'),
-              content: Column(
-                spacing: 4,
-                children: [
-                  CupertinoTextField(
-                    placeholder: 'Title',
-                    controller: titleController,
-                  ),
-                  CupertinoTextField(
-                    placeholder: 'Description',
-                    controller: descriptionController,
-                  ),
-                ],
-              ),
-              actions: [
-                CupertinoDialogAction(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    context.pop(null);
-                  },
-                ),
-                CupertinoDialogAction(
-                  child: const Text('Create'),
-                  onPressed: () {
-                    context.pop({
-                      'title': titleController.text,
-                      'description': descriptionController.text,
-                    });
-                  },
-                ),
-              ],
-            );
-          });
-
-      if (details == null) return;
-
-      final data = await _taskRepository.createTask({
-        'title': details['title'] == null
-            ? 'Title'
-            : details['title']!.isEmpty
-                ? 'Title'
-                : details['title'],
-        'description': details['description'] == null
-            ? 'Description'
-            : details['description']!.isEmpty
-                ? 'Description'
-                : details['description'],
-      });
-
-      safeEmit((state as ScannerLoaded).copyWith(createdTask: data));
-      await uploadImages();
+      final List<String> newPaths = [...(state).paths, ...paths];
+      safeEmit((state).copyWith(paths: newPaths));
     } catch (e, stack) {
       logger.d("$e\n$stack");
-      safeEmit(ScannerError(e.toString()));
+      safeEmit(state.copyWith(error: e.toString()));
     }
   }
 
-  Future<void> uploadImages() async {
-    if (state is! ScannerLoaded) return;
-    final taskId = (state as ScannerLoaded).createdTask?.id;
-    if (taskId == null) return;
-    final paths = (state as ScannerLoaded).paths;
-    await _taskRepository.uploadImages(taskId, paths);
+  void removePath(int index) {
+    final List<String> paths = List<String>.from((state).paths)
+      ..removeAt(index);
+    safeEmit((state).copyWith(paths: paths));
+  }
+
+  Future<bool> createTask() async {
+    if (state.createdTask != null) return true;
+
+    try {
+      final data = await _taskRepository.createTask({});
+      safeEmit(ScannerState(state.paths, data, null));
+
+      return true;
+    } catch (e, stack) {
+      logger.d("$e\n$stack");
+      safeEmit(state.copyWith(error: e.toString()));
+      return false;
+    }
+  }
+
+  Future<bool> uploadImages() async {
+    if (state.createdTask == null) return false;
+
+    try {
+      await _taskRepository.uploadImages(state.createdTask!.id, state.paths);
+      return true;
+    } catch (e, stack) {
+      logger.d("$e\n$stack");
+      safeEmit(state.copyWith(error: "Something went wrong"));
+      return false;
+    }
   }
 }
