@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
 import 'package:frontend/module/user/cubit/my_user_state.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -37,13 +38,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   context.read<MyUserCubit>().saveUser();
                   context.pop();
                 },
-                child: const Text("Save")),
+                child: const ThemedText("Save")),
           ),
           SliverList.list(
             children: [
               CupertinoFormSection.insetGrouped(
                 backgroundColor: Colors.transparent,
-                header: const Text("Details"),
+                header: const ThemedText("Details"),
                 children: [
                   CupertinoTextFormFieldRow(
                     placeholder: "Email",

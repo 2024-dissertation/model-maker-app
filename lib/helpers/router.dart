@@ -4,6 +4,7 @@ import 'package:frontend/app/views/app_layout.dart';
 import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/module/auth/cubit/auth_state.dart';
+import 'package:frontend/pages/analytics_page.dart';
 import 'package:frontend/pages/home_page.dart';
 import 'package:frontend/pages/login_page.dart';
 import 'package:frontend/module/tasks/models/task.dart';
@@ -85,6 +86,14 @@ class AppRouter {
                     ],
                   ),
                 ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/authed/analytics',
+                builder: (context, state) => const AnalyticsPage(),
               ),
             ],
           ),

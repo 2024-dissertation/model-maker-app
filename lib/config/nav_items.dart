@@ -16,6 +16,10 @@ final List<NavItem> navItems = [
     icon: CupertinoIcons.home,
   ),
   NavItem(
+    title: 'Analytics',
+    icon: CupertinoIcons.chart_bar,
+  ),
+  NavItem(
     title: 'New',
     icon: CupertinoIcons.add,
   ),

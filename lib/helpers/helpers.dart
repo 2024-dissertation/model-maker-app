@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 
 Future<void> showAlertDialog(BuildContext context,
@@ -16,8 +17,8 @@ Future<void> showAlertDialog(BuildContext context,
   await showCupertinoDialog<void>(
     context: context,
     builder: (BuildContext context) => CupertinoAlertDialog(
-      title: Text(title),
-      content: Text(message),
+      title: ThemedText(title),
+      content: ThemedText(message),
       actions: <CupertinoDialogAction>[
         CupertinoDialogAction(
           /// This parameter indicates this action is the default,
@@ -27,7 +28,7 @@ Future<void> showAlertDialog(BuildContext context,
             context.pop();
             onCancelPressed?.call();
           },
-          child: Text(cancelText),
+          child: ThemedText(cancelText),
         ),
         CupertinoDialogAction(
           /// This parameter indicates the action would perform
@@ -38,7 +39,7 @@ Future<void> showAlertDialog(BuildContext context,
             context.pop();
             onActionPressed?.call();
           },
-          child: Text(actionText),
+          child: ThemedText(actionText),
         ),
       ],
     ),
@@ -54,8 +55,8 @@ Future<void> showSingleActionAlertDialog(BuildContext context,
   await showCupertinoDialog<void>(
     context: context,
     builder: (BuildContext context) => CupertinoAlertDialog(
-      title: Text(title),
-      content: Text(message),
+      title: ThemedText(title),
+      content: ThemedText(message),
       actions: <CupertinoDialogAction>[
         CupertinoDialogAction(
           isDefaultAction: true,
@@ -64,7 +65,7 @@ Future<void> showSingleActionAlertDialog(BuildContext context,
             context.pop();
             onActionPressed?.call();
           },
-          child: Text(actionText),
+          child: ThemedText(actionText),
         ),
       ],
     ),

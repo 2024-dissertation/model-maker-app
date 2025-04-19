@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 
 class ImagePreview extends StatefulWidget {
@@ -46,14 +47,14 @@ class _ImagePreviewState extends State<ImagePreview> {
           },
           isDefaultAction: true,
           trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
-          child: const Text('Copy'),
+          child: const ThemedText('Copy'),
         ),
         CupertinoContextMenuAction(
           onPressed: () {
             context.pop();
           },
           trailingIcon: CupertinoIcons.share,
-          child: const Text('Share'),
+          child: const ThemedText('Share'),
         ),
         CupertinoContextMenuAction(
           onPressed: () {
@@ -62,7 +63,7 @@ class _ImagePreviewState extends State<ImagePreview> {
           },
           isDestructiveAction: true,
           trailingIcon: CupertinoIcons.delete,
-          child: const Text('Delete'),
+          child: const ThemedText('Delete'),
         ),
       ],
       child: AnimatedOpacity(
@@ -86,14 +87,10 @@ class _ImagePreviewState extends State<ImagePreview> {
                   minWidth: 32,
                   minHeight: 32,
                 ),
-                child: Text(
+                child: ThemedText(
                   '${widget.index}',
-                  style: const TextStyle(
-                    color: CupertinoColors.black,
-                    fontSize: 16 * 0.6,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
+                  size: 16 * 0.6,
+                  style: TextType.title,
                 ),
               ),
             ),

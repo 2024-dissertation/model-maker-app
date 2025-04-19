@@ -512,6 +512,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  fl_chart:
+    dependency: "direct main"
+    description:
+      name: fl_chart
+      sha256: f2e9137f261d0f53a820f6b829c80ba570ac915284c8e32789d973834796eca0
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.71.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -695,6 +703,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.8.1"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      sha256: b1ac0fe2832c9cc95e5e88b57d627c5e68c223b9657f4b96e1487aa9098c7b82
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.1"
   google_identity_services_web:
     dependency: transitive
     description:
@@ -1159,6 +1175,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  remixicon:
+    dependency: "direct main"
+    description:
+      name: remixicon
+      sha256: "9a0e6a67d622a1d6ddc5e5cff4898f9711ec8880fc2ebeb720f6e0bc268ea905"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.1"
   shelf:
     dependency: transitive
     description:

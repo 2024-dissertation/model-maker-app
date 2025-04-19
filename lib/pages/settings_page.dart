@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/config/constants.dart';
 import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/ui/themed/themed_list_item.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 
 import '../ui/prefix_widget.dart';
@@ -18,7 +19,9 @@ class SettingsPage extends StatelessWidget {
           CustomScrollView(
             slivers: [
               const CupertinoSliverNavigationBar(
-                largeTitle: Text('Settings'),
+                largeTitle: Text(
+                  'Settings',
+                ),
               ),
               SliverFillRemaining(
                 child: Padding(
@@ -67,7 +70,7 @@ class SettingsPage extends StatelessWidget {
             right: 25,
             bottom: 100,
             child: CupertinoButton.filled(
-              child: const Text("Log Out"),
+              child: const ThemedText("Log Out", color: TextColor.inverse),
               onPressed: () {
                 context.read<AuthCubit>().signOut();
               },

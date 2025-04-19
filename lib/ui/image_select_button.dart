@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:frontend/gen/assets.gen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:frontend/helpers/logger.dart';
@@ -24,11 +23,10 @@ class ImageSelectButton extends StatelessWidget {
       child: GestureDetector(
         child: Icon(CupertinoIcons.ellipsis_vertical),
         onTap: () async {
-
           logger.d("Started copying files");
           final List<File> copiedFiles = [];
 
-          for (int i=0; i<83; i++) {
+          for (int i = 0; i < 83; i++) {
             logger.d(i);
             final filename = "27-$i.png";
             final assetPath = "assets/images/$filename";

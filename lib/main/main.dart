@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/helpers/locator.dart';
+import 'package:frontend/module/analytics/cubit/analytics_cubit.dart';
 import 'package:frontend/module/auth/repository/auth_repository.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 import 'package:frontend/module/tasks/repository/task_repository_impl.dart';
@@ -60,6 +61,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider.value(value: myUserCubit),
+        BlocProvider(create: (_) => AnalyticsCubit()),
         BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(
           create: (_) => AuthCubit(myUserCubit: myUserCubit)..init(),

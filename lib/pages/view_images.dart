@@ -5,6 +5,7 @@ import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart' as p;
 
@@ -19,7 +20,7 @@ class ViewTaskImages extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
-        middle: Text('All Images'),
+        middle: ThemedText('All Images'),
       ),
       child: Center(
         child: FutureBuilder(
@@ -33,12 +34,12 @@ class ViewTaskImages extends StatelessWidget {
             if (data.hasError) {
               logger.d("${data.error}, ${data.stackTrace}");
               return Center(
-                child: Text(data.error.toString()),
+                child: ThemedText(data.error.toString()),
               );
             }
             if (data.hasData) {
               if (data.data!.images == null || data.data!.images!.isEmpty) {
-                return const Text("No images");
+                return const ThemedText("No images");
               }
 
               final urls = data.data!.imageUrls;
@@ -62,7 +63,7 @@ class ViewTaskImages extends StatelessWidget {
                         },
                         isDefaultAction: true,
                         trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
-                        child: const Text('Copy'),
+                        child: const ThemedText('Copy'),
                       ),
                     ],
                     child: Image.network(

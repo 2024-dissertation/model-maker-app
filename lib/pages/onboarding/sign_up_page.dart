@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/auth/repository/auth_repository.dart';
 import 'package:frontend/pages/login_page.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -59,7 +60,7 @@ class SignUpPage extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: CupertinoButton.filled(
               onPressed: () => onBack(),
-              child: Text("Back"),
+              child: ThemedText("Back"),
             ),
           ),
         ),

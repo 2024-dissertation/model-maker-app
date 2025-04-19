@@ -5,6 +5,7 @@ import 'package:frontend/config/constants.dart';
 import 'package:frontend/module/home/cubit/home_cubit.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
+import 'package:frontend/ui/error_card.dart';
 import 'package:frontend/ui/themed/themed_list_item.dart';
 import 'package:frontend/ui/task_status_widget.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
@@ -36,7 +37,9 @@ class _HomePage extends StatelessWidget {
             return CustomScrollView(
               slivers: [
                 CupertinoSliverNavigationBar(
-                  largeTitle: const Text('Home'),
+                  largeTitle: const Text(
+                    'Home',
+                  ),
                   trailing: IconButton(
                     iconSize: 20,
                     icon: const Icon(CupertinoIcons.add),
@@ -65,7 +68,7 @@ class _HomePage extends StatelessWidget {
                 ),
                 if (state.tasks.isEmpty)
                   const SliverToBoxAdapter(
-                      child: Center(child: Text("No jobs created")))
+                      child: Center(child: ThemedText("No jobs created")))
                 else
                   SliverPadding(
                     padding: EdgeInsets.symmetric(horizontal: AppPadding.md),
@@ -97,7 +100,8 @@ class _HomePage extends StatelessWidget {
                                           task.id,
                                         ),
                                 dismissableKey: "${task.id}",
-                                title: Text(task.fTitle),
+                                title: ThemedText(task.fTitle,
+                                    style: TextType.title, size: 16),
                                 subtitle: ThemedText(
                                   task.fDescription,
                                   style: TextType.small,
@@ -108,22 +112,22 @@ class _HomePage extends StatelessWidget {
                                     context: context,
                                     builder: (context) {
                                       return CupertinoAlertDialog(
-                                        title: const Text('Delete Task'),
-                                        content: const Text(
+                                        title: const ThemedText('Delete Task'),
+                                        content: const ThemedText(
                                             'Are you sure you want to delete this task?'),
                                         actions: [
                                           CupertinoDialogAction(
                                             onPressed: () {
                                               context.pop(false);
                                             },
-                                            child: const Text('Cancel'),
+                                            child: const ThemedText('Cancel'),
                                           ),
                                           CupertinoDialogAction(
                                             onPressed: () {
                                               context.pop(true);
                                             },
                                             isDestructiveAction: true,
-                                            child: const Text('Delete'),
+                                            child: const ThemedText('Delete'),
                                           ),
                                         ],
                                       );
@@ -164,7 +168,12 @@ class _HomePage extends StatelessWidget {
               ],
             );
           } else if (state is HomeError) {
-            return Text(state.message);
+            return Center(
+              child: ErrorCard(
+                state.message,
+                onRetry: () => context.read<HomeCubit>().fetchTasks(),
+              ),
+            );
           } else {
             return const CupertinoActivityIndicator();
           }
@@ -177,8 +186,8 @@ class _HomePage extends StatelessWidget {
     return showCupertinoModalPopup<int>(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
-        title: const Text('Title'),
-        message: const Text('Message'),
+        title: const ThemedText('Title'),
+        message: const ThemedText('Message'),
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             /// This parameter indicates the action would be a default
@@ -187,14 +196,14 @@ class _HomePage extends StatelessWidget {
             onPressed: () {
               context.pop(1);
             },
-            child: const Text('View'),
+            child: const ThemedText('View'),
           ),
           CupertinoActionSheetAction(
             onPressed: () {
               context.pop(2);
             },
             isDestructiveAction: true,
-            child: const Text('Re-run'),
+            child: const ThemedText('Re-run'),
           ),
         ],
       ),

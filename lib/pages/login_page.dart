@@ -41,9 +41,9 @@ class _LoginPageState extends State<LoginPage> {
             ThemedText("Login", style: TextType.title),
             SizedBox(height: 8),
             if (context.watch<MyUserCubit>().state is MyUserError)
-              Text(
+              ThemedText(
                 (context.watch<MyUserCubit>().state as MyUserError).message,
-                style: const TextStyle(color: Colors.red),
+                color: TextColor.inverse,
               ),
             CupertinoTextField(
               placeholder: "Email",
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
               builder: (context, state) {
                 if (state == AuthState.signedIn) {
                   return CupertinoButton.filled(
-                    child: const Text("Log out"),
+                    child: const ThemedText("Log out"),
                     onPressed: () => _authRepository.signOut(),
                   );
                 }
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 }
                 return Center(
                   child: CupertinoButton.filled(
-                    child: const Text("Login"),
+                    child: const ThemedText("Login"),
                     onPressed: () => _authRepository.signInWithEmailAndPassword(
                       _emailController.text,
                       _passwordController.text,

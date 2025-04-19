@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const raisinBlack = Color(0xFF1E1E24);
 
@@ -73,10 +74,9 @@ class CustomCupertinoTheme extends CupertinoThemeData {
 
     if (theme.brightness == Brightness.dark) {
       return CustomCupertinoTheme(
-        body: theme.textTheme.textStyle.copyWith(fontSize: 16),
-        title: theme.textTheme.textStyle
-            .copyWith(fontSize: 32, fontWeight: FontWeight.bold),
-        subtitle: theme.textTheme.textStyle.copyWith(fontSize: 20),
+        body: GoogleFonts.openSans(fontSize: 16),
+        title: GoogleFonts.openSans(fontSize: 32, fontWeight: FontWeight.w500),
+        subtitle: GoogleFonts.openSans(fontSize: 20),
         bgColor1: raisinBlack,
         bgColor2: desaturatedDarkVioletDark,
         bgColor3: cambridgeBlue,
@@ -86,10 +86,9 @@ class CustomCupertinoTheme extends CupertinoThemeData {
     }
 
     return CustomCupertinoTheme(
-      body: theme.textTheme.textStyle.copyWith(fontSize: 16),
-      title: theme.textTheme.textStyle
-          .copyWith(fontSize: 32, fontWeight: FontWeight.bold),
-      subtitle: theme.textTheme.textStyle.copyWith(fontSize: 20),
+      body: GoogleFonts.openSans(fontSize: 16),
+      title: GoogleFonts.openSans(fontSize: 40, fontWeight: FontWeight.bold),
+      subtitle: GoogleFonts.openSans(fontSize: 20, fontWeight: FontWeight.w600),
       bgColor1: cambridgeBlueLight,
       bgColor2: desaturatedDarkViolet,
       bgColor3: cambridgeBlue,

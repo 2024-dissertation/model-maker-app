@@ -9,6 +9,7 @@ import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/cubit/view_task_cubit.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 import 'package:frontend/ui/task_status_widget.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart' as p;
 
@@ -74,7 +75,7 @@ class __ViewTaskState extends State<_ViewTask> {
         child: BlocBuilder<ViewTaskCubit, ViewTaskState>(
             builder: (context, state) {
           if (state is ViewTaskError) {
-            return Center(child: Text(state.message));
+            return Center(child: ThemedText(state.message));
           }
 
           if (state is ViewTaskLoading) {
@@ -116,7 +117,7 @@ class __ViewTaskState extends State<_ViewTask> {
                     // src:
                     //     'https://modelviewer.dev/shared-assets/models/Astronaut.glb', // 3D model from URL
                   ),
-                  Text(p.join(Globals.baseUrl, "objects",
+                  ThemedText(p.join(Globals.baseUrl, "objects",
                       "${state.task.mesh!.taskID}", "model")),
                   Positioned(
                     bottom: 72,
@@ -153,13 +154,13 @@ class __ViewTaskState extends State<_ViewTask> {
             return CustomScrollView(
               slivers: [
                 CupertinoSliverNavigationBar(
-                  largeTitle: Text(state.task.fTitle),
+                  largeTitle: ThemedText(state.task.fTitle),
                   trailing: TaskStatusWidget(status: state.task.status),
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: AppPadding.md),
-                      child: Text(state.task.fDescription)),
+                      child: ThemedText(state.task.fDescription)),
                 ),
                 SliverToBoxAdapter(
                   child: Row(
@@ -174,7 +175,7 @@ class __ViewTaskState extends State<_ViewTask> {
                         },
                         child: const Row(
                           children: [
-                            Text('View images'),
+                            ThemedText('View images', color: TextColor.inverse),
                             CupertinoListTileChevron()
                           ],
                         ),
@@ -186,7 +187,8 @@ class __ViewTaskState extends State<_ViewTask> {
                         },
                         child: const Row(
                           children: [
-                            Text('Start process'),
+                            ThemedText('Start process',
+                                color: TextColor.inverse),
                             CupertinoListTileChevron()
                           ],
                         ),
@@ -213,7 +215,7 @@ class __ViewTaskState extends State<_ViewTask> {
           height: 250,
           child: inputList.isEmpty
               ? Center(
-                  child: Text('$title list is empty'),
+                  child: ThemedText('$title list is empty'),
                 )
               : ListView.separated(
                   itemCount: inputList.length,
@@ -229,8 +231,8 @@ class __ViewTaskState extends State<_ViewTask> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${index + 1}'),
-                            Text(inputList[index]),
+                            ThemedText('${index + 1}'),
+                            ThemedText(inputList[index]),
                             Icon(
                               chosenItem == inputList[index]
                                   ? Icons.check_box

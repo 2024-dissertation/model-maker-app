@@ -37,6 +37,9 @@ dependencies:
   flutter_svg: ^2.0.17
   vector_graphics: ^1.1.18
   flutter_gen: ^5.10.0
+  google_fonts: ^6.2.1
+  fl_chart: ^0.71.0
+  remixicon: ^1.4.1
 
 dev_dependencies:
   flutter_test:

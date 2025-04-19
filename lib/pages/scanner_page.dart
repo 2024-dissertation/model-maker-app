@@ -10,6 +10,7 @@ import 'package:frontend/ui/camera_snap.dart';
 import 'package:frontend/ui/image_extra_button.dart';
 import 'package:frontend/ui/image_preview.dart';
 import 'package:frontend/ui/image_select_button.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 
 class ScannerPage extends StatelessWidget {
   const ScannerPage({super.key});
@@ -123,7 +124,7 @@ class __ScannerPageState extends State<_ScannerPage> {
             onPressed: () {
               context.read<ScannerCubit>().clear();
             },
-            child: const Text("Clear"),
+            child: const ThemedText("Clear"),
           ),
           trailing: TextButton(
               onPressed: () async {
@@ -136,8 +137,8 @@ class __ScannerPageState extends State<_ScannerPage> {
                   await context.read<ScannerCubit>().uploadImages();
                 }
               },
-              child: const Text("Done")),
-          middle: const Text('Create Task'),
+              child: const ThemedText("Done")),
+          middle: const ThemedText('Create Task'),
         ),
         child: Column(
           children: [
@@ -154,7 +155,7 @@ class __ScannerPageState extends State<_ScannerPage> {
                         color: CupertinoColors.black,
                         width: double.infinity,
                         height: 500,
-                        child: Text("No cameras found")),
+                        child: ThemedText("No cameras found")),
                   ),
                 Positioned(
                   bottom: 16,

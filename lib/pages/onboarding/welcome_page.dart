@@ -81,7 +81,7 @@ class _WelcomePageState extends State<WelcomePage> {
               alignment: Alignment.bottomCenter,
               child: CupertinoButton.filled(
                 onPressed: () => widget.onContinue(),
-                child: Text("Continue"),
+                child: ThemedText("Continue"),
               ),
             ),
           ),

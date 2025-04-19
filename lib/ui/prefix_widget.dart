@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/ui/themed/themed_text.dart';
 
 class PrefixWidget extends StatelessWidget {
   const PrefixWidget({
@@ -25,7 +26,7 @@ class PrefixWidget extends StatelessWidget {
           child: Icon(icon, color: CupertinoColors.white),
         ),
         const SizedBox(width: 15),
-        Text(title)
+        ThemedText(title)
       ],
     );
   }
