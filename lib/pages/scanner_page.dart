@@ -169,6 +169,7 @@ class __ScannerPageState extends State<_ScannerPage> {
                           CameraSnap(capturePhoto: capturePhoto),
                           ImageSelectButton(
                             onFilesSelected: (files) {
+                              logger.d("Started");
                               context.read<ScannerCubit>().addPaths(
                                   files.map((file) => file.path).toList());
                             },

@@ -9,13 +9,37 @@ class ThemedCard extends StatelessWidget {
     this.onTap,
     this.color,
     this.shadowColor,
+    this.padding = AppPadding.sm,
+    this.outlined = false,
   });
+
+  const ThemedCard.large({
+    super.key,
+    required this.child,
+    this.onTap,
+    this.color,
+    this.shadowColor,
+    this.outlined = false,
+  }) : padding = AppPadding.lg;
+
+  const ThemedCard.medium({
+    super.key,
+    required this.child,
+    this.onTap,
+    this.color,
+    this.shadowColor,
+    this.outlined = false,
+  }) : padding = AppPadding.md;
 
   final Widget child;
   final VoidCallback? onTap;
 
   final Color? color;
   final Color? shadowColor;
+
+  final double padding;
+
+  final bool outlined;
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +50,30 @@ class ThemedCard extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(AppPadding.sm)),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(AppPadding.sm),
           decoration: BoxDecoration(
+            color: outlined ? Colors.transparent : color,
             borderRadius: BorderRadius.all(Radius.circular(AppPadding.sm)),
-            border: Border(
-              bottom: BorderSide(
-                color:
-                    shadowColor ?? CustomCupertinoTheme.of(context).cardShadow,
-                width: 4.0,
+            border: outlined
+                ? Border.all(
+                    color: CustomCupertinoTheme.of(context).primaryColor,
+                    width: 4.0,
+                  )
+                : null,
+          ),
+          child: Container(
+            padding: EdgeInsets.all(padding),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(AppPadding.sm)),
+              border: Border(
+                bottom: BorderSide(
+                  color: shadowColor ??
+                      CustomCupertinoTheme.of(context).cardShadow,
+                  width: 4.0,
+                ),
               ),
             ),
+            child: child,
           ),
-          child: child,
         ),
       ),
     );

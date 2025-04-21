@@ -2,6 +2,7 @@ import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/home/cubit/home_state.dart';
+import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 
 export 'package:frontend/module/home/cubit/home_state.dart';
@@ -47,6 +48,31 @@ class HomeCubit extends SafeCubit<HomeState> {
     final updatedTasks = tasks.where((task) => task.id != taskId).toList();
     final updatedFilteredTasks =
         filteredTasks.where((task) => task.id != taskId).toList();
+
+    safeEmit(HomeLoaded(updatedTasks, filteredTasks: updatedFilteredTasks));
+  }
+
+  void updateTask(Task updatedTask) {
+    if (state is! HomeLoaded) return;
+
+    final tasks = (state as HomeLoaded).tasks;
+    final filteredTasks = (state as HomeLoaded).filteredTasks;
+
+    final updatedTasks = tasks.map((task) {
+      if (task.id == updatedTask.id) {
+        return updatedTask;
+      }
+      return task;
+    }).toList();
+
+    final updatedFilteredTasks = filteredTasks.map((task) {
+      if (task.id == updatedTask.id) {
+        return updatedTask;
+      }
+      return task;
+    }).toList();
+
+    _taskRepository.saveTask(updatedTask);
 
     safeEmit(HomeLoaded(updatedTasks, filteredTasks: updatedFilteredTasks));
   }

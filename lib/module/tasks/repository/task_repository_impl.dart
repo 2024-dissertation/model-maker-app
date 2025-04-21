@@ -117,4 +117,18 @@ class TaskRepositoryImpl extends AbstractRepository implements TaskRepository {
       throw ParsingException();
     }
   }
+
+  @override
+  Future<Task> saveTask(Task task) async {
+    try {
+      final data = await apiDataSource.saveTask(task.toMap());
+      return TaskMapper.fromMap(data['task']);
+    } catch (e) {
+      if (e is ServerException || e is NetworkException) {
+        rethrow;
+      }
+      logger.e(e);
+      throw ParsingException();
+    }
+  }
 }

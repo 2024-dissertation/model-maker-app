@@ -3,7 +3,6 @@ import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/module/tasks/models/task_file.dart';
 import 'package:frontend/module/tasks/models/task_mesh.dart';
 import 'package:frontend/module/tasks/models/task_status.dart';
-import 'package:path/path.dart' as p;
 
 /*
 	ID          uint `gorm:"primaryKey"`

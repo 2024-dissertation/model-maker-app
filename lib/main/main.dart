@@ -1,26 +1,19 @@
 import 'dart:ui';
 
 import 'package:camera/camera.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/helpers/locator.dart';
 import 'package:frontend/module/analytics/cubit/analytics_cubit.dart';
-import 'package:frontend/module/auth/repository/auth_repository.dart';
-import 'package:frontend/module/tasks/repository/task_repository.dart';
-import 'package:frontend/module/tasks/repository/task_repository_impl.dart';
+import 'package:frontend/module/collections/cubit/collection_cubit.dart';
 import 'package:frontend/pages/app.dart';
 import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
-import 'package:frontend/data_source/api_data_source.dart';
 import 'package:frontend/config/firebase_options.dart';
 import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/helpers/logger.dart';
-import 'package:frontend/module/auth/repository/auth_repository_impl.dart';
-import 'package:frontend/module/user/repository/my_user_repository.dart';
-import 'package:frontend/module/user/repository/my_user_repository_impl.dart';
 import 'package:frontend/module/theme/cubit/theme_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -62,6 +55,7 @@ void main() async {
       providers: [
         BlocProvider.value(value: myUserCubit),
         BlocProvider(create: (_) => AnalyticsCubit()),
+        BlocProvider(create: (_) => CollectionCubit()),
         BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(
           create: (_) => AuthCubit(myUserCubit: myUserCubit)..init(),

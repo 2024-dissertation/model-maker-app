@@ -17,6 +17,7 @@ enum TextColor {
   white,
   success,
   warning,
+  muted,
 }
 
 class ThemedText extends StatelessWidget {
@@ -98,6 +99,8 @@ class ThemedText extends StatelessWidget {
         return CupertinoColors.activeGreen;
       case TextColor.warning:
         return CupertinoColors.systemPink;
+      case TextColor.muted:
+        return CupertinoColors.systemGrey;
     }
   }
 }

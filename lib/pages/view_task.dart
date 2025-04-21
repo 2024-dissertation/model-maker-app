@@ -117,8 +117,8 @@ class __ViewTaskState extends State<_ViewTask> {
                     // src:
                     //     'https://modelviewer.dev/shared-assets/models/Astronaut.glb', // 3D model from URL
                   ),
-                  ThemedText(p.join(Globals.baseUrl, "objects",
-                      "${state.task.mesh!.taskID}", "model")),
+                  // ThemedText(p.join(Globals.baseUrl, "objects",
+                  //     "${state.task.mesh!.taskID}", "model")),
                   Positioned(
                     bottom: 72,
                     right: 8,

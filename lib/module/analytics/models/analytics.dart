@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dart_mappable/dart_mappable.dart';
 
 part 'analytics.mapper.dart';

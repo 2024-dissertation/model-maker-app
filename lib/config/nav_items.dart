@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:remixicon/remixicon.dart';
 
 class NavItem {
   final String title;
@@ -13,18 +14,22 @@ class NavItem {
 final List<NavItem> navItems = [
   NavItem(
     title: 'Home',
-    icon: CupertinoIcons.home,
+    icon: RemixIcons.home_2_line,
   ),
   NavItem(
     title: 'Analytics',
-    icon: CupertinoIcons.chart_bar,
+    icon: RemixIcons.bar_chart_grouped_line,
   ),
   NavItem(
     title: 'New',
-    icon: CupertinoIcons.add,
+    icon: RemixIcons.add_line,
   ),
   NavItem(
-    title: 'Profile',
-    icon: CupertinoIcons.person,
+    title: 'Collections',
+    icon: RemixIcons.layout_2_line,
+  ),
+  NavItem(
+    title: 'Menu',
+    icon: RemixIcons.menu_2_line,
   ),
 ];

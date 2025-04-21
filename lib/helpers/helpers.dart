@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
-import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';

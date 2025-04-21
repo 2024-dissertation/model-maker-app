@@ -5,6 +5,7 @@ import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/module/auth/cubit/auth_state.dart';
 import 'package:frontend/pages/analytics_page.dart';
+import 'package:frontend/pages/collection_page.dart';
 import 'package:frontend/pages/home_page.dart';
 import 'package:frontend/pages/login_page.dart';
 import 'package:frontend/module/tasks/models/task.dart';
@@ -102,6 +103,14 @@ class AppRouter {
               GoRoute(
                 path: '/authed/new',
                 builder: (context, state) => const ScannerPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/authed/collection',
+                builder: (context, state) => const CollectionPage(),
               ),
             ],
           ),
