@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:frontend/helpers/globals.dart';
+import 'package:frontend/module/chatbox/models/chat_message.dart';
 import 'package:frontend/module/tasks/models/task_file.dart';
 import 'package:frontend/module/tasks/models/task_mesh.dart';
 import 'package:frontend/module/tasks/models/task_status.dart';
@@ -32,6 +33,7 @@ class Task with TaskMappable {
   final List<TaskFile>? images;
   final TaskMesh? mesh;
   final Map<String, dynamic> metadata;
+  final List<ChatMessage>? chatMessages;
 
   String get fTitle =>
       metadata.containsKey("ai-title") ? metadata["ai-title"] : title;
@@ -74,5 +76,6 @@ class Task with TaskMappable {
     this.images,
     this.mesh,
     this.metadata = const {},
+    this.chatMessages,
   });
 }

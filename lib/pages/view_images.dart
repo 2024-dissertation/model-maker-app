@@ -1,18 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/main/main.dart';
-import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart' as p;
 
 class ViewTaskImages extends StatelessWidget {
-  ViewTaskImages({super.key, required this.task});
+  ViewTaskImages({super.key, required this.taskId});
 
-  final Task task;
+  final int taskId;
 
   final TaskRepository _taskRepository = getIt();
 
@@ -24,7 +21,7 @@ class ViewTaskImages extends StatelessWidget {
       ),
       child: Center(
         child: FutureBuilder(
-          future: _taskRepository.getTaskById(task.id),
+          future: _taskRepository.getTaskById(taskId),
           builder: (context, data) {
             if (data.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -68,6 +65,12 @@ class ViewTaskImages extends StatelessWidget {
                     ],
                     child: Image.network(
                       urls[index].toString(),
+                      loadingBuilder: (context, child, loadingProgress) =>
+                          loadingProgress == null
+                              ? child
+                              : const Center(
+                                  child: CupertinoActivityIndicator(),
+                                ),
                     ),
                   ),
                 ),

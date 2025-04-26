@@ -1,6 +1,7 @@
 import 'package:frontend/exceptions/api_exceptions.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/module/app/repository/abstract_repository.dart';
+import 'package:frontend/module/chatbox/models/chat_message.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/models/task_file.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
@@ -123,6 +124,22 @@ class TaskRepositoryImpl extends AbstractRepository implements TaskRepository {
     try {
       final data = await apiDataSource.saveTask(task.toMap());
       return TaskMapper.fromMap(data['task']);
+    } catch (e) {
+      if (e is ServerException || e is NetworkException) {
+        rethrow;
+      }
+      logger.e(e);
+      throw ParsingException();
+    }
+  }
+
+  @override
+  Future<List<ChatMessage>> getChatMessages(int taskId) async {
+    try {
+      final data = await apiDataSource.getTaskMessages(taskId);
+      return (data['messages'] as List<dynamic>)
+          .map((e) => ChatMessageMapper.fromMap(data['messages']))
+          .toList();
     } catch (e) {
       if (e is ServerException || e is NetworkException) {
         rethrow;

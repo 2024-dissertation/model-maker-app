@@ -5,6 +5,7 @@ import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/module/auth/cubit/auth_state.dart';
 import 'package:frontend/pages/analytics_page.dart';
+import 'package:frontend/pages/collection_list_page.dart';
 import 'package:frontend/pages/collection_page.dart';
 import 'package:frontend/pages/home_page.dart';
 import 'package:frontend/pages/login_page.dart';
@@ -64,24 +65,17 @@ class AppRouter {
                 builder: (context, state) => const HomePage(),
                 routes: [
                   GoRoute(
-                    path: 'tasks/:id',
+                    path: 'task/:id',
                     builder: (context, state) {
                       final taskId = state.pathParameters['id'];
                       return ViewTask(taskId: int.parse("$taskId"));
-                    },
-                  ),
-                  GoRoute(
-                    path: 'task',
-                    builder: (context, state) {
-                      final task = state.extra as Task?;
-                      return ViewTask(task: task);
                     },
                     routes: [
                       GoRoute(
                         path: 'images',
                         builder: (context, state) {
-                          final task = state.extra as Task;
-                          return ViewTaskImages(task: task);
+                          final taskId = state.pathParameters['id'];
+                          return ViewTaskImages(taskId: int.parse("$taskId"));
                         },
                       ),
                     ],
@@ -109,9 +103,18 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/authed/collection',
-                builder: (context, state) => const CollectionPage(),
-              ),
+                  path: '/authed/collection',
+                  builder: (context, state) => const CollectionPage(),
+                  routes: [
+                    GoRoute(
+                      path: '/:id',
+                      builder: (context, state) {
+                        final id = state.pathParameters['id'];
+                        return CollectionListPage(
+                            collectionId: int.parse("$id"));
+                      },
+                    ),
+                  ]),
             ],
           ),
           StatefulShellBranch(

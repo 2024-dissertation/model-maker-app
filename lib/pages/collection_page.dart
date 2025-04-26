@@ -101,14 +101,19 @@ class _CollectionPageState extends State<CollectionPage> {
                           margin: EdgeInsets.only(bottom: AppPadding.sm),
                           child: CollectionCard(
                             collection: state.collections[index],
-                            onTap: () async {
-                              final data = await showCupertinoModalPopup(
+                            onTap: () {
+                              context.go(
+                                  '/authed/collection/${state.collections[index].id}');
+                            },
+                            onLongPress: () async {
+                              await showCupertinoModalPopup(
                                   context: context,
                                   builder: (context) {
                                     return CupertinoActionSheet(
                                       title: const Text('Collection'),
                                       actions: [
                                         CupertinoActionSheetAction(
+                                          isDefaultAction: true,
                                           onPressed: () {
                                             context.pop();
                                             context.go(
@@ -117,10 +122,53 @@ class _CollectionPageState extends State<CollectionPage> {
                                           child: const Text('View'),
                                         ),
                                         CupertinoActionSheetAction(
-                                          onPressed: () {
+                                          onPressed: () async {
+                                            final TextEditingController
+                                                controller =
+                                                TextEditingController(
+                                              text:
+                                                  state.collections[index].name,
+                                            );
+                                            final data =
+                                                await showCupertinoDialog<
+                                                    bool?>(
+                                              context: context,
+                                              builder: (context) {
+                                                return CupertinoAlertDialog(
+                                                  title: Text('Change name'),
+                                                  content: CupertinoTextField(
+                                                    controller: controller,
+                                                  ),
+                                                  actions: [
+                                                    CupertinoDialogAction(
+                                                      onPressed: () {
+                                                        context.pop(false);
+                                                      },
+                                                      child:
+                                                          const Text('Cancel'),
+                                                    ),
+                                                    CupertinoDialogAction(
+                                                      onPressed: () {
+                                                        context.pop(true);
+                                                      },
+                                                      isDefaultAction: true,
+                                                      child: const Text('Save'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                            if (data == true) {
+                                              context
+                                                  .read<CollectionCubit>()
+                                                  .saveCollection(
+                                                    state.collections[index]
+                                                        .copyWith(
+                                                      name: controller.text,
+                                                    ),
+                                                  );
+                                            }
                                             context.pop();
-                                            context.go(
-                                                '/authed/collection/${state.collections[index].id}/edit');
                                           },
                                           child: const Text('Edit'),
                                         ),
@@ -141,6 +189,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                       ),
                                     );
                                   });
+                              context.pop();
                             },
                           )),
                     ),

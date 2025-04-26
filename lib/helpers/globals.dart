@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Globals {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   // static String baseUrl = "http://stuvm250403.dcs.shef.ac.uk:3333/";
-  static String baseUrl = "https://6f64-86-19-111-199.ngrok-free.app/";
+  static String baseUrl = "http://185.199.222.44:3333/";
   static List<CameraDescription> cameras = [];
 }
 // static String baseUrl = "http://soup.soup-dissertation.katapult.cloud:3001";

@@ -1,0 +1,19 @@
+import 'package:dart_mappable/dart_mappable.dart';
+
+part 'chat_message.mapper.dart';
+
+@MappableClass()
+class ChatMessage with ChatMessageMappable {
+  final int id;
+  final String message;
+  final String sender;
+
+  bool get isAI => !isUser;
+  bool get isUser => sender == "USER";
+
+  const ChatMessage({
+    required this.id,
+    required this.message,
+    required this.sender,
+  });
+}

@@ -7,6 +7,7 @@ class ThemedCard extends StatelessWidget {
     super.key,
     required this.child,
     this.onTap,
+    this.onLongPress,
     this.color,
     this.shadowColor,
     this.padding = AppPadding.sm,
@@ -17,6 +18,7 @@ class ThemedCard extends StatelessWidget {
     super.key,
     required this.child,
     this.onTap,
+    this.onLongPress,
     this.color,
     this.shadowColor,
     this.outlined = false,
@@ -26,6 +28,7 @@ class ThemedCard extends StatelessWidget {
     super.key,
     required this.child,
     this.onTap,
+    this.onLongPress,
     this.color,
     this.shadowColor,
     this.outlined = false,
@@ -33,6 +36,7 @@ class ThemedCard extends StatelessWidget {
 
   final Widget child;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   final Color? color;
   final Color? shadowColor;
@@ -49,6 +53,7 @@ class ThemedCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.all(Radius.circular(AppPadding.sm)),
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Container(
           decoration: BoxDecoration(
             color: outlined ? Colors.transparent : color,

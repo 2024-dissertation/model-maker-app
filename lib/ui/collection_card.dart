@@ -11,12 +11,14 @@ class CollectionCard extends StatelessWidget {
     super.key,
     required this.collection,
     this.onTap,
+    this.onLongPress,
     this.outlined = false,
   });
 
   final Collection collection;
   final bool outlined;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class CollectionCard extends StatelessWidget {
       children: [
         ThemedCard(
           outlined: outlined,
+          onLongPress: onLongPress,
           onTap: () async {
             if (onTap != null) {
               onTap!();

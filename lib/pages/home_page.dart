@@ -88,8 +88,7 @@ class _HomePage extends StatelessWidget {
                               child: ThemedListItem(
                                 trailing: TaskStatusWidget(status: task.status),
                                 onTap: () => context.go(
-                                  '/authed/home/task',
-                                  extra: task,
+                                  '/authed/home/task/${task.id}',
                                 ),
                                 onLongTap: () async {
                                   final action =
@@ -239,24 +238,6 @@ class _HomePage extends StatelessWidget {
                                 },
                               ),
                             ),
-                            // child: CupertinoListTile(
-                            //   title: Text(task.title),
-                            //   subtitle: Text(task.description),
-                            //   onTap: () async {
-                            //     final action =
-                            //         await _showActionSheet(context);
-                            //     if (action == 1) {
-                            //       context.go(
-                            //         '/authed/home/task',
-                            //         extra: task,
-                            //       );
-                            //     } else if (action == 2) {
-                            //       _taskRepository.startTask(task.id);
-                            //     }
-                            //   },
-                            //   trailing: TaskStatusWidget(task: task),
-                            // ),
-                            // ),
                           )
                           .toList(),
                     ),
