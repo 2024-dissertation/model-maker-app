@@ -1,10 +1,59 @@
-desc "Deploy to firebase (Dev)"
-lane :deploy_firebase_dev do
+default_platform(:ios)
 
-  build_app()
+platform :ios do
+  desc "Get certificates"
+  lane :certificates do
+    sync_code_signing(
+      type: "adhoc",
+      app_identifier: ['com.soup.modelmaker', 'com.soup.modelmaker.staging'],
+      force_for_new_devices: true,
+      readonly: true,
+      git_url: "https://github.com/2024-dissertation/signing-certs"
+    )
 
-  firebase_app_distribution(
-    app: "1:415251284478:ios:db4ffa92590491366980af",
-    testers: "saml@everbit.dev",
-  )
+    sync_code_signing(
+      type: "appstore",
+      app_identifier: ['com.soup.modelmaker', 'com.soup.modelmaker.staging'],
+      force_for_new_devices: true,
+      readonly: true,
+      git_url: "https://github.com/2024-dissertation/signing-certs"
+    )
+  end
+
+  desc "Generate new certificates"
+  lane :generate_new_certificates do
+    sync_code_signing(
+      type: "adhoc",
+      app_identifier: ['com.soup.modelmaker', 'com.soup.modelmaker.staging'],
+      force_for_new_devices: true,
+      readonly: false,
+      git_url: "https://github.com/2024-dissertation/signing-certs"
+    )
+    sync_code_signing(
+      type: "appstore",
+      app_identifier: ['com.soup.modelmaker', 'com.soup.modelmaker.staging'],
+      force_for_new_devices: true,
+      readonly: false,
+      git_url: "https://github.com/2024-dissertation/signing-certs"
+    )
+  end
+
+  desc "Deploy to testflight (prod)"
+  lane :deploy_testflight do
+    setup_ci
+    sync_code_signing(
+      type: "appstore",
+      app_identifier: 'com.soup.modelmaker',
+      readonly: true,
+      git_url: "https://github.com/2024-dissertation/signing-certs"
+    )
+
+    build_app(scheme: "prod")
+
+    upload_to_app_store(
+      force: true,
+      run_precheck_before_submit: false,
+      submit_for_review: false,
+    )
+  end
 end

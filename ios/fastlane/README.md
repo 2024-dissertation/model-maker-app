@@ -13,13 +13,31 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-### deploy_firebase_dev
+## iOS
+
+### ios certificates
 
 ```sh
-[bundle exec] fastlane deploy_firebase_dev
+[bundle exec] fastlane ios certificates
 ```
 
-Deploy to firebase (Dev)
+Get certificates
+
+### ios generate_new_certificates
+
+```sh
+[bundle exec] fastlane ios generate_new_certificates
+```
+
+Generate new certificates
+
+### ios deploy_testflight
+
+```sh
+[bundle exec] fastlane ios deploy_testflight
+```
+
+Deploy to testflight (prod)
 
 ----
 

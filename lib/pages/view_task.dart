@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_3d_controller/flutter_3d_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/config/constants.dart';
 import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/helpers/logger.dart';
@@ -13,6 +17,7 @@ import 'package:frontend/ui/task_status_widget.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 import '../main/main.dart';
 
@@ -47,6 +52,9 @@ class __ViewTaskState extends State<_ViewTask> {
 
   final TaskRepository _taskRepository = getIt();
 
+  File? tmpFile;
+  bool started = false;
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +62,34 @@ class __ViewTaskState extends State<_ViewTask> {
     controller.onModelLoaded.addListener(() {
       debugPrint('model is loaded : ${controller.onModelLoaded.value}');
     });
+  }
+
+  void showDownloadProgress(received, total) {
+    if (total != -1) {
+      print((received / total * 100).toStringAsFixed(0) + "%");
+    }
+  }
+
+  void downloadFile(int id) async {
+    if (!started) {
+      started = true;
+      var tempDir = await getTemporaryDirectory();
+
+      final _dio = Dio();
+      Response response = await _dio.get(
+        p.join(Globals.baseUrl, "objects", "$id", "model"),
+        onReceiveProgress: showDownloadProgress,
+      );
+
+      File file = File("${tempDir.path}/$id.glb");
+      var raf = file.openSync(mode: FileMode.write);
+      await raf.writeString(response.data);
+      await raf.close();
+
+      setState(() {
+        tmpFile = file;
+      });
+    }
   }
 
   @override
@@ -71,7 +107,13 @@ class __ViewTaskState extends State<_ViewTask> {
           }
 
           if (state is ViewTaskLoaded) {
+            // if (!started) {
+            //   downloadFile(state.task.id);
+            // }
             if (state.task.mesh != null) {
+              // if (tmpFile == null) {
+              //   return Center(child: CircularProgressIndicator());
+              // }
               return Stack(
                 children: [
                   Flutter3DViewer(
@@ -94,7 +136,18 @@ class __ViewTaskState extends State<_ViewTask> {
                     },
                     //this callBack will call when model failed to load and will return failure error
                     onError: (String error) {
+                      debugPrint(p.join(Globals.baseUrl, "objects",
+                          "${state.task.mesh!.taskID}", "model"));
                       debugPrint('model failed to load : $error');
+                      Fluttertoast.showToast(
+                        msg: "Something went wrong",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
                     },
                     //You can have full control of 3d model animations, textures and camera
                     controller: controller,

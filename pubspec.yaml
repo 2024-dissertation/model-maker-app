@@ -40,6 +40,7 @@ dependencies:
   google_fonts: ^6.2.1
   fl_chart: ^0.71.0
   remixicon: ^1.4.1
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   flutter_test:
