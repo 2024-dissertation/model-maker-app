@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -8,18 +9,10 @@ class ImageExtraButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: CupertinoColors.white,
-        shape: BoxShape.circle,
-      ),
-      alignment: Alignment.center,
-      constraints: const BoxConstraints(
-        minWidth: 48,
-        minHeight: 48,
-      ),
-      child: GestureDetector(
-        child: Icon(CupertinoIcons.layers),
+    return Material(
+      borderRadius: BorderRadius.circular(24),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
         onTap: () async {
           final ImagePicker _picker = ImagePicker();
 
@@ -27,6 +20,11 @@ class ImageExtraButton extends StatelessWidget {
 
           onFilesSelected(images.map((image) => File(image.path)).toList());
         },
+        child: SizedBox(
+          height: 48,
+          width: 48,
+          child: Icon(CupertinoIcons.layers),
+        ),
       ),
     );
   }

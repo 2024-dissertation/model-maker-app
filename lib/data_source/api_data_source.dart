@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:frontend/exceptions/api_exceptions.dart';
 import 'package:frontend/helpers/logger.dart';
+import 'package:frontend/module/chatbox/models/chat_message.dart';
 import 'package:frontend/module/user/models/my_user.dart';
 
 class ApiDataSource {
@@ -118,12 +119,20 @@ class ApiDataSource {
     return _get('/tasks');
   }
 
-  Future<Map<String, dynamic>> getTaskMessages(int id) async {
-    return _get('/tasks/$id/messages');
+  Future<void> deleteTask(int taskId) async {
+    return _delete('/tasks/$taskId');
   }
 
   Future<Map<String, dynamic>> saveTask(Map<String, dynamic> data) async {
     return _put('/tasks', data);
+  }
+
+  Future<Map<String, dynamic>> sendMessage(int taskId, String message) async {
+    final data = {
+      'message': message,
+      'sender': 'USER',
+    };
+    return _post('/tasks/$taskId/message', data);
   }
 
   Future<Map<String, dynamic>> getTaskById(int id) async {

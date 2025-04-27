@@ -16,6 +16,7 @@ import 'package:frontend/pages/settings_page.dart';
 import 'package:frontend/pages/splash_screen.dart';
 import 'package:frontend/pages/onboarding/unauthorized_page.dart';
 import 'package:frontend/pages/view_images.dart';
+import 'package:frontend/pages/view_messages.dart';
 import 'package:frontend/pages/view_task.dart';
 import 'package:go_router/go_router.dart';
 
@@ -71,6 +72,13 @@ class AppRouter {
                       return ViewTask(taskId: int.parse("$taskId"));
                     },
                     routes: [
+                      GoRoute(
+                        path: 'messages',
+                        builder: (context, state) {
+                          final taskId = state.pathParameters['id'];
+                          return TaskMessagePage(taskId: int.parse("$taskId"));
+                        },
+                      ),
                       GoRoute(
                         path: 'images',
                         builder: (context, state) {

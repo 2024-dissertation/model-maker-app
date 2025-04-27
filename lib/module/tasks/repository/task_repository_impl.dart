@@ -136,10 +136,41 @@ class TaskRepositoryImpl extends AbstractRepository implements TaskRepository {
   @override
   Future<List<ChatMessage>> getChatMessages(int taskId) async {
     try {
-      final data = await apiDataSource.getTaskMessages(taskId);
-      return (data['messages'] as List<dynamic>)
-          .map((e) => ChatMessageMapper.fromMap(data['messages']))
+      final data = await apiDataSource.getTaskById(taskId);
+      if (data['task']['ChatMessages'] == null) {
+        return [];
+      }
+
+      return (data['task']['ChatMessages'] as List<dynamic>)
+          .map((e) => ChatMessageMapper.fromMap(e))
           .toList();
+    } catch (e) {
+      if (e is ServerException || e is NetworkException) {
+        rethrow;
+      }
+      logger.e(e);
+      throw ParsingException();
+    }
+  }
+
+  @override
+  Future<ChatMessage> sendMessage(int taskId, String message) async {
+    try {
+      final data = await apiDataSource.sendMessage(taskId, message);
+      return ChatMessageMapper.fromMap(data['message']);
+    } catch (e) {
+      if (e is ServerException || e is NetworkException) {
+        rethrow;
+      }
+      logger.e(e);
+      throw ParsingException();
+    }
+  }
+
+  @override
+  Future<void> deleteTask(int taskId) async {
+    try {
+      await apiDataSource.deleteTask(taskId);
     } catch (e) {
       if (e is ServerException || e is NetworkException) {
         rethrow;

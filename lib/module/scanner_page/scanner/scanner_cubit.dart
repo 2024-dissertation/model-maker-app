@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';
@@ -56,6 +59,14 @@ class ScannerCubit extends SafeCubit<ScannerState> {
 
     try {
       await _taskRepository.uploadImages(state.createdTask!.id, state.paths);
+      Fluttertoast.showToast(
+        msg: "Images uploaded successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: CupertinoColors.activeGreen,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
       return true;
     } catch (e, stack) {
       logger.d("$e\n$stack");

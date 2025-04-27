@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:frontend/helpers/logger.dart';
@@ -10,24 +11,15 @@ class ImageSelectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: CupertinoColors.white,
-        shape: BoxShape.circle,
-      ),
-      alignment: Alignment.center,
-      constraints: const BoxConstraints(
-        minWidth: 48,
-        minHeight: 48,
-      ),
-      child: GestureDetector(
-        child: Icon(CupertinoIcons.ellipsis_vertical),
+    return Material(
+      borderRadius: BorderRadius.circular(24),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
         onTap: () async {
           logger.d("Started copying files");
           final List<File> copiedFiles = [];
 
           for (int i = 0; i < 83; i++) {
-            logger.d(i);
             final filename = "27-$i.png";
             final assetPath = "assets/images/$filename";
 
@@ -46,6 +38,11 @@ class ImageSelectButton extends StatelessWidget {
 
           onFilesSelected(copiedFiles);
         },
+        child: SizedBox(
+          height: 48,
+          width: 48,
+          child: Icon(CupertinoIcons.ellipsis_vertical),
+        ),
       ),
     );
   }

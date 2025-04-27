@@ -21,6 +21,7 @@ part 'task.mapper.dart';
 
 @MappableClass(caseStyle: CaseStyle.pascalCase)
 class Task with TaskMappable {
+  @MappableField(key: "ID")
   final int id;
   final String title;
   final String description;

@@ -11,4 +11,6 @@ abstract class TaskRepository {
   Future<List<String>> getImages(int taskId);
   Future<Task> saveTask(Task task);
   Future<List<ChatMessage>> getChatMessages(int taskId);
+  Future<ChatMessage> sendMessage(int taskId, String message);
+  Future<void> deleteTask(int taskId);
 }

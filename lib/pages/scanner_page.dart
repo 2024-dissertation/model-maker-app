@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/helpers/helpers.dart';
 import 'package:frontend/helpers/logger.dart';
@@ -115,7 +116,14 @@ class __ScannerPageState extends State<_ScannerPage> {
     return BlocListener<ScannerCubit, ScannerState>(
       listener: (context, state) {
         if (state.error != null) {
-          showSingleActionAlertDialog(context, message: state.error!);
+          Fluttertoast.showToast(
+            msg: "Something went wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            backgroundColor: CupertinoColors.systemRed,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
         }
       },
       child: CupertinoPageScaffold(
@@ -124,7 +132,7 @@ class __ScannerPageState extends State<_ScannerPage> {
             onPressed: () {
               context.read<ScannerCubit>().clear();
             },
-            child: const ThemedText("Clear"),
+            child: const Text("Clear"),
           ),
           trailing: TextButton(
               onPressed: () async {
@@ -137,8 +145,8 @@ class __ScannerPageState extends State<_ScannerPage> {
                   await context.read<ScannerCubit>().uploadImages();
                 }
               },
-              child: const ThemedText("Done")),
-          middle: const ThemedText('Create Task'),
+              child: const Text("Done")),
+          middle: const Text('Create Task'),
         ),
         child: Column(
           children: [
@@ -188,14 +196,21 @@ class __ScannerPageState extends State<_ScannerPage> {
             Expanded(
               child: BlocBuilder<ScannerCubit, ScannerState>(
                 builder: (context, state) {
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
+                  return GridView.builder(
+                    scrollDirection: Axis.vertical,
                     itemCount: state.paths.length,
                     itemBuilder: (context, index) => ImagePreview(
                       index: index,
                       path: state.paths[index],
                       onDelete: (index) =>
                           context.read<ScannerCubit>().removePath(index),
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 1.0,
                     ),
                   );
                 },

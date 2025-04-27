@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CameraSnap extends StatefulWidget {
@@ -15,47 +16,44 @@ class _CameraSnapState extends State<CameraSnap> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: CupertinoColors.white,
-            shape: BoxShape.circle,
-          ),
-          alignment: Alignment.center,
-          constraints: const BoxConstraints(
-            minWidth: 48,
-            minHeight: 48,
-          ),
-          child: GestureDetector(
-            child: Icon(CupertinoIcons.camera,
-                color: _disabled ? CupertinoColors.systemGrey : null),
-            onTap: () {
-              if (_disabled) {
-                return;
-              }
+    return Material(
+      borderRadius: BorderRadius.circular(24),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
+        onTap: () {
+          if (_disabled) {
+            return;
+          }
 
-              setState(() {
-                _disabled = true;
-              });
+          setState(() {
+            _disabled = true;
+          });
 
-              HapticFeedback.lightImpact();
+          HapticFeedback.lightImpact();
 
-              widget.capturePhoto().whenComplete(() {
-                setState(() {
-                  _disabled = false;
-                });
-              });
-            },
-          ),
+          widget.capturePhoto().whenComplete(() {
+            setState(() {
+              _disabled = false;
+            });
+          });
+        },
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            SizedBox(
+              height: 48,
+              width: 48,
+              child: Icon(CupertinoIcons.camera,
+                  color: _disabled ? CupertinoColors.systemGrey : null),
+            ),
+            if (_disabled)
+              const Positioned(
+                bottom: 12,
+                child: CupertinoActivityIndicator(),
+              ),
+          ],
         ),
-        if (_disabled)
-          const Positioned(
-            bottom: 12,
-            child: CupertinoActivityIndicator(),
-          ),
-      ],
+      ),
     );
   }
 }

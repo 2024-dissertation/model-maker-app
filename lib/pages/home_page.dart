@@ -212,22 +212,24 @@ class _HomePage extends StatelessWidget {
                                     context: context,
                                     builder: (context) {
                                       return CupertinoAlertDialog(
-                                        title: const ThemedText('Delete Task'),
-                                        content: const ThemedText(
+                                        title: const Text('Delete Task'),
+                                        content: const Text(
                                             'Are you sure you want to delete this task?'),
                                         actions: [
                                           CupertinoDialogAction(
                                             onPressed: () {
                                               context.pop(false);
                                             },
-                                            child: const ThemedText('Cancel'),
+                                            child: const Text('Cancel'),
                                           ),
                                           CupertinoDialogAction(
                                             onPressed: () {
+                                              _taskRepository
+                                                  .deleteTask(task.id);
                                               context.pop(true);
                                             },
                                             isDestructiveAction: true,
-                                            child: const ThemedText('Delete'),
+                                            child: const Text('Delete'),
                                           ),
                                         ],
                                       );

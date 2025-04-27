@@ -2,7 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 part 'chat_message.mapper.dart';
 
-@MappableClass()
+@MappableClass(caseStyle: CaseStyle.pascalCase)
 class ChatMessage with ChatMessageMappable {
   final int id;
   final String message;

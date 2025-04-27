@@ -12,6 +12,7 @@ import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/cubit/view_task_cubit.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
+import 'package:frontend/ui/danger_card.dart';
 import 'package:frontend/ui/primary_card.dart';
 import 'package:frontend/ui/task_status_widget.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
@@ -161,32 +162,38 @@ class __ViewTaskState extends State<_ViewTask> {
                   // ThemedText(p.join(Globals.baseUrl, "objects",
                   //     "${state.task.mesh!.taskID}", "model")),
                   Positioned(
-                    bottom: 72,
-                    right: 8,
-                    child: CupertinoButton.filled(
-                      child: const Icon(CupertinoIcons.arrow_right),
-                      onPressed: () async {
-                        context
-                            .push('/authed/home/task/${state.task.id}/images');
-                      },
-                    ),
-                  ),
-                  Positioned(
                     bottom: 16,
                     right: 8,
-                    child: CupertinoButton.filled(
-                      child: const Icon(CupertinoIcons.add),
-                      onPressed: () async {
-                        List<String> availableTextures =
-                            await controller.getAvailableTextures();
-                        logger.d(
-                            'Textures : $availableTextures --- Length : ${availableTextures.length}');
-                        debugPrint(
-                            'Textures : $availableTextures --- Length : ${availableTextures.length}');
-                        chosenTexture = await showPickerDialog(
-                            'Textures', availableTextures, chosenTexture);
-                        controller.setTexture(textureName: chosenTexture ?? '');
-                      },
+                    child: Column(
+                      spacing: 8,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        PrimaryCard(
+                          onTap: () {
+                            context.push(
+                                '/authed/home/task/${state.task.id}/images');
+                          },
+                          child: const Row(
+                            children: [
+                              ThemedText('Source', color: TextColor.inverse),
+                              CupertinoListTileChevron()
+                            ],
+                          ),
+                        ),
+                        PrimaryCard(
+                          onTap: () {
+                            context.push(
+                                '/authed/home/task/${state.task.id}/messages');
+                          },
+                          child: const Row(
+                            children: [
+                              ThemedText('Chat', color: TextColor.inverse),
+                              CupertinoListTileChevron()
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -207,35 +214,55 @@ class __ViewTaskState extends State<_ViewTask> {
                   child: SizedBox(height: AppPadding.md),
                 ),
                 SliverToBoxAdapter(
-                  child: Row(
-                    spacing: 8,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      PrimaryCard(
-                        onTap: () {
-                          context
-                              .go('/authed/home/task/${state.task.id}/images');
-                        },
-                        child: const Row(
-                          children: [
-                            ThemedText('View images', color: TextColor.inverse),
-                            CupertinoListTileChevron()
-                          ],
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppPadding.lg),
+                    child: Column(
+                      spacing: 8,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        PrimaryCard(
+                          onTap: () {
+                            context.push(
+                                '/authed/home/task/${state.task.id}/images');
+                          },
+                          child: const Row(
+                            children: [
+                              ThemedText('View images',
+                                  color: TextColor.inverse),
+                              CupertinoListTileChevron()
+                            ],
+                          ),
                         ),
-                      ),
-                      PrimaryCard(
-                        onTap: () {
-                          _taskRepository.startTask(state.task.id);
-                        },
-                        child: const Row(
-                          children: [
-                            ThemedText('Start process',
-                                color: TextColor.inverse),
-                            CupertinoListTileChevron()
-                          ],
+                        PrimaryCard(
+                          onTap: () {
+                            context.push(
+                                '/authed/home/task/${state.task.id}/messages');
+                          },
+                          child: const Row(
+                            children: [
+                              ThemedText('View Messages',
+                                  color: TextColor.inverse),
+                              CupertinoListTileChevron()
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                        DangerCard(
+                          onTap: () async {
+                            _taskRepository.startTask(state.task.id);
+                            await Future.delayed(
+                                const Duration(milliseconds: 500));
+                            context.read<ViewTaskCubit>().fetchTask();
+                          },
+                          child: const Row(
+                            children: [
+                              ThemedText('Start process',
+                                  color: TextColor.inverse),
+                              CupertinoListTileChevron()
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
