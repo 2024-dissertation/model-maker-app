@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/helpers/locator.dart';
 import 'package:frontend/module/analytics/cubit/analytics_cubit.dart';
@@ -37,7 +39,11 @@ void main() async {
 
   analytics = FirebaseAnalytics.instance;
 
-  FlutterError.onError = (details) => logger.d;
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+  if (kDebugMode) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+  }
 
   PlatformDispatcher.instance.onError = (error, stack) {
     logger.e(error, stackTrace: stack);

@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';
@@ -15,6 +16,9 @@ class MyUserCubit extends SafeHydratedCubit<MyUserState> {
     safeEmit(MyUserLoading());
     try {
       final myUser = await _myUserRepository.getMyUser();
+      FirebaseCrashlytics.instance.setUserIdentifier("${myUser.id}");
+      FirebaseCrashlytics.instance.log("User loaded: ${myUser.id}");
+
       safeEmit(MyUserLoaded(myUser));
     } catch (e) {
       logger.e(e.toString());

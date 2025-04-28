@@ -41,6 +41,7 @@ dependencies:
   fl_chart: ^0.71.0
   remixicon: ^1.4.1
   fluttertoast: ^8.2.12
+  firebase_crashlytics: ^4.3.5
 
 dev_dependencies:
   flutter_test:

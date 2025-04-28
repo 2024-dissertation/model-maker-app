@@ -71,9 +71,9 @@ class _UnauthorizedPageState extends State<UnauthorizedPage> {
               },
             ),
           ),
-          SafeArea(
-            child: Positioned(
-              top: 0,
+          Positioned(
+            top: 0,
+            child: SafeArea(
               child: Padding(
                 padding: EdgeInsets.only(left: 25),
                 child: DotIndicator(
