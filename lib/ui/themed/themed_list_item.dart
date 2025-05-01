@@ -10,6 +10,7 @@ class ThemedListItem extends StatelessWidget {
     this.subtitle,
     this.trailing,
     required this.onTap,
+    this.bottom,
     this.onLongTap,
     this.onDismissed,
     this.onConfirmDismiss,
@@ -20,6 +21,7 @@ class ThemedListItem extends StatelessWidget {
   final Widget title;
   final Widget? subtitle;
   final Widget? trailing;
+  final Widget? bottom;
   final VoidCallback onTap;
   final VoidCallback? onLongTap;
   final VoidCallback? onDismissed;
@@ -58,10 +60,23 @@ class ThemedListItem extends StatelessWidget {
             onDismissed: (direction) => onDismissed?.call(),
             confirmDismiss: (_) async => await onConfirmDismiss?.call(),
             key: Key(dismissableKey),
-            child: ListTile(
-              title: title,
-              subtitle: subtitle,
-              trailing: trailing,
+            child: Column(
+              children: [
+                ListTile(
+                  title: title,
+                  subtitle: subtitle,
+                  trailing: trailing,
+                ),
+                if (bottom != null)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: AppPadding.sm,
+                      right: AppPadding.sm,
+                      bottom: AppPadding.sm,
+                    ),
+                    child: bottom,
+                  ),
+              ],
             ),
           ),
         ),

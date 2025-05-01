@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,8 +29,21 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _HomePage extends StatelessWidget {
-  _HomePage();
+class _HomePage extends StatefulWidget {
+  const _HomePage({super.key});
+
+  @override
+  State<_HomePage> createState() => __HomePageState();
+}
+
+class __HomePageState extends State<_HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Timer.periodic(const Duration(seconds: 10), (timer) {
+    //   context.read<HomeCubit>().fetchTasks();
+    // });
+  }
 
   final TaskRepository _taskRepository = getIt();
 
@@ -90,6 +105,14 @@ class _HomePage extends StatelessWidget {
                                 onTap: () => context.go(
                                   '/authed/home/task/${task.id}',
                                 ),
+                                bottom: task.metadata
+                                        .containsKey('opensfm-process')
+                                    ? LinearProgressIndicator(
+                                        value: (double.tryParse(
+                                                    "${task.metadata['opensfm-process']}") ??
+                                                0) /
+                                            100)
+                                    : null,
                                 onLongTap: () async {
                                   final action =
                                       await _showActionSheet(context);

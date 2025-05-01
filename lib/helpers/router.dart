@@ -15,6 +15,7 @@ import 'package:frontend/pages/profile_page.dart';
 import 'package:frontend/pages/settings_page.dart';
 import 'package:frontend/pages/splash_screen.dart';
 import 'package:frontend/pages/onboarding/unauthorized_page.dart';
+import 'package:frontend/pages/url_selector_page.dart';
 import 'package:frontend/pages/view_images.dart';
 import 'package:frontend/pages/view_messages.dart';
 import 'package:frontend/pages/view_task.dart';
@@ -134,6 +135,12 @@ class AppRouter {
                   GoRoute(
                     path: 'profile',
                     builder: (context, state) => const ProfilePage(),
+                  ),
+                  GoRoute(
+                    path: 'urls',
+                    builder: (context, state) {
+                      return const UrlSelectorPage();
+                    },
                   ),
                 ],
               ),

@@ -205,4 +205,8 @@ class ApiDataSource {
   Future<Map<String, dynamic>> deleteReport(int reportId) async {
     return _post('/reports/$reportId/delete', null);
   }
+
+  Future<Map<String, dynamic>> getAnalytics() async {
+    return _get('/analytics');
+  }
 }

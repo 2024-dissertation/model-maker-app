@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -15,6 +16,7 @@ import 'package:frontend/module/tasks/repository/task_repository.dart';
 import 'package:frontend/ui/danger_card.dart';
 import 'package:frontend/ui/primary_card.dart';
 import 'package:frontend/ui/task_status_widget.dart';
+import 'package:frontend/ui/themed/themed_card.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart' as p;
@@ -96,26 +98,26 @@ class __ViewTaskState extends State<_ViewTask> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      child: SafeArea(
-        child: BlocBuilder<ViewTaskCubit, ViewTaskState>(
-            builder: (context, state) {
-          if (state is ViewTaskError) {
-            return Center(child: ThemedText(state.message));
-          }
+      child:
+          BlocBuilder<ViewTaskCubit, ViewTaskState>(builder: (context, state) {
+        if (state is ViewTaskError) {
+          return Center(child: ThemedText(state.message));
+        }
 
-          if (state is ViewTaskLoading) {
-            return const CupertinoActivityIndicator();
-          }
+        if (state is ViewTaskLoading) {
+          return const CupertinoActivityIndicator();
+        }
 
-          if (state is ViewTaskLoaded) {
-            // if (!started) {
-            //   downloadFile(state.task.id);
+        if (state is ViewTaskLoaded) {
+          // if (!started) {
+          //   downloadFile(state.task.id);
+          // }
+          if (state.task.mesh != null) {
+            // if (tmpFile == null) {
+            //   return Center(child: CircularProgressIndicator());
             // }
-            if (state.task.mesh != null) {
-              // if (tmpFile == null) {
-              //   return Center(child: CircularProgressIndicator());
-              // }
-              return Stack(
+            return SafeArea(
+              child: Stack(
                 children: [
                   Flutter3DViewer(
                     //If you pass 'true' the flutter_3d_controller will add gesture interceptor layer
@@ -197,81 +199,89 @@ class __ViewTaskState extends State<_ViewTask> {
                     ),
                   ),
                 ],
-              );
-            }
-            return CustomScrollView(
-              slivers: [
-                CupertinoSliverNavigationBar(
-                  largeTitle: ThemedText(state.task.fTitle),
-                  trailing: TaskStatusWidget(status: state.task.status),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppPadding.md),
-                      child: ThemedText(state.task.fDescription)),
-                ),
-                SliverToBoxAdapter(
-                  child: SizedBox(height: AppPadding.md),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppPadding.lg),
-                    child: Column(
-                      spacing: 8,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PrimaryCard(
-                          onTap: () {
-                            context.push(
-                                '/authed/home/task/${state.task.id}/images');
-                          },
-                          child: const Row(
-                            children: [
-                              ThemedText('View images',
-                                  color: TextColor.inverse),
-                              CupertinoListTileChevron()
-                            ],
-                          ),
-                        ),
-                        PrimaryCard(
-                          onTap: () {
-                            context.push(
-                                '/authed/home/task/${state.task.id}/messages');
-                          },
-                          child: const Row(
-                            children: [
-                              ThemedText('View Messages',
-                                  color: TextColor.inverse),
-                              CupertinoListTileChevron()
-                            ],
-                          ),
-                        ),
-                        DangerCard(
-                          onTap: () async {
-                            _taskRepository.startTask(state.task.id);
-                            await Future.delayed(
-                                const Duration(milliseconds: 500));
-                            context.read<ViewTaskCubit>().fetchTask();
-                          },
-                          child: const Row(
-                            children: [
-                              ThemedText('Start process',
-                                  color: TextColor.inverse),
-                              CupertinoListTileChevron()
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+              ),
             );
           }
+          return CustomScrollView(
+            slivers: [
+              CupertinoSliverNavigationBar(
+                largeTitle: ThemedText(state.task.fTitle),
+                trailing: TaskStatusWidget(status: state.task.status),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppPadding.md),
+                    child: ThemedText(state.task.fDescription)),
+              ),
+              SliverToBoxAdapter(
+                child: SizedBox(height: AppPadding.md),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppPadding.lg),
+                  child: Column(
+                    spacing: 8,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PrimaryCard(
+                        onTap: () {
+                          context.push(
+                              '/authed/home/task/${state.task.id}/images');
+                        },
+                        child: const Row(
+                          children: [
+                            ThemedText('View images', color: TextColor.inverse),
+                            CupertinoListTileChevron()
+                          ],
+                        ),
+                      ),
+                      PrimaryCard(
+                        onTap: () {
+                          context.push(
+                              '/authed/home/task/${state.task.id}/messages');
+                        },
+                        child: const Row(
+                          children: [
+                            ThemedText('View Messages',
+                                color: TextColor.inverse),
+                            CupertinoListTileChevron()
+                          ],
+                        ),
+                      ),
+                      DangerCard(
+                        onTap: () async {
+                          _taskRepository.startTask(state.task.id);
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
+                          context.read<ViewTaskCubit>().fetchTask();
+                        },
+                        child: const Row(
+                          children: [
+                            ThemedText('Start process',
+                                color: TextColor.inverse),
+                            CupertinoListTileChevron()
+                          ],
+                        ),
+                      ),
+                      if (state.task.metadata.containsKey("log"))
+                        ThemedCard(
+                          child: ThemedText(
+                            base64Decode(state.task.metadata['log'])
+                                .map((e) => String.fromCharCode(e))
+                                .join(),
+                            color: TextColor.muted,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
 
-          return const SizedBox();
-        }),
-      ),
+        return const SizedBox();
+      }),
     );
   }
 

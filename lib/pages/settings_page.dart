@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/config/constants.dart';
 import 'package:frontend/module/auth/cubit/auth_cubit.dart';
+import 'package:frontend/ui/modals/about_modal.dart';
+import 'package:frontend/ui/modals/version_modal.dart';
 import 'package:frontend/ui/themed/themed_list_item.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
@@ -40,7 +42,13 @@ class SettingsPage extends StatelessWidget {
                         dismissableKey: 'profile',
                       ),
                       ThemedListItem(
-                        onTap: () => context.push('/authed/settings/profile'),
+                        onTap: () {
+                          showCupertinoSheet(
+                              context: context,
+                              useNestedNavigation: true,
+                              pageBuilder: (BuildContext context) =>
+                                  AboutModal());
+                        },
                         title: const PrefixWidget(
                           icon: CupertinoIcons.info,
                           title: 'About',
@@ -50,15 +58,31 @@ class SettingsPage extends StatelessWidget {
                         dismissableKey: 'profile',
                       ),
                       ThemedListItem(
-                        onTap: () => context.push('/authed/settings/profile'),
+                        onTap: () {
+                          showCupertinoSheet(
+                              context: context,
+                              useNestedNavigation: true,
+                              pageBuilder: (BuildContext context) =>
+                                  VersionModal());
+                        },
                         title: const PrefixWidget(
                           icon: CupertinoIcons.number,
                           title: 'App Version',
                           color: CupertinoColors.systemGrey,
                         ),
                         trailing: const Icon(CupertinoIcons.forward),
-                        dismissableKey: 'profile',
+                        dismissableKey: 'version',
                       ),
+                      // ThemedListItem(
+                      //   onTap: () => context.push('/authed/settings/urls'),
+                      //   title: const PrefixWidget(
+                      //     icon: CupertinoIcons.wifi,
+                      //     title: 'Change Server',
+                      //     color: CupertinoColors.systemOrange,
+                      //   ),
+                      //   trailing: const Icon(CupertinoIcons.forward),
+                      //   dismissableKey: 'server',
+                      // ),
                     ],
                   ),
                 ),

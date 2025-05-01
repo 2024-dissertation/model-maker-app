@@ -27,6 +27,7 @@ class ScannerCubit extends SafeCubit<ScannerState> {
     try {
       final List<String> newPaths = [...(state).paths, ...paths];
       safeEmit((state).copyWith(paths: newPaths));
+      logger.d("Paths: $newPaths");
     } catch (e, stack) {
       logger.d("$e\n$stack");
       safeEmit(state.copyWith(error: e.toString()));
