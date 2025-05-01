@@ -28,6 +28,8 @@ class ThemedText extends StatelessWidget {
     this.color = TextColor.primary,
     this.size,
     this.weight,
+    this.overflow,
+    this.textAlign,
   });
 
   final TextType style;
@@ -35,6 +37,8 @@ class ThemedText extends StatelessWidget {
 
   final double? size;
   final FontWeight? weight;
+  final TextOverflow? overflow;
+  final TextAlign? textAlign;
 
   final String text;
 
@@ -42,6 +46,8 @@ class ThemedText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      overflow: overflow,
+      textAlign: textAlign,
       style: _getTextType(context)?.copyWith(fontSize: size),
     );
   }

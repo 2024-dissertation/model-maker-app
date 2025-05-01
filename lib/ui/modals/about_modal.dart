@@ -102,9 +102,13 @@ class _AboutModalState extends State<AboutModal> {
                 Divider(),
                 Row(
                   children: [
-                    ThemedText(
-                      url,
-                      color: TextColor.muted,
+                    Flexible(
+                      child: ThemedText(
+                        url,
+                        color: TextColor.muted,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                      ),
                     ),
                   ],
                 ),
