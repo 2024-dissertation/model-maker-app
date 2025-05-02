@@ -12,6 +12,7 @@ import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/module/tasks/models/task.dart';
 import 'package:frontend/module/tasks/cubit/view_task_cubit.dart';
+import 'package:frontend/module/tasks/models/task_status.dart';
 import 'package:frontend/module/tasks/repository/task_repository.dart';
 import 'package:frontend/ui/danger_card.dart';
 import 'package:frontend/ui/primary_card.dart';
@@ -250,10 +251,21 @@ class __ViewTaskState extends State<_ViewTask> {
                       ),
                       DangerCard(
                         onTap: () async {
+                          if (state.task.status == TaskStatus.INPROGRESS) {
+                            return;
+                          }
                           _taskRepository.startTask(state.task.id);
                           await Future.delayed(
                               const Duration(milliseconds: 500));
                           context.read<ViewTaskCubit>().fetchTask();
+                          Fluttertoast.showToast(
+                            msg: "Started scanning",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            backgroundColor: CupertinoColors.activeGreen,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
                         },
                         child: const Row(
                           children: [
