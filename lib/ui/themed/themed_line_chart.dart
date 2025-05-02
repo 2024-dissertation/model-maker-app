@@ -73,43 +73,21 @@ class _LineChart extends StatelessWidget {
     return data.map((e) => getLineBar(index++)).toList();
   }
 
-  LineTouchData get lineTouchData2 => const LineTouchData(
-        enabled: false,
-      );
-
-  FlTitlesData get titlesData2 => FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: bottomTitles,
-        ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: leftTitles(),
-        ),
-      );
-
   Widget leftTitleWidgets(double value, TitleMeta meta) => ThemedText("$value");
 
   SideTitles leftTitles() => SideTitles(
         getTitlesWidget: leftTitleWidgets,
         showTitles: true,
-        interval: dataMax / 4,
+        interval: dataMax == 0 ? 1 : dataMax / 4,
         reservedSize: 40,
       );
-
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    return ThemedText(labels[value.round()]);
-  }
 
   SideTitles get bottomTitles => SideTitles(
         showTitles: true,
         reservedSize: 32,
         interval: 1,
-        getTitlesWidget: bottomTitleWidgets,
+        getTitlesWidget: (double value, TitleMeta meta) =>
+            ThemedText(labels[value.round()]),
       );
 
   FlGridData get gridData => const FlGridData(show: false);

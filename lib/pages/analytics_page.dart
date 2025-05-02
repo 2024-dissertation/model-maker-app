@@ -56,12 +56,14 @@ class AnalyticsPage extends StatelessWidget {
                           CupertinoColors.systemRed,
                         ],
                         labels: state.analytics.weekOfTasks
-                            .map((e) => e.date)
-                            .toList(),
+                                ?.map((e) => e.date)
+                                .toList() ??
+                            [],
                         data: [
                           state.analytics.weekOfTasks
-                              .map((e) => e.count.toDouble())
-                              .toList()
+                                  ?.map((e) => e.count.toDouble())
+                                  .toList() ??
+                              []
                         ],
                       ),
                       SizedBox(height: AppPadding.md),
@@ -83,11 +85,13 @@ class AnalyticsPage extends StatelessWidget {
                       ThemedPieChart(
                           title: 'Models by Collection',
                           labels: state.analytics.collections
-                              .map((e) => e.name)
-                              .toList(),
+                                  ?.map((e) => e.name)
+                                  .toList() ??
+                              [],
                           data: state.analytics.collections
-                              .map((e) => e.count.toDouble())
-                              .toList(),
+                                  ?.map((e) => e.count.toDouble())
+                                  .toList() ??
+                              [],
                           colors: [
                             CupertinoColors.systemBlue,
                             CupertinoColors.systemRed,

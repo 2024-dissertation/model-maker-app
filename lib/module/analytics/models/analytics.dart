@@ -30,15 +30,15 @@ class Analytics with AnalyticsMappable {
   final int tasksTotal;
   final int tasksSuccess;
   final int tasksFailed;
-  final List<WeekOfTask> weekOfTasks;
-  final List<AnalyticsCollection> collections;
+  final List<WeekOfTask>? weekOfTasks;
+  final List<AnalyticsCollection>? collections;
 
   const Analytics({
     required this.collectionTotal,
     required this.tasksTotal,
     required this.tasksSuccess,
     required this.tasksFailed,
-    required this.weekOfTasks,
-    required this.collections,
+    this.weekOfTasks,
+    this.collections,
   });
 }

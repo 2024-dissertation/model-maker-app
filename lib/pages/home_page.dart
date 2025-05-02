@@ -59,13 +59,6 @@ class __HomePageState extends State<_HomePage> {
                   largeTitle: const Text(
                     'Home',
                   ),
-                  trailing: IconButton(
-                    iconSize: 20,
-                    icon: const Icon(CupertinoIcons.add),
-                    onPressed: () {
-                      context.go('/authed/new');
-                    },
-                  ),
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(35),
                     child: Padding(

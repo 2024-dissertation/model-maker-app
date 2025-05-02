@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/app/views/app_layout.dart';
+import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/helpers/globals.dart';
 import 'package:frontend/module/auth/cubit/auth_state.dart';
@@ -21,11 +22,17 @@ import 'package:frontend/pages/view_messages.dart';
 import 'package:frontend/pages/view_task.dart';
 import 'package:go_router/go_router.dart';
 
+final GlobalKey<NavigatorState> _rootNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _shellNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shell');
+
 class AppRouter {
 // GoRouter configuration
   final router = GoRouter(
-    navigatorKey: Globals.navigatorKey,
-    initialLocation: '/unauthorized',
+    navigatorKey: _rootNavigatorKey,
+    initialLocation: '/splash-screen',
+    debugLogDiagnostics: true,
     routes: [
       GoRoute(
         path: '/splash-screen',
@@ -150,6 +157,7 @@ class AppRouter {
       ),
     ],
     redirect: (context, state) {
+      logger.d(state);
       if ((context.read<AuthCubit>().state == AuthState.initial ||
               context.read<AuthCubit>().state == AuthState.signedOut) &&
           state.matchedLocation.startsWith('/unauthorized') == false) {

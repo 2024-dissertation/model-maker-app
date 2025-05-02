@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 class Globals {
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   // static String baseUrl = "http://stuvm250403.dcs.shef.ac.uk:3333/";
   static String baseUrl = "https://soupmodelmaker.org/";
   static List<CameraDescription> cameras = [];
