@@ -40,6 +40,8 @@ class __ScannerPageState extends State<_ScannerPage> {
   CameraController? controller;
   bool _visible = false;
 
+  bool uploading = false;
+
   @override
   void initState() {
     super.initState();
@@ -136,6 +138,20 @@ class __ScannerPageState extends State<_ScannerPage> {
           ),
           trailing: TextButton(
               onPressed: () async {
+                if (uploading) return;
+
+                setState(() {
+                  uploading = true;
+                });
+
+                Fluttertoast.showToast(
+                  msg: "Starting upload",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                  backgroundColor: CupertinoColors.activeGreen,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
                 if (await context.read<ScannerCubit>().createTask()) {
                   if (context.read<ScannerCubit>().state.paths.isEmpty) {
                     showSingleActionAlertDialog(context,
@@ -143,7 +159,20 @@ class __ScannerPageState extends State<_ScannerPage> {
                     return;
                   }
                   await context.read<ScannerCubit>().uploadImages();
+                  context.read<ScannerCubit>().clear();
+                  Fluttertoast.showToast(
+                    msg: "Task created successfully",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.TOP,
+                    backgroundColor: CupertinoColors.activeGreen,
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  );
                 }
+
+                setState(() {
+                  uploading = false;
+                });
               },
               child: const Text("Done")),
           middle: const Text('Create Task'),

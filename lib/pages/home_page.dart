@@ -59,6 +59,20 @@ class __HomePageState extends State<_HomePage> {
                   largeTitle: const Text(
                     'Home',
                   ),
+                  trailing: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    child: const Icon(CupertinoIcons.ellipsis),
+                    onPressed: () async {
+                      final action = await _showFilters(context);
+                      if (action != null) {
+                        if (action == 1) {
+                          context.read<HomeCubit>().fetchArchivedTasks();
+                        } else if (action == 2) {
+                          context.read<HomeCubit>().fetchTasks();
+                        }
+                      }
+                    },
+                  ),
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(35),
                     child: Padding(
@@ -313,6 +327,29 @@ class __HomePageState extends State<_HomePage> {
             isDefaultAction: true,
             isDestructiveAction: true,
             child: const Text('Re-run'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<int?> _showFilters(BuildContext context) {
+    return showCupertinoModalPopup<int>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: const Text('Filters'),
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () {
+              context.pop(1);
+            },
+            child: const Text('Show archived'),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              context.pop(2);
+            },
+            child: const Text('Show Unarchived'),
           ),
         ],
       ),

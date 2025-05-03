@@ -119,8 +119,12 @@ class ApiDataSource {
     return _get('/tasks');
   }
 
-  Future<void> deleteTask(int taskId) async {
-    return _delete('/tasks/$taskId');
+  Future<Map<String, dynamic>> getArchivedTasks() async {
+    return _get('/archived/tasks');
+  }
+
+  Future<Map<String, dynamic>> archiveTask(int taskId) async {
+    return _post('/tasks/$taskId/archive', {});
   }
 
   Future<Map<String, dynamic>> saveTask(Map<String, dynamic> data) async {

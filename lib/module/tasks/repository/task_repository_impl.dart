@@ -35,6 +35,31 @@ class TaskRepositoryImpl extends AbstractRepository implements TaskRepository {
   }
 
   @override
+  Future<List<Task>> getArchivedTasks() async {
+    try {
+      final data = await apiDataSource.getArchivedTasks();
+      return (data['tasks'] as List<dynamic>)
+          .map((e) {
+            try {
+              return TaskMapper.fromMap(e);
+            } catch (error) {
+              logger.e('Failed to parse task $e');
+              return null;
+            }
+          })
+          .where((element) => element != null)
+          .toList()
+          .cast<Task>();
+    } catch (e) {
+      if (e is ServerException || e is NetworkException) {
+        rethrow;
+      }
+      logger.e(e);
+      throw ParsingException();
+    }
+  }
+
+  @override
   Future<Task> getTaskById(int taskId) async {
     try {
       final data = await apiDataSource.getTaskById(taskId);
@@ -170,7 +195,7 @@ class TaskRepositoryImpl extends AbstractRepository implements TaskRepository {
   @override
   Future<void> deleteTask(int taskId) async {
     try {
-      await apiDataSource.deleteTask(taskId);
+      await apiDataSource.archiveTask(taskId);
     } catch (e) {
       if (e is ServerException || e is NetworkException) {
         rethrow;

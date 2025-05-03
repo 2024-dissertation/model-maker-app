@@ -4,6 +4,7 @@ import 'package:frontend/module/tasks/models/task_file.dart';
 
 abstract class TaskRepository {
   Future<List<Task>> getTasks();
+  Future<List<Task>> getArchivedTasks();
   Future<Task> getTaskById(int taskId);
   Future<Task> createTask(Map<String, dynamic> task);
   Future<List<TaskFile>> uploadImages(int taskId, List<String> paths);

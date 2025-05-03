@@ -27,6 +27,19 @@ class HomeCubit extends SafeCubit<HomeState> {
     }
   }
 
+  Future<void> fetchArchivedTasks() async {
+    if (state is HomeInitial) {
+      safeEmit(HomeLoading());
+    }
+    try {
+      final tasks = await _taskRepository.getArchivedTasks();
+      safeEmit(HomeLoaded(tasks, filteredTasks: tasks));
+    } catch (e, stack) {
+      logger.e("$e\n$stack");
+      safeEmit(HomeError(e.toString()));
+    }
+  }
+
   void searchTasks(String query) {
     if (state is! HomeLoaded) return;
 
@@ -43,6 +56,8 @@ class HomeCubit extends SafeCubit<HomeState> {
     if (state is! HomeLoaded) return;
 
     final tasks = (state as HomeLoaded).tasks;
+
+    _taskRepository.deleteTask(taskId);
 
     final filteredTasks = (state as HomeLoaded).filteredTasks;
     final updatedTasks = tasks.where((task) => task.id != taskId).toList();
