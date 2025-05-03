@@ -48,10 +48,10 @@ class SignUpPage extends StatelessWidget {
                 Buttons.appleDark,
                 onPressed: () => _authRepository.signInWithApple(),
               ),
-              SignInButton(
-                Buttons.googleDark,
-                onPressed: () => _authRepository.signInWithGoogle(),
-              ),
+              // SignInButton(
+              //   Buttons.googleDark,
+              //   onPressed: () => _authRepository.signInWithGoogle(),
+              // ),
             ],
           ),
         ),
