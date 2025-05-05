@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:frontend/exceptions/api_exceptions.dart';
 import 'package:frontend/helpers/logger.dart';
-import 'package:frontend/module/chatbox/models/chat_message.dart';
 import 'package:frontend/module/user/models/my_user.dart';
 
 class ApiDataSource {

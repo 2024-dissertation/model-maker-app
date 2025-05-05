@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/config/constants.dart';
+import 'package:frontend/module/user/cubit/my_user_cubit.dart';
+import 'package:frontend/module/user/cubit/my_user_state.dart';
 import 'package:frontend/ui/themed/themed_card.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -42,7 +45,7 @@ class _VersionModalState extends State<VersionModal> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar.large(
-        largeTitle: Text('Verson Info'),
+        largeTitle: Text('Version Info'),
       ),
       child: SafeArea(
         child: Padding(
@@ -59,6 +62,12 @@ class _VersionModalState extends State<VersionModal> {
                 _buildVersionInfoRow("Package Name", packageName),
                 _buildVersionInfoRow("Version", version),
                 _buildVersionInfoRow("Build Number", buildNumber),
+                _buildVersionInfoRow(
+                    "UserId",
+                    (context.read<MyUserCubit>().state as MyUserLoaded)
+                        .myUser
+                        .id
+                        .toString()),
               ],
             ],
           ),
