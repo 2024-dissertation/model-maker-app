@@ -53,7 +53,7 @@ class CollectionCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             child: ThemedText(
-              "${collection.tasks?.length}",
+              "${collection.tasks?.length ?? 0}",
               weight: FontWeight.w600,
             ),
           ),

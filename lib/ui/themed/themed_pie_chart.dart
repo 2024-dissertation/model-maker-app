@@ -39,7 +39,9 @@ class ThemedPieChart extends StatelessWidget {
             final index = entry.key;
             final value = entry.value;
             return PieChartSectionData(
-              color: colors?[index] ?? Colors.blue,
+              color: colors != null
+                  ? colors![index % colors!.length]
+                  : Colors.blue,
               value: value,
               title: '${(value / total * 100).toStringAsFixed(1)}%',
               titleStyle: CustomCupertinoTheme.of(context).body.copyWith(
@@ -86,7 +88,8 @@ class ThemedPieChart extends StatelessWidget {
                             .entries
                             .map(
                               (e) => Indicator(
-                                color: colors?[e.key] ?? Colors.blue,
+                                color: colors?[e.key % colors!.length] ??
+                                    Colors.blue,
                                 text: e.value,
                                 isSquare: true,
                               ),

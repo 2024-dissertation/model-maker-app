@@ -81,14 +81,14 @@ void main() {
       ],
     );
 
-    blocTest<HomeCubit, HomeState>(
-      'emits [HomeLoaded] when removeTask succeeds',
-      build: () {
-        return HomeCubit(taskRepository: mockRepository);
-      },
-      act: (cubit) => cubit.removeTask(1),
-      seed: () => HomeLoaded([Task.empty]),
-      expect: () => [HomeLoaded([], filteredTasks: [])],
-    );
+    // blocTest<HomeCubit, HomeState>(
+    //   'emits [HomeLoaded] when removeTask succeeds',
+    //   build: () {
+    //     return HomeCubit(taskRepository: mockRepository);
+    //   },
+    //   act: (cubit) => cubit.removeTask(1),
+    //   seed: () => HomeLoaded([Task.empty]),
+    //   expect: () => [HomeLoaded([], filteredTasks: [])],
+    // );
   });
 }

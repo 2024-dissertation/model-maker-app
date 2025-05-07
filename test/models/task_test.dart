@@ -9,7 +9,7 @@ void main() {
     test('should correctly parse JSON into Task', () {
       final json = '''
 {
-    "Id": 10,
+    "ID": 10,
     "CreatedAt": "2025-02-17T23:04:59.696683Z",
     "UpdatedAt": "2025-02-25T14:10:04.720931Z",
     "DeletedAt": "2025-02-25T14:10:04.720932Z",
@@ -110,13 +110,13 @@ void main() {
     test('should return correct color for TaskStatus', () {
       expect(TaskStatus.SUCCESS.color, CupertinoColors.activeGreen);
       expect(TaskStatus.FAILED.color, CupertinoColors.systemRed);
-      expect(TaskStatus.INITIAL.color, CupertinoColors.activeBlue);
+      expect(TaskStatus.INITIAL.color, CupertinoColors.systemGrey);
     });
 
     test('should return correct label for TaskStatus', () {
       expect(TaskStatus.SUCCESS.label, "Completed");
       expect(TaskStatus.FAILED.label, "Failed");
-      expect(TaskStatus.INITIAL.label, "In Progress");
+      expect(TaskStatus.INITIAL.label, "Not started");
     });
   });
 }

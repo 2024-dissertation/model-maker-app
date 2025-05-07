@@ -110,6 +110,14 @@ class _CollectionListPageState extends State<CollectionListPage> {
                             style: TextType.small,
                             color: TextColor.secondary,
                           ),
+                          bottom: collection.tasks![index].metadata
+                                  .containsKey('opensfm-process')
+                              ? LinearProgressIndicator(
+                                  value: (double.tryParse(
+                                              "${collection.tasks![index].metadata['opensfm-process']}") ??
+                                          0) /
+                                      100)
+                              : null,
                           dismissableKey: '${collection.tasks![index].id}',
                         ),
                       ),

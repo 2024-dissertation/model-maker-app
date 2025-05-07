@@ -45,7 +45,7 @@ class __ScannerPageState extends State<_ScannerPage> {
   @override
   void initState() {
     super.initState();
-    init();
+    init(camera);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -56,15 +56,35 @@ class __ScannerPageState extends State<_ScannerPage> {
     });
   }
 
-  Future<void> init() async {
-    controller = CameraController(widget.cameras[0], ResolutionPreset.max);
-    controller!.initialize().then((_) {
+  Future<void> init(int camera) async {
+    final _controller =
+        CameraController(widget.cameras[camera], ResolutionPreset.max);
+    _controller.initialize().then((_) {
       if (!mounted) {
         print("not mounted");
+        Fluttertoast.showToast(
+          msg: "Camera not mounted",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: CupertinoColors.systemRed,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
         return;
       }
-      setState(() {});
+      setState(() {
+        controller = _controller;
+      });
     }).catchError((Object e) {
+      logger.e(e);
+      Fluttertoast.showToast(
+        msg: "Camera error",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: CupertinoColors.systemRed,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
       if (e is CameraException) {
         switch (e.code) {
           case 'CameraAccessDenied':
@@ -106,6 +126,8 @@ class __ScannerPageState extends State<_ScannerPage> {
       context.read<ScannerCubit>().addPath(photoFile.path);
     }
   }
+
+  int camera = 0;
 
   @override
   void dispose() {
@@ -216,6 +238,33 @@ class __ScannerPageState extends State<_ScannerPage> {
                               context.read<ScannerCubit>().addPaths(
                                   files.map((file) => file.path).toList());
                             },
+                          ),
+                          Material(
+                            borderRadius: BorderRadius.circular(24),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(24),
+                              child: SizedBox(
+                                height: 48,
+                                width: 48,
+                                child: Icon(CupertinoIcons.camera_rotate),
+                              ),
+                              onTap: () async {
+                                if (widget.cameras.length > 1) {
+                                  camera = (camera + 1) % widget.cameras.length;
+                                  init(camera);
+                                  logger.d("Camera changed to $camera");
+                                  Fluttertoast.showToast(
+                                    msg: "Camera changed to $camera",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    backgroundColor:
+                                        CupertinoColors.activeGreen,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0,
+                                  );
+                                }
+                              },
+                            ),
                           ),
                         ]),
                   ),

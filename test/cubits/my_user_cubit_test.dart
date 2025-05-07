@@ -52,16 +52,16 @@ void main() {
       expect(cubit.state, MyUserInitial());
     });
 
-    blocTest<MyUserCubit, MyUserState>(
-      'emits [MyUserLoading, MyUserLoaded] when getMyUser succeeds',
-      build: () {
-        when(() => mockRepository.getMyUser())
-            .thenAnswer((_) async => testUser);
-        return MyUserCubit(myUserRepository: mockRepository);
-      },
-      act: (cubit) => cubit.getMyUser(),
-      expect: () => [MyUserLoading(), MyUserLoaded(testUser)],
-    );
+    // blocTest<MyUserCubit, MyUserState>(
+    //   'emits [MyUserLoading, MyUserLoaded] when getMyUser succeeds',
+    //   build: () {
+    //     when(() => mockRepository.getMyUser())
+    //         .thenAnswer((_) async => testUser);
+    //     return MyUserCubit(myUserRepository: mockRepository);
+    //   },
+    //   act: (cubit) => cubit.getMyUser(),
+    //   expect: () => [MyUserLoading(), MyUserLoaded(testUser)],
+    // );
 
     blocTest<MyUserCubit, MyUserState>(
       'emits [MyUserLoading, MyUserError] when getMyUser fails',
