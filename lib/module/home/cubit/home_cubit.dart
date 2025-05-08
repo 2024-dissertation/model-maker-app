@@ -14,6 +14,10 @@ class HomeCubit extends SafeCubit<HomeState> {
       : _taskRepository = taskRepository ?? getIt(),
         super(HomeInitial());
 
+  void clear() {
+    safeEmit(HomeInitial());
+  }
+
   Future<void> fetchTasks() async {
     if (state is HomeInitial) {
       safeEmit(HomeLoading());

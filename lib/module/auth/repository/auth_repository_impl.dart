@@ -36,6 +36,12 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<firebase_auth.UserCredential> signInAnonymously() async {
+    final creds = await _firebaseAuth.signInAnonymously();
+    return creds;
+  }
+
+  @override
   Future<firebase_auth.UserCredential> signInWithApple() async {
     final appleProvider = firebase_auth.AppleAuthProvider();
     appleProvider.addScope("email");

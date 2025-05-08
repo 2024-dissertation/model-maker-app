@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/config/constants.dart';
+import 'package:frontend/module/analytics/cubit/analytics_cubit.dart';
 import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/module/auth/cubit/auth_state.dart';
 import 'package:frontend/module/auth/repository/auth_repository.dart';
+import 'package:frontend/module/collections/cubit/collection_cubit.dart';
+import 'package:frontend/module/home/cubit/home_cubit.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
 import 'package:frontend/main/main.dart';
 import 'package:frontend/module/user/cubit/my_user_state.dart';
@@ -24,8 +28,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _emailController.text = "laister.sam+scanner@gmail.com";
-    _passwordController.text = "password";
+    // _emailController.text = "laister.sam+scanner@gmail.com";
+    // _passwordController.text = "password";
     super.initState();
   }
 
@@ -39,7 +43,10 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ThemedText("Login", style: TextType.title),
-            SizedBox(height: 8),
+            SizedBox(height: AppPadding.md),
+            ThemedText("This is only for admins, please sign in with Apple",
+                color: TextColor.muted),
+            SizedBox(height: AppPadding.md),
             if (context.watch<MyUserCubit>().state is MyUserError)
               ThemedText(
                 (context.watch<MyUserCubit>().state as MyUserError).message,
@@ -64,7 +71,12 @@ class _LoginPageState extends State<LoginPage> {
                 if (state == AuthState.signedIn) {
                   return CupertinoButton.filled(
                     child: const ThemedText("Log out"),
-                    onPressed: () => _authRepository.signOut(),
+                    onPressed: () {
+                      context.read<HomeCubit>().clear();
+                      context.read<AnalyticsCubit>().clear();
+                      context.read<CollectionCubit>().clear();
+                      _authRepository.signOut();
+                    },
                   );
                 }
                 if (state == AuthState.initial) {

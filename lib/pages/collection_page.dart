@@ -12,19 +12,8 @@ import 'package:frontend/ui/themed/themed_card.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 
-class CollectionPage extends StatefulWidget {
+class CollectionPage extends StatelessWidget {
   const CollectionPage({super.key});
-
-  @override
-  State<CollectionPage> createState() => _CollectionPageState();
-}
-
-class _CollectionPageState extends State<CollectionPage> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<CollectionCubit>().fetchCollections();
-  }
 
   @override
   Widget build(BuildContext context) {

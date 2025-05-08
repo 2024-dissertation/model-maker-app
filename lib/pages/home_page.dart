@@ -18,32 +18,7 @@ import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => HomeCubit()..fetchTasks(),
-      child: _HomePage(),
-    );
-  }
-}
-
-class _HomePage extends StatefulWidget {
-  const _HomePage({super.key});
-
-  @override
-  State<_HomePage> createState() => __HomePageState();
-}
-
-class __HomePageState extends State<_HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    // Timer.periodic(const Duration(seconds: 10), (timer) {
-    //   context.read<HomeCubit>().fetchTasks();
-    // });
-  }
+  HomePage({super.key});
 
   final TaskRepository _taskRepository = getIt();
 

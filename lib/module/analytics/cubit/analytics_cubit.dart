@@ -9,8 +9,10 @@ part 'analytics_state.dart';
 class AnalyticsCubit extends SafeCubit<AnalyticsState> {
   final MyUserRepository myUserRepository = getIt();
 
-  AnalyticsCubit() : super(AnalyticsInitial()) {
-    getAnalytics();
+  AnalyticsCubit() : super(AnalyticsInitial());
+
+  void clear() {
+    safeEmit(AnalyticsInitial());
   }
 
   Future<void> getAnalytics() async {

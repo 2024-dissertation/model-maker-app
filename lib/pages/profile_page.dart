@@ -83,36 +83,36 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   spacing: 8,
                   children: [
-                    PrimaryCard.medium(
-                      onTap: () {
-                        context.read<AuthCubit>().signOut();
-                        context.pop();
-                      },
-                      child: const Row(
-                        children: [
-                          ThemedText(
-                            'Submit Account Deletion',
-                            color: TextColor.inverse,
-                            weight: FontWeight.w600,
-                          ),
-                        ],
-                      ),
-                    ),
-                    PrimaryCard.medium(
-                      onTap: () {
-                        context.read<AuthCubit>().signOut();
-                        context.pop();
-                      },
-                      child: const Row(
-                        children: [
-                          ThemedText(
-                            'Request Data',
-                            color: TextColor.inverse,
-                            weight: FontWeight.w600,
-                          ),
-                        ],
-                      ),
-                    ),
+                    // PrimaryCard.medium(
+                    //   onTap: () {
+                    //     context.read<AuthCubit>().signOut();
+                    //     context.pop();
+                    //   },
+                    //   child: const Row(
+                    //     children: [
+                    //       ThemedText(
+                    //         'Submit Account Deletion',
+                    //         color: TextColor.inverse,
+                    //         weight: FontWeight.w600,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // PrimaryCard.medium(
+                    //   onTap: () {
+                    //     context.read<AuthCubit>().signOut();
+                    //     context.pop();
+                    //   },
+                    //   child: const Row(
+                    //     children: [
+                    //       ThemedText(
+                    //         'Request Data',
+                    //         color: TextColor.inverse,
+                    //         weight: FontWeight.w600,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

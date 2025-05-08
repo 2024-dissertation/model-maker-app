@@ -11,6 +11,10 @@ class CollectionCubit extends SafeCubit<CollectionState> {
 
   CollectionCubit() : super(CollectionInitial());
 
+  void clear() {
+    safeEmit(CollectionInitial());
+  }
+
   Future<void> fetchCollections() async {
     if (state is CollectionInitial) {
       safeEmit(CollectionLoading());

@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/helpers/locator.dart';
 import 'package:frontend/module/analytics/cubit/analytics_cubit.dart';
 import 'package:frontend/module/collections/cubit/collection_cubit.dart';
+import 'package:frontend/module/home/cubit/home_cubit.dart';
 import 'package:frontend/pages/app.dart';
 import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
@@ -61,9 +62,10 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider.value(value: myUserCubit),
-        BlocProvider(create: (_) => AnalyticsCubit()),
-        BlocProvider(create: (_) => CollectionCubit()),
+        BlocProvider(create: (_) => AnalyticsCubit()..getAnalytics()),
+        BlocProvider(create: (_) => CollectionCubit()..fetchCollections()),
         BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(create: (_) => HomeCubit()..fetchTasks()),
         BlocProvider(
           create: (_) => AuthCubit(myUserCubit: myUserCubit)..init(),
         ),

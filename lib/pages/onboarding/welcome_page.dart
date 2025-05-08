@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:frontend/ui/primary_card.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:vector_graphics/vector_graphics_compat.dart';
 
@@ -79,9 +80,13 @@ class _WelcomePageState extends State<WelcomePage> {
           SafeArea(
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: CupertinoButton.filled(
-                onPressed: () => widget.onContinue(),
-                child: ThemedText("Continue"),
+              child: PrimaryCard.medium(
+                onTap: () => widget.onContinue(),
+                child: ThemedText(
+                  "Continue",
+                  weight: FontWeight.w600,
+                  color: TextColor.inverse,
+                ),
               ),
             ),
           ),

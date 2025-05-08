@@ -22,10 +22,7 @@ import 'package:frontend/pages/view_messages.dart';
 import 'package:frontend/pages/view_task.dart';
 import 'package:go_router/go_router.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shell');
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
 // GoRouter configuration
@@ -71,7 +68,7 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: '/authed/home',
-                builder: (context, state) => const HomePage(),
+                builder: (context, state) => HomePage(),
                 routes: [
                   GoRoute(
                     path: 'task/:id',

@@ -12,6 +12,7 @@ abstract class AuthRepository {
   );
   firebase_auth.User? currentUser();
   Future<firebase_auth.UserCredential> signInWithApple();
+  Future<firebase_auth.UserCredential> signInAnonymously();
   Future<firebase_auth.UserCredential> signInWithGoogle();
   Future<firebase_auth.User?> singUpWithEmailAndPassword(
     String email,

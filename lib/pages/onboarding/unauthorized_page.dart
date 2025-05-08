@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/helpers/theme.dart';
+import 'package:frontend/module/onboarding/cubit/onboarding_cubit.dart';
 import 'package:frontend/pages/onboarding/sign_up_page.dart';
+import 'package:frontend/pages/onboarding/use_case_page.dart';
 import 'package:frontend/pages/onboarding/welcome_page.dart';
 import 'package:frontend/ui/dot_indicator.dart';
 
@@ -34,11 +37,33 @@ class _UnauthorizedPageState extends State<UnauthorizedPage> {
         },
         pageIndex: index,
       ),
+      UseCasePage(
+        onBack: () {
+          setState(
+            () {
+              index = 0;
+              controller.animateToPage(0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut);
+            },
+          );
+        },
+        onContinue: () {
+          setState(
+            () {
+              index = 2;
+              controller.animateToPage(2,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut);
+            },
+          );
+        },
+      ),
       SignUpPage(
         onBack: () {
           setState(() {
             index = 1;
-            controller.animateToPage(0,
+            controller.animateToPage(1,
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeInOut);
           });
@@ -49,41 +74,42 @@ class _UnauthorizedPageState extends State<UnauthorizedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      resizeToAvoidBottomInset: false,
-      child: Stack(
-        children: [
-          AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            color: index == 0
-                ? CustomCupertinoTheme.of(context).bgColor1
-                : CustomCupertinoTheme.of(context).bgColor2,
-            child: PageView.builder(
-              controller: controller,
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-              itemCount: pages.length,
-              onPageChanged: (index) {
-                setState(() {
-                  this.index = index;
-                });
-              },
+    return BlocProvider(
+      create: (_) => OnboardingCubit(),
+      child: CupertinoPageScaffold(
+        resizeToAvoidBottomInset: false,
+        child: Stack(
+          children: [
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              color: CustomCupertinoTheme.of(context).bgColor1,
+              child: PageView.builder(
+                controller: controller,
+                itemBuilder: (context, index) {
+                  return pages[index];
+                },
+                itemCount: pages.length,
+                onPageChanged: (index) {
+                  setState(() {
+                    this.index = index;
+                  });
+                },
+              ),
             ),
-          ),
-          Positioned(
-            top: 0,
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.only(left: 25),
-                child: DotIndicator(
-                  itemCount: pages.length,
-                  currentIndex: index,
+            Positioned(
+              top: 0,
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 25),
+                  child: DotIndicator(
+                    itemCount: pages.length,
+                    currentIndex: index,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

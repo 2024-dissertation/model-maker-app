@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flutter/foundation.dart';
 import 'package:frontend/exceptions/api_exceptions.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/module/user/models/my_user.dart';
@@ -24,7 +25,9 @@ class ApiDataSource {
       _client.options.headers['Authorization'] =
           'Bearer ${await currentUser.getIdToken()}';
       final response = await _client.get(path);
-      logger.d('GET $path ${response.statusCode} ${response.data}');
+      if (kDebugMode) {
+        logger.d('GET $path ${response.statusCode} ${response.data}');
+      }
       return response.data;
     } on DioException catch (e) {
       logger.e('Failed to get $path with data ${e.response?.data}');
@@ -45,7 +48,9 @@ class ApiDataSource {
       }
 
       final response = await _client.post(path, data: data);
-      logger.d('POST $path ${response.statusCode} ${response.data}');
+      if (kDebugMode) {
+        logger.d('POST $path ${response.statusCode} ${response.data}');
+      }
       return response.data;
     } on DioException catch (e) {
       logger.e('Failed to post $path with error: ${e.response?.data}');
