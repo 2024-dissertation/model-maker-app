@@ -217,4 +217,8 @@ class ApiDataSource {
   Future<Map<String, dynamic>> getAnalytics() async {
     return _get('/analytics');
   }
+
+  Future<Map<String, dynamic>> deleteAccount() async {
+    return _post('/unverify', {});
+  }
 }

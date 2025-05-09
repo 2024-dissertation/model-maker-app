@@ -154,7 +154,6 @@ class AppRouter {
       ),
     ],
     redirect: (context, state) {
-      logger.d(state);
       if ((context.read<AuthCubit>().state == AuthState.initial ||
               context.read<AuthCubit>().state == AuthState.signedOut) &&
           state.matchedLocation.startsWith('/unauthorized') == false) {

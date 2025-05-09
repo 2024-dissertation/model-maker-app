@@ -50,4 +50,18 @@ class MyUserRepositoryImpl extends AbstractRepository
       throw ParsingException();
     }
   }
+
+  @override
+  Future<Map<String, dynamic>> deleteAccount() async {
+    try {
+      final data = await apiDataSource.deleteAccount();
+      return data;
+    } catch (e) {
+      if (e is ServerException || e is NetworkException) {
+        rethrow;
+      }
+      logger.e(e);
+      throw ParsingException();
+    }
+  }
 }

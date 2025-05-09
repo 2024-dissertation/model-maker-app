@@ -4,6 +4,7 @@ part 'my_user.mapper.dart';
 
 @MappableClass(caseStyle: CaseStyle.pascalCase)
 class MyUser with MyUserMappable {
+  @MappableField(key: 'ID')
   final int id;
   final String email;
   final String firebaseUid;

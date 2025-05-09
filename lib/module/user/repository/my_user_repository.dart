@@ -5,4 +5,5 @@ abstract class MyUserRepository {
   Future<MyUser> getMyUser();
   Future<MyUser> saveMyUser(MyUser myUser);
   Future<Analytics> getAnalytics();
+  Future<Map<String, dynamic>> deleteAccount();
 }

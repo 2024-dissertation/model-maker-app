@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/helpers/logger.dart';
 import 'package:frontend/helpers/safe_cubit.dart';
 import 'package:frontend/main/main.dart';
@@ -53,6 +56,29 @@ class MyUserCubit extends SafeHydratedCubit<MyUserState> {
         (state as MyUserLoaded).myUser.copyWith(email: email),
       ),
     );
+  }
+
+  void deleteUser() {
+    if (state is! MyUserLoaded) return;
+
+    try {
+      _myUserRepository.deleteAccount().then((_) {
+        FirebaseMessaging.instance
+            .unsubscribeFromTopic((state as MyUserLoaded).myUser.firebaseUid);
+        FirebaseAuth.instance.signOut();
+        Fluttertoast.showToast(
+          msg: "Account deleted successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      });
+    } catch (e) {
+      logger.e(e);
+      safeEmit(MyUserError(e.toString()));
+    }
   }
 
   @override

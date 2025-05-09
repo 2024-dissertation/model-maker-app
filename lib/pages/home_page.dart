@@ -17,10 +17,21 @@ import 'package:frontend/ui/task_status_widget.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final TaskRepository _taskRepository = getIt();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeCubit>().fetchTasks();
+  }
 
   @override
   Widget build(BuildContext context) {
