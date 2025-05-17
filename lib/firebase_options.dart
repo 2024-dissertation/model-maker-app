@@ -58,12 +58,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAF7BdSOpXlXSmHWlCC1LCXyt_a_S5T_sM',
-    appId: '1:415251284478:ios:db4ffa92590491366980af',
+    appId: '1:415251284478:ios:55ee7f6b782444b86980af',
     messagingSenderId: '415251284478',
     projectId: 'soup-photogrammetry-project',
     storageBucket: 'soup-photogrammetry-project.firebasestorage.app',
-    iosClientId: '415251284478-g876kn2pdo0bg23j6oot6uqjdma28de2.apps.googleusercontent.com',
-    iosBundleId: 'com.soup.scanner',
+    iosClientId: '415251284478-im85brosvlkaoo00t4j48ral4224v11j.apps.googleusercontent.com',
+    iosBundleId: 'com.soup.modelmaker',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

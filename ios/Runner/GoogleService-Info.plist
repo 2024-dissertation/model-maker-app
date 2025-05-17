@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>415251284478-g876kn2pdo0bg23j6oot6uqjdma28de2.apps.googleusercontent.com</string>
+	<string>415251284478-im85brosvlkaoo00t4j48ral4224v11j.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.415251284478-g876kn2pdo0bg23j6oot6uqjdma28de2</string>
+	<string>com.googleusercontent.apps.415251284478-im85brosvlkaoo00t4j48ral4224v11j</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAF7BdSOpXlXSmHWlCC1LCXyt_a_S5T_sM</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.soup.scanner</string>
+	<string>com.soup.modelmaker</string>
 	<key>PROJECT_ID</key>
 	<string>soup-photogrammetry-project</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:415251284478:ios:db4ffa92590491366980af</string>
+	<string>1:415251284478:ios:55ee7f6b782444b86980af</string>
 </dict>
 </plist>
