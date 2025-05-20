@@ -1,6 +1,6 @@
 [![main](https://github.com/2024-dissertation/frontend/actions/workflows/main.yml/badge.svg)](https://github.com/2024-dissertation/frontend/actions/workflows/main.yml)
 
-# Sam Laister's Dissertation Frontend
+# Model Maker Frontend
 
 This is the frontend for my dissertation project. It is built using Flutter. 
 
