@@ -2,8 +2,6 @@
 
 # Model Maker Frontend
 
-This is the frontend for my dissertation project. It is built using Flutter. 
-
 ## Tests
 
 To run the tests, run the following command:
