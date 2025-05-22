@@ -40,9 +40,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We need the camera to take pictures for scans</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need microphone access for the camera to act correctly. We don't record videos, only pictures</string>
+	<string>We need the camera to take photos for scans</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

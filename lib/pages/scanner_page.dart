@@ -57,8 +57,11 @@ class __ScannerPageState extends State<_ScannerPage> {
   }
 
   Future<void> init(int camera) async {
-    final _controller =
-        CameraController(widget.cameras[camera], ResolutionPreset.max);
+    final _controller = CameraController(
+      widget.cameras[camera],
+      ResolutionPreset.max,
+      enableAudio: false,
+    );
     _controller.initialize().then((_) {
       if (!mounted) {
         print("not mounted");
