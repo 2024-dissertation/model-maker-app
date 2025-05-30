@@ -5,7 +5,7 @@ platform :ios do
   lane :certificates do
     sync_code_signing(
       type: "adhoc",
-      app_identifier: ['com.soup.modelmaker', 'com.soup.modelmaker.staging'],
+      app_identifier: ['com.soup.modelmaker'],
       force_for_new_devices: true,
       readonly: true,
       git_url: "https://github.com/2024-dissertation/signing-certs"
@@ -13,7 +13,7 @@ platform :ios do
 
     sync_code_signing(
       type: "appstore",
-      app_identifier: ['com.soup.modelmaker', 'com.soup.modelmaker.staging'],
+      app_identifier: ['com.soup.modelmaker'],
       force_for_new_devices: true,
       readonly: true,
       git_url: "https://github.com/2024-dissertation/signing-certs"
@@ -24,14 +24,14 @@ platform :ios do
   lane :generate_new_certificates do
     sync_code_signing(
       type: "adhoc",
-      app_identifier: ['com.soup.modelmaker', 'com.soup.modelmaker.staging'],
+      app_identifier: ['com.soup.modelmaker'],
       force_for_new_devices: true,
       readonly: false,
       git_url: "https://github.com/2024-dissertation/signing-certs"
     )
     sync_code_signing(
       type: "appstore",
-      app_identifier: ['com.soup.modelmaker', 'com.soup.modelmaker.staging'],
+      app_identifier: ['com.soup.modelmaker'],
       force_for_new_devices: true,
       readonly: false,
       git_url: "https://github.com/2024-dissertation/signing-certs"

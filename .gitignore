@@ -51,3 +51,11 @@ app.*.map.json
 
 *.mocks.dart
 coverage/html/
+
+GoogleService-Info.plist
+
+*.cer
+*.p12
+*.certSigningRequest
+*.mobileprovision
+coverage/
