@@ -13,6 +13,7 @@ part 'task_file.mapper.dart';
 
 @MappableClass(caseStyle: CaseStyle.pascalCase)
 class TaskFile with TaskFileMappable {
+  @MappableField(key: "ID")
   final int id;
   final String filename;
   final String url;

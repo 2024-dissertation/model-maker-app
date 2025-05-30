@@ -20,7 +20,7 @@ void main() {
     "UserId": 2,
     "Images": [
         {
-            "Id": 204,
+            "ID": 204,
             "Filename": "task-10-3.jpg",
             "Url": "/uploads/task-10/task-10-3.jpg",
             "CreatedAt": "2025-02-17T23:05:05.787882Z",
@@ -29,7 +29,7 @@ void main() {
             "FileType": "upload"
         },
         {
-            "Id": 205,
+            "ID": 205,
             "Filename": "task-10-5.jpg",
             "Url": "/uploads/task-10/task-10-5.jpg",
             "CreatedAt": "2025-02-17T23:05:05.79347Z",
@@ -38,7 +38,7 @@ void main() {
             "FileType": "upload"
         },
         {
-            "Id": 206,
+            "ID": 206,
             "Filename": "task-10-8.jpg",
             "Url": "/uploads/task-10/task-10-8.jpg",
             "CreatedAt": "2025-02-17T23:05:05.794674Z",
@@ -48,7 +48,7 @@ void main() {
         }
     ],
     "Mesh": {
-        "Id": 215,
+        "ID": 215,
         "Filename": "scene_dense_mesh_refine_texture.ply",
         "Url": "objects/task-10/scene_dense_mesh_refine_texture.ply",
         "CreatedAt": "2025-02-17T23:13:21.892173Z",
@@ -82,10 +82,39 @@ void main() {
       expect(result.mesh!.taskID, 10);
     });
 
+    test('should correctly parse Queued Status into Task', () {
+      final json = '''
+{
+    "ID": 10,
+    "CreatedAt": "2025-02-17T23:04:59.696683Z",
+    "UpdatedAt": "2025-02-25T14:10:04.720931Z",
+    "DeletedAt": "2025-02-25T14:10:04.720932Z",
+    "Title": "Test Title",
+    "Description": "Test description",
+    "Completed": true,
+    "Status": "QUEUED",
+    "UserId": 2,
+    "Images": [],
+    "Mesh": {
+        "ID": 215,
+        "Filename": "scene_dense_mesh_refine_texture.ply",
+        "Url": "objects/task-10/scene_dense_mesh_refine_texture.ply",
+        "CreatedAt": "2025-02-17T23:13:21.892173Z",
+        "UpdatedAt": "2025-02-17T23:13:21.892173Z",
+        "TaskId": 10,
+        "FileType": "mesh"
+    }
+}
+''';
+
+      final result = TaskMapper.fromJson(json);
+      expect(result.status, TaskStatus.QUEUED);
+    });
+
     test('should correctly parse JSON into TaskFile', () {
       final json = '''
 {
-    "Id": 204,
+    "ID": 204,
     "Filename": "task-10-3.jpg",
     "Url": "/uploads/task-10/task-10-3.jpg",
     "CreatedAt": "2025-02-17T23:05:05.787882Z",

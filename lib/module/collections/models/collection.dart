@@ -5,6 +5,7 @@ part 'collection.mapper.dart';
 
 @MappableClass(caseStyle: CaseStyle.pascalCase)
 class Collection with CollectionMappable {
+  @MappableField(key: "ID")
   final int id;
   final String name;
   final List<Task>? tasks;

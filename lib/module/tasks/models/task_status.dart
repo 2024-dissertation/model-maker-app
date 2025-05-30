@@ -10,6 +10,7 @@ enum TaskStatus {
   FAILED,
   INITIAL,
   UNKNOWN,
+  QUEUED,
 }
 
 extension TaskStatusX on TaskStatus {
@@ -22,6 +23,9 @@ extension TaskStatusX on TaskStatus {
         return CupertinoColors.systemGrey;
 
       case TaskStatus.INPROGRESS:
+        return CupertinoColors.activeBlue;
+
+      case TaskStatus.QUEUED:
         return CupertinoColors.activeBlue;
 
       case TaskStatus.FAILED:
@@ -42,6 +46,9 @@ extension TaskStatusX on TaskStatus {
 
       case TaskStatus.INPROGRESS:
         return "In Progress";
+
+      case TaskStatus.QUEUED:
+        return "In Queue";
 
       case TaskStatus.FAILED:
         return "Failed";

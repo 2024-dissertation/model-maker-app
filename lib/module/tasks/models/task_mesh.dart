@@ -15,6 +15,7 @@ part 'task_mesh.mapper.dart';
 
 @MappableClass(caseStyle: CaseStyle.pascalCase)
 class TaskMesh with TaskMeshMappable {
+  @MappableField(key: "ID")
   final int id;
   final String createdAt;
   final String updatedAt;

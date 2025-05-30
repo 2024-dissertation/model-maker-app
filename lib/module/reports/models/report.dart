@@ -5,6 +5,7 @@ part 'report.mapper.dart';
 
 @MappableClass(caseStyle: CaseStyle.pascalCase)
 class Report with ReportMappable {
+  @MappableField(key: "ID")
   final int id;
   final String title;
   final String body;

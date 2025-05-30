@@ -8,7 +8,7 @@ void main() {
     test('should correctly parse JSON into UserMeBasic', () {
       final json = '''
 {
-    "Id": 2,
+    "ID": 2,
     "CreatedAt": "2025-01-18T16:54:23.963373Z",
     "UpdatedAt": "2025-02-04T13:51:06.143185Z",
     "DeletedAt": null,
@@ -36,7 +36,7 @@ void main() {
     test('should correctly parse JSON Map into UserMeBasic', () {
       final json = '''
 {
-    "Id": 2,
+    "ID": 2,
     "CreatedAt": "2025-01-18T16:54:23.963373Z",
     "UpdatedAt": "2025-02-04T13:51:06.143185Z",
     "DeletedAt": null,

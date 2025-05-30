@@ -32,7 +32,7 @@ void main() {
 {
     "tasks": [
         {
-            "Id": 2,
+            "ID": 2,
             "CreatedAt": "2025-01-18T16:54:23.979123Z",
             "UpdatedAt": "2025-01-18T17:04:29.461158Z",
             "DeletedAt": "2025-01-18T17:04:29.461159Z",
@@ -43,7 +43,7 @@ void main() {
             "UserId": 2,
             "Images": null,
             "Mesh": {
-                "Id": 24,
+                "ID": 24,
                 "Filename": "task-2.glb",
                 "Url": "/objects/2/task-2.glb",
                 "CreatedAt": "2025-01-18T17:04:29.458012Z",
@@ -53,7 +53,7 @@ void main() {
             }
         },
         {
-            "Id": 1,
+            "ID": 1,
             "CreatedAt": "2025-01-18T16:53:37.108412Z",
             "UpdatedAt": "2025-01-18T17:07:43.910028Z",
             "DeletedAt": "2025-01-18T17:07:43.910028Z",
@@ -64,7 +64,7 @@ void main() {
             "UserId": 1,
             "Images": null,
             "Mesh": {
-                "Id": 25,
+                "ID": 25,
                 "Filename": "task-1.glb",
                 "Url": "/objects/1/task-1.glb",
                 "CreatedAt": "2025-01-18T17:07:43.906099Z",
@@ -74,7 +74,7 @@ void main() {
             }
         },
         {
-            "Id": 3,
+            "ID": 3,
             "CreatedAt": "2025-01-20T15:13:48.67263Z",
             "UpdatedAt": "2025-01-20T15:17:28.031412Z",
             "DeletedAt": "2025-01-20T15:17:28.031413Z",
@@ -87,7 +87,7 @@ void main() {
             "Mesh": null
         },
         {
-            "Id": 4,
+            "ID": 4,
             "CreatedAt": "2025-01-20T15:24:02.637938Z",
             "UpdatedAt": "2025-01-20T15:24:02.637938Z",
             "DeletedAt": "2025-01-20T15:24:02.637938Z",
@@ -168,7 +168,7 @@ void main() {
       final data = '''
 {
     "task": {
-        "Id": 10,
+        "ID": 10,
         "CreatedAt": "2025-02-17T23:04:59.696683Z",
         "UpdatedAt": "2025-02-25T14:10:04.720931Z",
         "DeletedAt": "2025-02-25T14:10:04.720932Z",
@@ -179,7 +179,7 @@ void main() {
         "UserId": 2,
         "Images": [
             {
-                "Id": 204,
+                "ID": 204,
                 "Filename": "task-10-3.jpg",
                 "Url": "/uploads/task-10/task-10-3.jpg",
                 "CreatedAt": "2025-02-17T23:05:05.787882Z",
@@ -188,7 +188,7 @@ void main() {
                 "FileType": "upload"
             },
             {
-                "Id": 205,
+                "ID": 205,
                 "Filename": "task-10-5.jpg",
                 "Url": "/uploads/task-10/task-10-5.jpg",
                 "CreatedAt": "2025-02-17T23:05:05.79347Z",
@@ -198,7 +198,7 @@ void main() {
             }
         ],
         "Mesh": {
-            "Id": 215,
+            "ID": 215,
             "Filename": "scene_dense_mesh_refine_texture.ply",
             "Url": "objects/task-10/scene_dense_mesh_refine_texture.ply",
             "CreatedAt": "2025-02-17T23:13:21.892173Z",
@@ -275,7 +275,7 @@ void main() {
       final data = '''
 {
     "task": {
-        "Id": 21,
+        "ID": 21,
         "CreatedAt": "2025-03-02T23:41:48.059815Z",
         "UpdatedAt": "2025-03-02T23:41:48.059815Z",
         "DeletedAt": "2025-03-02T23:41:48.059815Z",
@@ -377,7 +377,7 @@ void main() {
 {
     "images": [
         {
-            "Id": 512,
+            "ID": 512,
             "Filename": "task-21-0.png",
             "Url": "/uploads/task-21/task-21-0.png",
             "CreatedAt": "2025-03-02T23:48:51.60844Z",
