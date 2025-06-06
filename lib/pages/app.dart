@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:frontend/helpers/logger.dart';
-import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/helpers/router.dart';
 import 'package:frontend/helpers/theme.dart';
-import 'package:frontend/module/auth/cubit/auth_state.dart';
 import 'package:frontend/module/theme/cubit/theme_cubit.dart';
 import 'package:frontend/module/theme/cubit/theme_state.dart';
+import 'package:frontend/module/user/cubit/my_user_cubit.dart';
+import 'package:frontend/module/user/cubit/my_user_state.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -165,7 +165,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
+    return BlocListener<MyUserCubit, MyUserState>(
       listener: (context, state) {
         router.router.refresh();
       },

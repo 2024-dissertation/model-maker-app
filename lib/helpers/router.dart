@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/app/views/app_layout.dart';
 import 'package:frontend/helpers/logger.dart';
-import 'package:frontend/module/auth/cubit/auth_cubit.dart';
+import 'package:frontend/module/user/cubit/my_user_cubit.dart';
 import 'package:frontend/helpers/globals.dart';
-import 'package:frontend/module/auth/cubit/auth_state.dart';
+import 'package:frontend/module/user/cubit/my_user_state.dart';
 import 'package:frontend/pages/analytics_page.dart';
 import 'package:frontend/pages/collection_list_page.dart';
 import 'package:frontend/pages/collection_page.dart';
@@ -25,35 +25,33 @@ import 'package:go_router/go_router.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
-// GoRouter configuration
   final router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/splash-screen',
+    initialLocation: '/',
     debugLogDiagnostics: true,
     routes: [
       GoRoute(
-        path: '/splash-screen',
-        builder: (context, state) => const SplashScreen(),
+        path: '/',
+        builder: (context, state) {
+          // Show splash screen only during initial load
+          final userState = context.read<MyUserCubit>().state;
+          if (userState is MyUserInitial || userState is MyUserLoading) {
+            return const SplashScreen();
+          }
+          // Redirect to appropriate page based on auth state
+          return userState.isAuthenticated
+              ? HomePage()
+              : const UnauthorizedPage();
+        },
       ),
       GoRoute(
-        path: '/unauthorized',
-        builder: (context, state) => const UnauthorizedPage(),
-        routes: [
-          GoRoute(
-            path: 'login',
-            builder: (context, state) => const LoginPage(),
-          ),
-        ],
-      ),
-      GoRoute(
-        path: '/loading',
+        path: '/login',
         builder: (context, state) => const LoginPage(),
       ),
       StatefulShellRoute(
         builder: (context, state, child) {
           return child;
         },
-        // https://gist.github.com/tolo/b26bd0ccb89a5fa2e57ec715f8963f2a
         navigatorContainerBuilder: (
           context,
           StatefulNavigationShell navigationShell,
@@ -154,18 +152,30 @@ class AppRouter {
       ),
     ],
     redirect: (context, state) {
-      if ((context.read<AuthCubit>().state == AuthState.initial ||
-              context.read<AuthCubit>().state == AuthState.signedOut) &&
-          state.matchedLocation.startsWith('/unauthorized') == false) {
-        return '/unauthorized';
+      final userState = context.read<MyUserCubit>().state;
+
+      // Don't redirect during initial load or loading state
+      if (userState is MyUserInitial || userState is MyUserLoading) {
+        return null;
       }
 
-      if (context.read<AuthCubit>().state == AuthState.loading) {
-        return '/splash-screen';
+      // Handle authentication redirects
+      final isAuthenticated = userState.isAuthenticated;
+      final isGoingToAuth = state.matchedLocation.startsWith('/authed');
+      final isGoingToLogin = state.matchedLocation == '/login';
+
+      // If user is not authenticated and trying to access auth routes
+      if (!isAuthenticated && isGoingToAuth) {
+        return '/';
       }
 
-      if (context.read<AuthCubit>().state == AuthState.signedIn &&
-          state.matchedLocation.startsWith('/authed') == false) {
+      // If user is authenticated and trying to access login
+      if (isAuthenticated && isGoingToLogin) {
+        return '/authed/home';
+      }
+
+      // If user is authenticated and at root, go to home
+      if (isAuthenticated && state.matchedLocation == '/') {
         return '/authed/home';
       }
 

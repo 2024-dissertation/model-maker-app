@@ -13,7 +13,6 @@ import 'package:frontend/module/analytics/cubit/analytics_cubit.dart';
 import 'package:frontend/module/collections/cubit/collection_cubit.dart';
 import 'package:frontend/module/home/cubit/home_cubit.dart';
 import 'package:frontend/pages/app.dart';
-import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
 import 'package:frontend/config/firebase_options.dart';
 import 'package:frontend/helpers/globals.dart';
@@ -56,19 +55,16 @@ void main() async {
 
   injectDependencies();
 
-  MyUserCubit myUserCubit = MyUserCubit();
-
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: myUserCubit),
+        BlocProvider(
+          create: (_) => MyUserCubit()..init(),
+        ),
         BlocProvider(create: (_) => AnalyticsCubit()..getAnalytics()),
         BlocProvider(create: (_) => CollectionCubit()..fetchCollections()),
         BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(create: (_) => HomeCubit()..fetchTasks()),
-        BlocProvider(
-          create: (_) => AuthCubit(myUserCubit: myUserCubit)..init(),
-        ),
       ],
       child: const App(),
     ),
