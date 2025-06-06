@@ -1,8 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:permission_handler/permission_handler.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'dart:typed_data';
 
 class ImagePreview extends StatefulWidget {
   const ImagePreview({
@@ -42,13 +47,32 @@ class _ImagePreviewState extends State<ImagePreview> {
     return CupertinoContextMenu(
       actions: [
         CupertinoContextMenuAction(
-          onPressed: () {
-            context.pop();
-          },
-          isDefaultAction: true,
-          trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
-          child: const ThemedText('Copy'),
-        ),
+            onPressed: () async {
+              context.pop();
+              final status = await Permission.photos.request();
+              if (status.isGranted) {
+                final file = File(widget.path);
+                final bytes = await file.readAsBytes();
+                final result = await ImageGallerySaver.saveImage(
+                    Uint8List.fromList(bytes));
+                if (!mounted) return;
+                Fluttertoast.showToast(
+                  msg: result['isSuccess'] == true
+                      ? 'Saved to gallery'
+                      : 'Failed to save',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                );
+              } else {
+                Fluttertoast.showToast(
+                  msg: 'Permission denied',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                );
+              }
+            },
+            trailingIcon: CupertinoIcons.photo_on_rectangle,
+            child: const ThemedText('Save to Gallery')),
         CupertinoContextMenuAction(
           onPressed: () {
             context.pop();

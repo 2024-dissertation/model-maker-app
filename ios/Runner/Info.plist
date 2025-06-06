@@ -39,6 +39,8 @@
 	<string>415251284478-g876kn2pdo0bg23j6oot6uqjdma28de2.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need access to your photo library so you can save pictures taken with the scanner</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need the camera to take photos for scans</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

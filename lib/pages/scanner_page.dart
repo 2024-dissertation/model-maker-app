@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -289,26 +290,28 @@ class __ScannerPageState extends State<_ScannerPage> {
                                     capturePhoto: capturePhoto,
                                   ),
                                   const SizedBox(width: 16),
-                                  ImageSelectButton(
+                                  if (kDebugMode) ...[
+                                    ImageSelectButton(
+                                      onFilesSelected: (files) {
+                                        context.read<ScannerCubit>().addPaths(
+                                            files
+                                                .map((file) => file.path)
+                                                .toList());
+                                        _showToast("Images added");
+                                      },
+                                    ),
+                                    const SizedBox(width: 16),
+                                  ],
+                                  ImageExtraButton(
                                     onFilesSelected: (files) {
                                       context.read<ScannerCubit>().addPaths(
                                           files
                                               .map((file) => file.path)
                                               .toList());
-                                      _showToast("Images added");
+                                      _showToast("Extra images added");
                                     },
                                   ),
                                   const SizedBox(width: 16),
-                                  // ImageExtraButton(
-                                  //   onFilesSelected: (files) {
-                                  //     context.read<ScannerCubit>().addPaths(
-                                  //         files
-                                  //             .map((file) => file.path)
-                                  //             .toList());
-                                  //     _showToast("Extra images added");
-                                  //   },
-                                  // ),
-                                  // const SizedBox(width: 16),
                                   _CameraRotateButton(
                                     onTap: () async {
                                       if (widget.cameras.length > 1) {
