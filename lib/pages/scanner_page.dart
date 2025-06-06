@@ -39,7 +39,6 @@ class _ScannerPage extends StatefulWidget {
 class __ScannerPageState extends State<_ScannerPage> {
   CameraController? controller;
   bool _visible = false;
-
   bool uploading = false;
 
   @override
@@ -65,14 +64,7 @@ class __ScannerPageState extends State<_ScannerPage> {
     _controller.initialize().then((_) {
       if (!mounted) {
         print("not mounted");
-        Fluttertoast.showToast(
-          msg: "Camera not mounted",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: CupertinoColors.systemRed,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+        _showToast("Camera not mounted", isError: true);
         return;
       }
       setState(() {
@@ -80,14 +72,7 @@ class __ScannerPageState extends State<_ScannerPage> {
       });
     }).catchError((Object e) {
       logger.e(e);
-      Fluttertoast.showToast(
-        msg: "Camera error",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        backgroundColor: CupertinoColors.systemRed,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      _showToast("Camera error", isError: true);
       if (e is CameraException) {
         switch (e.code) {
           case 'CameraAccessDenied':
@@ -97,25 +82,17 @@ class __ScannerPageState extends State<_ScannerPage> {
           case 'CameraAccessDeniedWithoutPrompt':
             showSingleActionAlertDialog(context,
                 message:
-                    "Camera access denied perminantly, go to settings to enable camera access");
+                    "Camera access denied permanently, go to settings to enable camera access");
             break;
           case 'CameraAccessRestricted':
             showSingleActionAlertDialog(context,
                 message:
                     "Camera access restricted, go to settings to enable camera access");
           case 'AudioAccessDenied':
-            showSingleActionAlertDialog(context,
-                message: "Audio access denied");
-            break;
           case 'AudioAccessDeniedWithoutPrompt':
-            showSingleActionAlertDialog(context,
-                message:
-                    "Audio access denied perminantly, go to settings to enable audio access");
-            break;
           case 'AudioAccessRestricted':
-            showSingleActionAlertDialog(context,
-                message:
-                    "Audio access restricted, go to settings to enable audio access");
+            // Audio errors can be ignored since we don't use audio
+            break;
           default:
             break;
         }
@@ -123,10 +100,23 @@ class __ScannerPageState extends State<_ScannerPage> {
     });
   }
 
+  void _showToast(String message, {bool isError = false}) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.TOP,
+      backgroundColor:
+          isError ? CupertinoColors.systemRed : CupertinoColors.activeGreen,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+
   Future<void> capturePhoto() async {
     if (controller != null && controller?.value.isInitialized == true) {
       final photoFile = await controller!.takePicture();
       context.read<ScannerCubit>().addPath(photoFile.path);
+      _showToast("Photo captured");
     }
   }
 
@@ -143,161 +133,277 @@ class __ScannerPageState extends State<_ScannerPage> {
     return BlocListener<ScannerCubit, ScannerState>(
       listener: (context, state) {
         if (state.error != null) {
-          Fluttertoast.showToast(
-            msg: "Something went wrong",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.TOP,
-            backgroundColor: CupertinoColors.systemRed,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          _showToast("Something went wrong", isError: true);
         }
       },
       child: CupertinoPageScaffold(
+        backgroundColor: CupertinoColors.systemBackground,
         navigationBar: CupertinoNavigationBar(
-          leading: TextButton(
+          backgroundColor: CupertinoColors.systemBackground.withOpacity(0.8),
+          leading: CupertinoButton(
+            padding: EdgeInsets.zero,
             onPressed: () {
               context.read<ScannerCubit>().clear();
             },
             child: const Text("Clear"),
           ),
-          trailing: TextButton(
-              onPressed: () async {
-                if (uploading) return;
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: uploading
+                ? null
+                : () async {
+                    setState(() {
+                      uploading = true;
+                    });
 
-                setState(() {
-                  uploading = true;
-                });
+                    _showToast("Starting upload");
 
-                Fluttertoast.showToast(
-                  msg: "Starting upload",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.TOP,
-                  backgroundColor: CupertinoColors.activeGreen,
-                  textColor: Colors.white,
-                  fontSize: 16.0,
-                );
-                if (await context.read<ScannerCubit>().createTask()) {
-                  if (context.read<ScannerCubit>().state.paths.isEmpty) {
-                    showSingleActionAlertDialog(context,
-                        message: "No images to upload");
-                    return;
-                  }
-                  await context.read<ScannerCubit>().uploadImages();
-                  context.read<ScannerCubit>().clear();
-                  Fluttertoast.showToast(
-                    msg: "Task created successfully",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.TOP,
-                    backgroundColor: CupertinoColors.activeGreen,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  );
-                }
+                    if (await context.read<ScannerCubit>().createTask()) {
+                      if (context.read<ScannerCubit>().state.paths.isEmpty) {
+                        showSingleActionAlertDialog(context,
+                            message: "No images to upload");
+                        return;
+                      }
+                      await context.read<ScannerCubit>().uploadImages();
+                      context.read<ScannerCubit>().clear();
+                      _showToast("Task created successfully");
+                    }
 
-                setState(() {
-                  uploading = false;
-                });
-              },
-              child: const Text("Done")),
-          middle: const Text('Create Task'),
+                    setState(() {
+                      uploading = false;
+                    });
+                  },
+            child: uploading
+                ? const CupertinoActivityIndicator()
+                : const Text("Done",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          middle: const Text('Create Task',
+              style: TextStyle(fontWeight: FontWeight.bold)),
         ),
-        child: Column(
-          children: [
-            AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: _visible ? 1.0 : 0.0,
-              child: Stack(children: [
-                if (controller != null &&
-                    controller?.value.isInitialized == true)
-                  CameraPreview(controller!)
-                else
-                  Center(
-                    child: Container(
-                        color: CupertinoColors.black,
-                        width: double.infinity,
-                        height: 500,
-                        child: ThemedText("No cameras found")),
-                  ),
-                Positioned(
-                  bottom: 16,
-                  left: 16,
-                  right: 16,
-                  child: Center(
-                    child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        spacing: 8,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: _visible ? 1.0 : 0.0,
+                  child: Container(
+                    margin: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: CupertinoColors.black.withOpacity(0.2),
+                          blurRadius: 16,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: Stack(
+                        fit: StackFit.expand,
                         children: [
-                          CameraSnap(capturePhoto: capturePhoto),
-                          ImageSelectButton(
-                            onFilesSelected: (files) {
-                              logger.d("Started");
-                              context.read<ScannerCubit>().addPaths(
-                                  files.map((file) => file.path).toList());
-                            },
-                          ),
-                          ImageExtraButton(
-                            onFilesSelected: (files) {
-                              context.read<ScannerCubit>().addPaths(
-                                  files.map((file) => file.path).toList());
-                            },
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(24),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(24),
-                              child: SizedBox(
-                                height: 48,
-                                width: 48,
-                                child: Icon(CupertinoIcons.camera_rotate),
+                          if (controller != null &&
+                              controller?.value.isInitialized == true)
+                            CameraPreview(controller!)
+                          else
+                            Container(
+                              color: CupertinoColors.black,
+                              child: const Center(
+                                child: ThemedText(
+                                  "No cameras found",
+                                ),
                               ),
-                              onTap: () async {
-                                if (widget.cameras.length > 1) {
-                                  camera = (camera + 1) % widget.cameras.length;
-                                  init(camera);
-                                  logger.d("Camera changed to $camera");
-                                  Fluttertoast.showToast(
-                                    msg: "Camera changed to $camera",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.TOP,
-                                    backgroundColor:
-                                        CupertinoColors.activeGreen,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0,
-                                  );
-                                }
-                              },
+                            ),
+                          if (controller != null &&
+                              controller?.value.isInitialized == true)
+                            Positioned(
+                              top: 16,
+                              right: 16,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: CupertinoColors.black.withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color:
+                                        CupertinoColors.white.withOpacity(0.2),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      controller!.description.lensDirection ==
+                                              CameraLensDirection.front
+                                          ? CupertinoIcons.person_fill
+                                          : CupertinoIcons.camera_fill,
+                                      color: CupertinoColors.white,
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      controller!.description.lensDirection ==
+                                              CameraLensDirection.front
+                                          ? 'Front Camera'
+                                          : 'Back Camera',
+                                      style: const TextStyle(
+                                        color: CupertinoColors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          Positioned(
+                            bottom: 24,
+                            left: 24,
+                            right: 24,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 16,
+                              ),
+                              decoration: BoxDecoration(
+                                color: CupertinoColors.black.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(32),
+                                border: Border.all(
+                                  color: CupertinoColors.white.withOpacity(0.2),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  CameraSnap(
+                                    capturePhoto: capturePhoto,
+                                  ),
+                                  const SizedBox(width: 16),
+                                  ImageSelectButton(
+                                    onFilesSelected: (files) {
+                                      context.read<ScannerCubit>().addPaths(
+                                          files
+                                              .map((file) => file.path)
+                                              .toList());
+                                      _showToast("Images added");
+                                    },
+                                  ),
+                                  const SizedBox(width: 16),
+                                  // ImageExtraButton(
+                                  //   onFilesSelected: (files) {
+                                  //     context.read<ScannerCubit>().addPaths(
+                                  //         files
+                                  //             .map((file) => file.path)
+                                  //             .toList());
+                                  //     _showToast("Extra images added");
+                                  //   },
+                                  // ),
+                                  // const SizedBox(width: 16),
+                                  _CameraRotateButton(
+                                    onTap: () async {
+                                      if (widget.cameras.length > 1) {
+                                        camera = (camera + 1) %
+                                            widget.cameras.length;
+                                        init(camera);
+                                        logger.d("Camera changed to $camera");
+                                        _showToast("Camera switched");
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ]),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ]),
-            ),
-            Expanded(
-              child: BlocBuilder<ScannerCubit, ScannerState>(
-                builder: (context, state) {
-                  return GridView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: state.paths.length,
-                    itemBuilder: (context, index) => ImagePreview(
-                      index: index,
-                      path: state.paths[index],
-                      onDelete: (index) =>
-                          context.read<ScannerCubit>().removePath(index),
-                    ),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 1.0,
-                    ),
-                  );
-                },
               ),
-            ),
-          ],
+              Expanded(
+                flex: 1,
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  child: BlocBuilder<ScannerCubit, ScannerState>(
+                    builder: (context, state) {
+                      if (state.paths.isEmpty) {
+                        return Center(
+                          child: Text(
+                            'No images captured yet',
+                            style: TextStyle(
+                              color: CupertinoColors.label.resolveFrom(context),
+                              fontSize: 16,
+                            ),
+                          ),
+                        );
+                      }
+
+                      return GridView.builder(
+                        scrollDirection: Axis.vertical,
+                        padding: EdgeInsets.zero,
+                        itemCount: state.paths.length,
+                        itemBuilder: (context, index) => ImagePreview(
+                          index: index,
+                          path: state.paths[index],
+                          onDelete: (index) =>
+                              context.read<ScannerCubit>().removePath(index),
+                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 1.0,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CameraRotateButton extends StatelessWidget {
+  const _CameraRotateButton({
+    required this.onTap,
+  });
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 48,
+        width: 48,
+        decoration: BoxDecoration(
+          color: CupertinoColors.white.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: CupertinoColors.white.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        child: const Icon(
+          CupertinoIcons.camera_rotate,
+          color: CupertinoColors.white,
+          size: 24,
         ),
       ),
     );

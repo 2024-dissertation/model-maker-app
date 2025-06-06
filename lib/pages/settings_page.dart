@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/config/constants.dart';
-import 'package:frontend/module/auth/cubit/auth_cubit.dart';
+import 'package:frontend/module/user/cubit/my_user_cubit.dart';
 import 'package:frontend/ui/modals/about_modal.dart';
 import 'package:frontend/ui/modals/version_modal.dart';
 import 'package:frontend/ui/themed/themed_list_item.dart';
@@ -96,7 +96,7 @@ class SettingsPage extends StatelessWidget {
             child: CupertinoButton.filled(
               child: const ThemedText("Log Out", color: TextColor.inverse),
               onPressed: () {
-                context.read<AuthCubit>().signOut();
+                context.read<MyUserCubit>().signOut();
               },
             ),
           ),

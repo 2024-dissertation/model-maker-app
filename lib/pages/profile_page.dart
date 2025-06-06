@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/config/constants.dart';
-import 'package:frontend/module/auth/cubit/auth_cubit.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
 import 'package:frontend/module/user/cubit/my_user_state.dart';
 import 'package:frontend/ui/danger_card.dart';
