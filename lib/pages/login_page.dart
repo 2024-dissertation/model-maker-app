@@ -3,13 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/config/constants.dart';
 import 'package:frontend/module/analytics/cubit/analytics_cubit.dart';
-import 'package:frontend/module/auth/cubit/auth_cubit.dart';
-import 'package:frontend/module/auth/cubit/auth_state.dart';
-import 'package:frontend/module/auth/repository/auth_repository.dart';
 import 'package:frontend/module/collections/cubit/collection_cubit.dart';
 import 'package:frontend/module/home/cubit/home_cubit.dart';
 import 'package:frontend/module/user/cubit/my_user_cubit.dart';
-import 'package:frontend/main/main.dart';
 import 'package:frontend/module/user/cubit/my_user_state.dart';
 import 'package:frontend/ui/themed/themed_text.dart';
 
@@ -24,12 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final AuthRepository _authRepository = getIt();
-
   @override
   void initState() {
-    // _emailController.text = "laister.sam+scanner@gmail.com";
-    // _passwordController.text = "password";
     super.initState();
   }
 
@@ -66,29 +58,30 @@ class _LoginPageState extends State<LoginPage> {
               controller: _passwordController,
             ),
             const SizedBox(height: 24),
-            BlocBuilder<AuthCubit, AuthState>(
+            BlocBuilder<MyUserCubit, MyUserState>(
               builder: (context, state) {
-                if (state == AuthState.signedIn) {
+                if (state is MyUserLoaded) {
                   return CupertinoButton.filled(
                     child: const ThemedText("Log out"),
                     onPressed: () {
                       context.read<HomeCubit>().clear();
                       context.read<AnalyticsCubit>().clear();
                       context.read<CollectionCubit>().clear();
-                      _authRepository.signOut();
+                      context.read<MyUserCubit>().signOut();
                     },
                   );
                 }
-                if (state == AuthState.initial) {
+                if (state is MyUserInitial || state is MyUserLoading) {
                   return const CupertinoActivityIndicator();
                 }
                 return Center(
                   child: CupertinoButton.filled(
                     child: const ThemedText("Login"),
-                    onPressed: () => _authRepository.signInWithEmailAndPassword(
-                      _emailController.text,
-                      _passwordController.text,
-                    ),
+                    onPressed: () =>
+                        context.read<MyUserCubit>().signInWithEmailAndPassword(
+                              _emailController.text,
+                              _passwordController.text,
+                            ),
                   ),
                 );
               },
