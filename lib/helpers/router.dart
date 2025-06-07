@@ -34,7 +34,7 @@ class AppRouter {
         path: '/',
         builder: (context, state) {
           // Show splash screen only during initial load
-          final userState = context.read<MyUserCubit>().state;
+          final userState = context.watch<MyUserCubit>().state;
           if (userState is MyUserInitial || userState is MyUserLoading) {
             return const SplashScreen();
           }
