@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
             if (context.watch<MyUserCubit>().state is MyUserError)
               ThemedText(
                 (context.watch<MyUserCubit>().state as MyUserError).message,
-                color: TextColor.inverse,
+                color: TextColor.secondary,
               ),
             CupertinoTextField(
               placeholder: "Email",
@@ -60,23 +60,16 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 24),
             BlocBuilder<MyUserCubit, MyUserState>(
               builder: (context, state) {
-                if (state is MyUserLoaded) {
-                  return CupertinoButton.filled(
-                    child: const ThemedText("Log out"),
-                    onPressed: () {
-                      context.read<HomeCubit>().clear();
-                      context.read<AnalyticsCubit>().clear();
-                      context.read<CollectionCubit>().clear();
-                      context.read<MyUserCubit>().signOut();
-                    },
-                  );
-                }
                 if (state is MyUserInitial || state is MyUserLoading) {
                   return const CupertinoActivityIndicator();
                 }
                 return Center(
                   child: CupertinoButton.filled(
-                    child: const ThemedText("Login"),
+                    child: const ThemedText(
+                      "Login",
+                      weight: FontWeight.w600,
+                      color: TextColor.inverse,
+                    ),
                     onPressed: () =>
                         context.read<MyUserCubit>().signInWithEmailAndPassword(
                               _emailController.text,
