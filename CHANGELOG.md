@@ -7,11 +7,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-### [v1.0.2]
+### [v1.1.0]
 
-- Added Job Queue for the photogrammetry process. Max of 1 at a time
-- Max 100 jobs in the queue
-- Added Queued status to Tasks
+- New Scanner Page UI
 
 ### [v1.0.0]
 
