@@ -12,7 +12,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-import '../../tests-broken/cubits/my_user_cubit_test.mocks.dart';
+import 'task_cubit_test.mocks.dart';
 
 class MockStorage extends Mock implements Storage {}
 
